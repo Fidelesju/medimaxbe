@@ -6,17 +6,17 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao
 {
-    public class MedicineDb : Db<MedicineResponseModel>, IMedicineDb
+    public class MedicineDb : Db<MedicamentoResponseModel>, IMedicineDb
     {
         public MedicineDb(IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment, MediMaxDbContext dbContext) : base(configuration, webHostEnvironment, dbContext)
         {
         }
 
-        public async Task<List<MedicineResponseModel>> GetAllMedicine()
+        public async Task<List<MedicamentoResponseModel>> BuscarTodosMedicamentos()
         {
             string sql;
-            List<MedicineResponseModel> medicineList;
+            List<MedicamentoResponseModel> medicamentoLista;
             sql = @"
                SELECT 
 	                m.id AS Id,
@@ -29,16 +29,16 @@ namespace MediMax.Data.Dao
 
             await Connect();
             await Query(sql);
-            medicineList = await GetQueryResultList();
+            medicamentoLista = await GetQueryResultList();
             await Disconnect();
-            return medicineList;
+            return medicamentoLista;
         }
 
 
-        protected override MedicineResponseModel Mapper(DbDataReader reader)
+        protected override MedicamentoResponseModel Mapper(DbDataReader reader)
         {
-            MedicineResponseModel medicine;
-            medicine = new MedicineResponseModel();
+            MedicamentoResponseModel medicine;
+            medicine = new MedicamentoResponseModel();
             medicine.Id = Convert.ToInt32(reader["Id"]);
             medicine.Name = Convert.ToString(reader["Name"]);
             medicine.ExpirationDate = Convert.ToString(reader["ExpirationDate"]);

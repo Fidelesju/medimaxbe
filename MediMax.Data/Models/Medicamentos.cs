@@ -1,6 +1,4 @@
-﻿using MediMax.Data.Dao;
-using MediMax.Data.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MediMax.Data.Models
 {

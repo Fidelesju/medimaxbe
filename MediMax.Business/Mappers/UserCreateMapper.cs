@@ -5,7 +5,7 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers
 {
-    public class UserCreateMapper : Mapper<UserCreateRequestModel>, IUserCreateMapper
+    public class UserCreateMapper : Mapper<UsuarioCreateRequestModel>, IUsuarioCreateMapper
     {
         private readonly Usuario? _user;
 

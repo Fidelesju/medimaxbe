@@ -27,11 +27,11 @@ namespace MediMax.Application.Controller
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<BaseResponse<int>>> CreateFood(AlimentacaoCreateRequestModel request)
+        public async Task<ActionResult<BaseResponse<int>>> CriarRefeições(AlimentacaoCreateRequestModel request)
         {
             try
             {
-                int id = await _alimentacaoService.CreateFood(request);
+                int id = await _alimentacaoService.CriarRefeições(request);
                 if (id == 0)
                 {
                     return BadRequest(new BaseResponse<int>
@@ -58,7 +58,7 @@ namespace MediMax.Application.Controller
         }
 
         [HttpGet("GetMealsByType/TypeMeals/{typeMeals}")]
-        public async Task<ActionResult<BaseResponse<List<AlimentacaoResponseModel>>>> GetMealsByType(string typeMeals)
+        public async Task<ActionResult<BaseResponse<List<AlimentacaoResponseModel>>>> BuscarRefeiçõesPorTipo(string typeMeals)
         {
             try
             {

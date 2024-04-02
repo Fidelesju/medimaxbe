@@ -5,7 +5,7 @@ using MediMax.Data.Repositories.Interfaces;
 
 namespace MediMax.Data.Repositories
 {
-    public class UserRepository : Repository<Usuario>, IUserRepository
+    public class UserRepository : Repository<Usuario>, IUsuarioRepository
     {
         public UserRepository(MediMaxDbContext context) : base(context)
         {

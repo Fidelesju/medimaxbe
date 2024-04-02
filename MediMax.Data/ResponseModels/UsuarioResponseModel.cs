@@ -1,6 +1,6 @@
 ﻿namespace MediMax.Data.ResponseModels
 {
-    public class UserResponseModel
+    public class UsuarioResponseModel
     {
         public int Id { get; set; }
         public string? Email { get; set; }

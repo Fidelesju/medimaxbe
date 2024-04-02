@@ -15,7 +15,7 @@ namespace MediMax.Business.Mappers
             _tratamento = new Tratamento();
         }
 
-        public Tratamento GetTratemento(MedicamentoETratamentoCreateRequestModel request)
+        public Tratamento BuscarTratemento(MedicamentoETratamentoCreateRequestModel request)
         {
             _tratamento.quantidade_medicamentos = request.quantidade_medicamento_por_dia;
             _tratamento.horario_inicio = request.horario_inicial_tratamento;

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uw2TQS+GZRC52O8sFq9WfpI0t1TZ8LVc0InAeq21FdvEyqf5UQZxPp2oEML/RxG5kAl8v5jyM9HgaFDUwSgJ6w==",
+  "dgSpecHash": "FIHNWWXKmux5zoFg8Meg2wgMafj9yfdmBJjmJn63ocudowe0X17zlFG1wJBb15ZMZBAQ8W4OQbLQvF10Fi16Cg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Application\\MediMax.Application.csproj",
+  "projectFilePath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\MediMax.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\firesharp\\2.0.4\\firesharp.2.0.4.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\fluentvalidation\\11.7.1\\fluentvalidation.11.7.1.nupkg.sha512",

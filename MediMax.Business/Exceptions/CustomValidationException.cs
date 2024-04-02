@@ -22,5 +22,6 @@ namespace MediMax.Business.Exceptions
         public Dictionary<string, string> Errors { get; set; }
         public List<Dictionary<string, string>> ErrorsList { get; set; }
         public bool IsStringError { get; set; }
+        public object Failures { get; set; }
     }
 }

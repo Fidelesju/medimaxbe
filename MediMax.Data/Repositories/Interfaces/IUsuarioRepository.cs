@@ -2,7 +2,7 @@
 
 namespace MediMax.Data.Repositories.Interfaces
 {
-    public interface IUserRepository
+    public interface IUsuarioRepository
     {
         int Create(Usuario user);
         void Update(Usuario user);

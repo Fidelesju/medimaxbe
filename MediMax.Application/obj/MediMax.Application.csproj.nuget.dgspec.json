@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Application\\MediMax.Application.csproj": {}
+    "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\MediMax.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Application\\MediMax.Application.csproj": {
+    "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\MediMax.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Application\\MediMax.Application.csproj",
+        "projectUniqueName": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\MediMax.Application.csproj",
         "projectName": "MediMax.Application",
-        "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Application\\MediMax.Application.csproj",
+        "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\MediMax.Application.csproj",
         "packagesPath": "C:\\Users\\Julia Fideles\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Application\\obj\\",
+        "outputPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Julia Fideles\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,11 +28,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Business\\MediMax.Business.csproj": {
-                "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Business\\MediMax.Business.csproj"
+              "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\MediMax.Business.csproj": {
+                "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\MediMax.Business.csproj"
               },
-              "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Data\\MediMax.Data.csproj": {
-                "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Data\\MediMax.Data.csproj"
+              "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\MediMax.Data.csproj": {
+                "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\MediMax.Data.csproj"
               }
             }
           }
@@ -115,14 +115,14 @@
         }
       }
     },
-    "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Business\\MediMax.Business.csproj": {
+    "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\MediMax.Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Business\\MediMax.Business.csproj",
+        "projectUniqueName": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\MediMax.Business.csproj",
         "projectName": "MediMax.Business",
-        "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Business\\MediMax.Business.csproj",
+        "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\MediMax.Business.csproj",
         "packagesPath": "C:\\Users\\Julia Fideles\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Business\\obj\\",
+        "outputPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Julia Fideles\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -139,8 +139,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Data\\MediMax.Data.csproj": {
-                "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Data\\MediMax.Data.csproj"
+              "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\MediMax.Data.csproj": {
+                "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\MediMax.Data.csproj"
               }
             }
           }
@@ -215,14 +215,14 @@
         }
       }
     },
-    "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Data\\MediMax.Data.csproj": {
+    "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\MediMax.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Data\\MediMax.Data.csproj",
+        "projectUniqueName": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\MediMax.Data.csproj",
         "projectName": "MediMax.Data",
-        "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Data\\MediMax.Data.csproj",
+        "projectPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\MediMax.Data.csproj",
         "packagesPath": "C:\\Users\\Julia Fideles\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimax\\MediMax\\MediMax.Data\\obj\\",
+        "outputPath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Julia Fideles\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -5,6 +5,6 @@ namespace MediMax.Data.Dao.Interfaces
 {
     public interface IMedicineDb
     {
-        Task<List<MedicineResponseModel>> GetAllMedicine();
+        Task<List<MedicamentoResponseModel>> BuscarTodosMedicamentos();
     }
 }

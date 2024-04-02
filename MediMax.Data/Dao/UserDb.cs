@@ -5,17 +5,17 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao
 {
-    public class UserDb : Db<UserResponseModel>, IUserDb
+    public class UserDb : Db<UsuarioResponseModel>, IUsuarioDb
     {
         public UserDb(IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment, MediMaxDbContext dbContext) : base(configuration, webHostEnvironment, dbContext)
         {
         }
 
-        public async Task<UserResponseModel> GetUserById(int userId)
+        public async Task<UsuarioResponseModel> GetUserById(int userId)
         {
             string sql;
-            UserResponseModel user;
+            UsuarioResponseModel user;
             sql = $@"
                 SELECT 
 	                    u.userId AS UserId,
@@ -33,10 +33,10 @@ namespace MediMax.Data.Dao
             return user;
         }
 
-        public async Task<UserResponseModel> GetUserByEmail(string name)
+        public async Task<UsuarioResponseModel> GetUserByEmail(string name)
         {
             string sql;
-            UserResponseModel user;
+            UsuarioResponseModel user;
             sql = $@"
                 SELECT 
                     u.userId AS UserId,
@@ -53,10 +53,10 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return user;
         }
-        protected override UserResponseModel Mapper(DbDataReader reader)
+        protected override UsuarioResponseModel Mapper(DbDataReader reader)
         {
-            UserResponseModel user;
-            user = new UserResponseModel();
+            UsuarioResponseModel user;
+            user = new UsuarioResponseModel();
             user.Id = Convert.ToInt32(reader["UserId"]);
             user.Name = Convert.ToString(reader["Name"]);
             user.Email = Convert.ToString(reader["Email"]);

@@ -4,9 +4,10 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Business.Services.Interfaces
 {
-    public interface ITreatmentService
+    public interface IMedicamentoService
     {
-        Task<List<TreatmentResponseModel>> GetTreatmentByName(string name);
+        Task<int> CriandoMedicamentosETratamento(MedicamentoETratamentoCreateRequestModel request);
+        Task<List<MedicamentoResponseModel>> BuscarTodosMedicamentos();
         //Task<UserResponseModel> GetUserByName(string name);
     }
 }

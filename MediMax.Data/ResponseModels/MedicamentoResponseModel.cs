@@ -1,6 +1,6 @@
 ﻿namespace MediMax.Data.ResponseModels
 {
-    public class MedicineResponseModel
+    public class MedicamentoResponseModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }

@@ -4,9 +4,9 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Validations
 {
-    public class UserCreateValidation : Validation<UserCreateRequestModel>
+    public class UsuarioCreateValidation : Validation<UsuarioCreateRequestModel>
     {
-        public UserCreateValidation()
+        public UsuarioCreateValidation()
         {
             ValidateEmail();
             ValidateName();
@@ -18,9 +18,9 @@ namespace MediMax.Business.Validations
             RuleFor(u => u.UserName)
                 .NotEmpty()
                 .WithMessage(DefaultErrorMessages.RequiredField)
-                .Must(name => CustomValidations.IsInLengthInterval(3, 150, name))
+                .Length(3, 150)
                 .WithMessage(DefaultErrorMessages.TextOutOfBounds(3, 150))
-                ;
+                .WithName("Nome de usuário");
         }
 
         private void ValidateEmail()
@@ -30,9 +30,9 @@ namespace MediMax.Business.Validations
                 .WithMessage(DefaultErrorMessages.RequiredField)
                 .EmailAddress()
                 .WithMessage(DefaultErrorMessages.InvalidEmail)
-                .Must(name => CustomValidations.IsInLengthInterval(3, 150, name))
+                .Length(3, 150)
                 .WithMessage(DefaultErrorMessages.TextOutOfBounds(3, 150))
-                ;
+                .WithName("E-mail");
         }
 
         private void ValidatePassword()
@@ -42,8 +42,9 @@ namespace MediMax.Business.Validations
                 .WithMessage(DefaultErrorMessages.RequiredField)
                 .Must(p => CustomValidations.ValidatePasswordStrength(p))
                 .WithMessage(DefaultErrorMessages.PasswordOutFormat())
-                ;
+                .WithName("Senha");
         }
+
 
         protected override List<PersistenceError> GetPersistenceValidations()
         {
