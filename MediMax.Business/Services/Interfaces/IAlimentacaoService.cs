@@ -5,7 +5,7 @@ namespace MediMax.Business.Services.Interfaces
 {
     public interface IAlimentacaoService
     {
-        Task<int> CriarRefeições(AlimentacaoCreateRequestModel request);
+        Task<int> CriarRefeicoes(AlimentacaoCreateRequestModel request);
         Task<List<AlimentacaoResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals);
     }
 }

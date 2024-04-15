@@ -55,8 +55,15 @@ namespace MediMax.Data.Dao
                    t.observacao AS Observation,
                    t.esta_ativo AS IsActive
                 FROM tratamento t
-                WHERE esta_ativo = 1
-                AND horario_inicio BETWEEN '{startTime}' AND '{finishTime}'
+                WHERE t.esta_ativo = 1
+                AND t.horario_inicio BETWEEN '16:41' AND '17:41'
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM gerenciamento_tratamento gt
+                    WHERE gt.remedio_id = t.medicamento_id
+                    AND gt.horario_correto_tratamento  BETWEEN '16:41' AND '17:41'
+                    AND gt.data_ingestao_medicamento = now()
+                )
                 ";
 
             await Connect();
@@ -65,9 +72,36 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return TreatmentList;
         } 
-        
-       
 
+        public async Task<bool> AlterandoTratamento(int remedio_id,
+            string nome,
+            int quantidade_medicamentos,
+            string horario_inicio,
+            int intervalo_tratamento,
+            int tempo_tratamento_dias,
+            string recomendacoes_alimentacao,
+            string observacao,
+            int id)
+        {
+            string sql;
+            bool success;
+            sql = $@"
+                UPDATE tratamento t
+                SET t.nome_medicamento = '{nome}', 
+                t.quantidade_medicamentos = '{quantidade_medicamentos}', 
+                t.horario_inicio = '{horario_inicio}', 
+                t.intervalo_tratamento = {intervalo_tratamento}, 
+                t.tempo_tratamento_dias = {tempo_tratamento_dias}, 
+                t.recomendacoes_alimentacao = '{recomendacoes_alimentacao}', 
+                t.observacao = '{observacao}' 
+                WHERE t.id = {id}
+                ";
+
+            await Connect();
+            success = await PersistQuery(sql);
+            await Disconnect();
+            return success;
+        }
 
         protected override TratamentoResponseModel Mapper(DbDataReader reader)
         {

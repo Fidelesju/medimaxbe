@@ -35,7 +35,7 @@ namespace MediMax.Business.Validations
                 .GreaterThan(0)
                 .WithMessage("A dosagem deve ser maior que zero.");
 
-            RuleFor(u => u.quantidade_medicamento_por_dia)
+            RuleFor(u => u.quantidade_medicamento_dosagem)
                 .NotNull()
                 .WithMessage(DefaultErrorMessages.RequiredField)
                 .GreaterThan(0)

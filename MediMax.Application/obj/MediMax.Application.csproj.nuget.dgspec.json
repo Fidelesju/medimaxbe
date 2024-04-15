@@ -83,6 +83,18 @@
               "target": "Package",
               "version": "[7.0.0, )"
             },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Serilog.Sinks.MSSqlServer": {
+              "target": "Package",
+              "version": "[6.6.0, )"
+            },
+            "Serilog.Sinks.MySQL": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "ServiceStack": {
               "target": "Package",
               "version": "[6.11.0, )"
@@ -190,6 +202,18 @@
             "MySqlConnector": {
               "target": "Package",
               "version": "[2.3.3, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Serilog.Sinks.MSSqlServer": {
+              "target": "Package",
+              "version": "[6.6.0, )"
+            },
+            "Serilog.Sinks.MySQL": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             }
           },
           "imports": [
@@ -286,6 +310,18 @@
             "MySqlConnector": {
               "target": "Package",
               "version": "[2.3.3, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Serilog.Sinks.MSSqlServer": {
+              "target": "Package",
+              "version": "[6.6.0, )"
+            },
+            "Serilog.Sinks.MySQL": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             }
           },
           "imports": [

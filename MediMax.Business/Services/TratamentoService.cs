@@ -71,6 +71,15 @@ namespace MediMax.Business.Services
             try
             {
                 treatmentList = await _tratamentoDb.BuscarTratamentoPorIntervalo(startTime, finishTime);
+
+                // Calcula os horários das doses seguintes para cada tratamento
+                foreach (var treatment in treatmentList)
+                {
+                    if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
+                    {
+                        treatment.dosageTime = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
+                    }
+                }
             }
             catch (RecordNotFoundException)
             {
@@ -78,6 +87,24 @@ namespace MediMax.Business.Services
             }
 
             return treatmentList;
+        }
+
+        private List<string> CalcularHorariosDoses(string startTime, int intervaloEmHoras)
+        {
+            List<string> dosageTimes = new List<string>();
+            DateTime startDateTime = DateTime.Parse(startTime);
+
+            // Adiciona o horário inicial como a primeira dose
+            dosageTimes.Add(startDateTime.ToString("HH:mm"));
+
+            // Calcula os horários das doses seguintes com base no intervalo de horas
+            for (int i = 1; i < 24 / intervaloEmHoras; i++)
+            {
+                DateTime nextDoseTime = startDateTime.AddHours(intervaloEmHoras * i);
+                dosageTimes.Add(nextDoseTime.ToString("HH:mm"));
+            }
+
+            return dosageTimes;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace MediMax.Business.Mappers
             _medicamentos.quantidade_embalagem = BaseMapping.quantidade_embalagem;
             _medicamentos.dosagem = BaseMapping.dosagem;
             _medicamentos.data_vencimento = BaseMapping.data_vencimento_medicamento;
+            _medicamentos.esta_ativo = 1;
             return _medicamentos;
         }
     }

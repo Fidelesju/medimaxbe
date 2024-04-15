@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\MediMax.Application.bundle.scp.css",
-      "PackagePath": "staticwebassets\\MediMax.Application.bundle.scp.css"
-    },
-    {
       "Id": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -243,6 +239,10 @@
     {
       "Id": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\wwwroot\\logs\\log-2024-4-15_segunda-feira.log",
+      "PackagePath": "staticwebassets\\logs\\log-2024-4-15_segunda-feira.log"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.MediMax.Application.Microsoft.AspNetCore.StaticWebAssets.props",

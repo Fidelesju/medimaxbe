@@ -45,6 +45,7 @@ namespace MediMax.Application.Configurations
             services.AddScoped<ITratamentoDb, TreatmentDb>();
             services.AddScoped<IUsuarioDb, UserDb>();
             services.AddScoped<IAlimentacaoDb, AlimentacaoDb>();
+            services.AddScoped<IHorariosDosagemDb, HorariosDosagemDb>();
 
         }
 
@@ -57,6 +58,7 @@ namespace MediMax.Application.Configurations
             services.AddScoped<IOwnerCreateMapper, OwnerCreateMapper>();
             services.AddScoped<IOwnerUpdateMapper, OwnerUpdateMapper>();
             services.AddScoped<IAlimentacaoCreateMapper, AlimentacaoCreateMapper>();
+            services.AddScoped<IHorarioDosagemCreateMapper, HorarioDosagemCreateMapper>();
         }
 
         private static void ConfigureRepositoriesDependecyInjection(IServiceCollection services)
@@ -67,6 +69,7 @@ namespace MediMax.Application.Configurations
             services.AddScoped<IUsuarioRepository, UserRepository>();
             services.AddScoped<IOwnerRepository, OwnerRepository>();
             services.AddScoped<IAlimentacaoRepository, AlimentacaoRepository>();
+            services.AddScoped<IHorarioDosagemRepository, HorarioDosagemRepository>();
         }
     }
 }

@@ -8,7 +8,8 @@ namespace MediMax.Data.Models
     {
         [Key]
         public int id { get; set; }
-        public string nome_medicamento { get; set; }
+        public int remedio_id { get; set; }
+        public string? nome_medicamento { get; set; }
         public int? quantidade_medicamentos { get; set; }
         public string? horario_inicio { get; set; }
         public int? intervalo_tratamento { get; set; }

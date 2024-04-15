@@ -7,5 +7,14 @@ namespace MediMax.Data.Dao.Interfaces
     {
         Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name);
         Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime);
+        Task<bool> AlterandoTratamento(int remedio_id,
+                string nome,
+                int quantidade_medicamentos,
+                string horario_inicio,
+                int intervalo_tratamento,
+                int tempo_tratamento_dias,
+                string recomendacoes_alimentacao,
+                string observacao,
+                int id);
     }
 }

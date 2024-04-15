@@ -1,51 +1,58 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 using MediMax.Application.Configurations;
 using MediMax.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configuração de Serilog para gravar logs no banco de dados
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.MySQL(
+        connectionString: builder.Configuration.GetConnectionString("DefaultConnection"),
+        tableName: "log", // Nome da tabela de logs
+        restrictedToMinimumLevel: LogEventLevel.Information) // Nível mínimo de logs a serem gravados
+    .CreateLogger();
 
-// Add services to the container.
-    builder.Services.AddRazorPages();
+// Outros serviços do aplicativo
+builder.Services.AddRazorPages();
+builder.Services.AddControllers();
+builder.Services.AddDbContext<MediMaxDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
+builder.Services.RegisterService();
 
-    builder.Services.AddControllers();
-    //Connection to database
-    string mySqlConnection =
-        builder.Configuration.GetConnectionString("DefaultConnection");
-
-    builder.Services.AddDbContext<MediMaxDbContext>(options =>
-        options.UseMySql(mySqlConnection,
-            ServerVersion.AutoDetect(mySqlConnection)));
-    builder.Services.RegisterService();
-
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerConfiguration();
-    builder.Services.AddJwtConfiguration(builder.Configuration);
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerConfiguration();
+builder.Services.AddJwtConfiguration(builder.Configuration);
 
 var app = builder.Build();
-    app.MapControllers();
+app.MapControllers();
 
-    // Configure the HTTP request pipeline.
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseExceptionHandler("/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
-    }
+// Configurações de ambiente de produção
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
 
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
+// Outros middlewares
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthConfiguration();
+app.MapRazorPages();
+app.UseRouting();
+app.UseMiddleware<LoggingMiddleware>(); // Adiciona o middleware de logs
 
-    app.UseRouting();
-
-    app.UseAuthConfiguration();
-    app.MapRazorPages();
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "MediMax v1");
-    });
+// Configurações de Swagger
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MediMax v1");
+});
 
 
-    app.Run();
+// Inicia o aplicativo
+app.Run();

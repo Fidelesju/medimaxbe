@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using MediMax.Application.Controller;
 using MediMax.Business.CoreServices.Interfaces;
 using MediMax.Business.Exceptions;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Data.ApplicationModels;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace MediMax.Application.Controller
+namespace MediMax.Application.Controllers
 {
-    [Route("[controller]"), ApiController]
+    [Route("[controller]")]
+    [ApiController]
     public class AccountController : BaseController<AccountController>
     {
         private readonly IAccountService _accountService;
@@ -21,28 +23,26 @@ namespace MediMax.Application.Controller
             ILoggerService loggerService
         ) : base(logger, loggerService)
         {
-            _logger = logger;
             _accountService = accountService;
+            _logger = logger;
         }
 
-        [AllowAnonymous, HttpPost("Login")]
+        [AllowAnonymous]
+        [HttpPost("Login")]
         public async Task<ActionResult<BaseResponse<LoginResponseModel>>> Login(LoginRequestModel request)
         {
-            LoginResponseModel loginResponse;
-            BaseResponse<LoginResponseModel> response;
             try
             {
-                loginResponse = await _accountService.AuthenticateUser(request);
-                response = BaseResponse<LoginResponseModel>
+                var loginResponse = await _accountService.AuthenticateUser(request);
+                return Ok(BaseResponse<LoginResponseModel>
                         .Builder()
                         .SetMessage("Usuário autenticado.")
                         .SetData(loginResponse)
-                    ;
-                return Ok(response);
+                    );
             }
             catch (RecordNotFoundException)
             {
-                return StatusCode(401, BaseResponse<string>
+                return Unauthorized(BaseResponse<string>
                     .Builder()
                     .SetMessage("Acesso não autorizado.")
                     .SetData("")
@@ -50,29 +50,26 @@ namespace MediMax.Application.Controller
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, "Parametros incorretos");
-                return StatusCode(401, "Email ou senha incorreto");
+                return HandleException(exception);
             }
         }
 
-        [AllowAnonymous, HttpPost("Login/Admin")]
+        [AllowAnonymous]
+        [HttpPost("Login/Admin")]
         public async Task<ActionResult<BaseResponse<LoginAdminResponseModel>>> LoginAdmin(LoginRequestModel loginRequest)
         {
-            LoginAdminResponseModel loginResponse;
-            BaseResponse<LoginAdminResponseModel> response;
             try
             {
-                loginResponse = await _accountService.AuthenticateUserAdmin(loginRequest);
-                response = BaseResponse<LoginAdminResponseModel>
+                var loginResponse = await _accountService.AuthenticateUserAdmin(loginRequest);
+                return Ok(BaseResponse<LoginAdminResponseModel>
                         .Builder()
                         .SetMessage("Usuário autenticado.")
                         .SetData(loginResponse)
-                    ;
-                return Ok(response);
+                    );
             }
             catch (RecordNotFoundException)
             {
-                return StatusCode(401, BaseResponse<string>
+                return Unauthorized(BaseResponse<string>
                     .Builder()
                     .SetMessage("Acesso não autorizado.")
                     .SetData("")
@@ -80,28 +77,26 @@ namespace MediMax.Application.Controller
             }
             catch (Exception exception)
             {
-                return await UntreatedException(exception);
+                return HandleException(exception);
             }
         }
 
-        [AllowAnonymous, HttpPost("Login/Owner")]
+        [AllowAnonymous]
+        [HttpPost("Login/Owner")]
         public async Task<ActionResult<BaseResponse<LoginOwnerResponseModel>>> LoginOwner(LoginRequestModel loginRequest)
         {
-            LoginOwnerResponseModel loginResponse;
-            BaseResponse<LoginOwnerResponseModel> response;
             try
             {
-                loginResponse = await _accountService.AuthenticateUserOwner(loginRequest);
-                response = BaseResponse<LoginOwnerResponseModel>
+                var loginResponse = await _accountService.AuthenticateUserOwner(loginRequest);
+                return Ok(BaseResponse<LoginOwnerResponseModel>
                     .Builder()
                     .SetMessage("Usuário autenticado.")
                     .SetData(loginResponse)
-                ;
-                return Ok(response);
+                );
             }
             catch (RecordNotFoundException)
             {
-                return StatusCode(401, BaseResponse<string>
+                return Unauthorized(BaseResponse<string>
                     .Builder()
                     .SetMessage("Acesso não autorizado.")
                     .SetData("")
@@ -109,77 +104,14 @@ namespace MediMax.Application.Controller
             }
             catch (Exception exception)
             {
-                return await UntreatedException(exception);
+                return HandleException(exception);
             }
         }
 
-
-        //[Authorize(Roles = "owner, admin"), HttpPost("Owner/UpdatePassword")]
-        //public async Task<ActionResult<BaseResponse<bool>>> UpdateOwnerPassword(OwnerUpdatePasswordRequestModel request)
-        //{
-        //    BaseResponse<bool> response;
-        //    bool success;
-        //    try
-        //    {
-        //        success = await _accountService.UpdateOwnerPassword(request);
-        //        if (!success)
-        //        {
-        //            response = BaseResponse<bool>
-        //                    .Builder()
-        //                    .SetMessage("Credenciais inválidas.")
-        //                    .SetData(false)
-        //                ;
-        //            return BadRequest(response);
-        //        }
-        //        response = BaseResponse<bool>
-        //                .Builder()
-        //                .SetMessage("Senha atualizada com sucesso.")
-        //                .SetData(true)
-        //            ;
-        //        return Ok(response);
-        //    }
-        //    catch (CustomValidationException exception)
-        //    {
-        //        return ValidationErrorsBadRequest(exception);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        return await UntreatedException(exception);
-        //    }
-        //}
-
-        //[AllowAnonymous, HttpPost("Owner/RecoverPassword")]
-        //public async Task<ActionResult<BaseResponse<bool>>> RecoverOwnerPassword(OwnerSendForgotPasswordRequestModel request)
-        //{
-        //    BaseResponse<bool> response;
-        //    bool success;
-        //    try
-        //    {
-        //        success = await _accountService.RecoverOwnerPassword(request.Email);
-        //        if (!success)
-        //        {
-        //            response = BaseResponse<bool>
-        //                .Builder()
-        //                .SetMessage("Erro ao enviar email.")
-        //                .SetData(false)
-        //            ;
-        //            return BadRequest(response);
-        //        }
-        //        response = BaseResponse<bool>
-        //            .Builder()
-        //            .SetMessage("Senha nova enviada para seu email.")
-        //            .SetData(true)
-        //        ;
-        //        return Ok(response);
-        //    }
-        //    catch (CustomValidationException exception)
-        //    {
-        //        return ValidationErrorsBadRequest(exception);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        return await UntreatedException(exception);
-        //    }
-        //}
+        private ActionResult HandleException(Exception exception)
+        {
+            _logger.LogError(exception, "Parametros incorretos");
+            return StatusCode(401, "Email ou senha incorreto");
+        }
     }
 }

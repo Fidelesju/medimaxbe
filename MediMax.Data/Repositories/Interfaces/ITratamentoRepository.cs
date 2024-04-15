@@ -6,5 +6,6 @@ namespace MediMax.Data.Repositories.Interfaces
     {
         int Create(Tratamento tratamentos);
         void Update(Tratamento tratamentos);
+
     }
 }

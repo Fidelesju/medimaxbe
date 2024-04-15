@@ -26,7 +26,7 @@ namespace MediMax.Business.Services
             _alimentacaoDb = alimentacaoDb;
         }
 
-        public async Task<int> CriarRefeições(AlimentacaoCreateRequestModel request)
+        public async Task<int> CriarRefeicoes(AlimentacaoCreateRequestModel request)
         {
             Alimentacao food;
             AlimentacaoCreateValidation validation;

@@ -7,6 +7,7 @@
         public int? PackageQuantity { get; set; }
         public double? Dosage{ get; set; }
         public string? ExpirationDate { get; set; }
+        public int? IsActive{ get; set; }
 
     }
 }

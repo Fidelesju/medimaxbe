@@ -13,6 +13,6 @@ namespace MediMax.Data.ResponseModels
         public string? DietaryRecommendations { get; set; }
         public string? Observation { get; set; }
         public int? IsActive { get; set; }
-
+        public List<string> dosageTime { get; set; }
     }
 }

@@ -8,6 +8,9 @@ namespace MediMax.Business.Services.Interfaces
     {
         Task<int> CriandoMedicamentosETratamento(MedicamentoETratamentoCreateRequestModel request);
         Task<List<MedicamentoResponseModel>> BuscarTodosMedicamentos();
-        //Task<UserResponseModel> GetUserByName(string name);
+        Task<bool> AlterandoMedicamentosETratamento(MedicamentoETratamentoUpdateRequestModel request);
+        Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorNome(string name);
+        Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorDataVencimento();
+        Task<bool> DeletandoMedicamento(int id);
     }
 }
