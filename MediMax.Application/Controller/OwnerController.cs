@@ -13,6 +13,8 @@ namespace MediMax.Application.Controller
     public class OwnerController : BaseController<OwnerController>
     {
         private readonly IOwnerService _ownerService;
+        private readonly ILogger<OwnerController> _logger;
+
         public OwnerController(
             ILogger<OwnerController> logger,
             ILoggerService loggerService,
@@ -27,6 +29,10 @@ namespace MediMax.Application.Controller
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("Create")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<int>>> CreateOwner(OwnerCreateRequestModel request)
         {
             BaseResponse<int> response;
@@ -51,18 +57,24 @@ namespace MediMax.Application.Controller
                     ;
                 return Ok(response);
             }
-            catch (CustomValidationException exception)
+            catch (CustomValidationException ex)
             {
-                return ValidationErrorsBadRequest(exception);
+                _logger.LogError(ex, "CreateOwner: Controller");
+                return ValidationErrorsBadRequest(ex);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                return await UntreatedException(exception);
+                _logger.LogError(ex, "CreateOwner: Controller");
+                return await UntreatedException(ex);
             }
         }
 
 
         [/*Authorize(Roles = "owner,admin"),*/ HttpGet("{ownerId}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<OwnerResponseModel>>> GetOwnerById(int ownerId)
         {
             OwnerResponseModel owner;
@@ -77,17 +89,23 @@ namespace MediMax.Application.Controller
                     ;
                 return Ok(response);
             }
-            catch (RecordNotFoundException exception)
+            catch (RecordNotFoundException ex)
             {
-                return await NotFoundResponse(exception);
+                _logger.LogError(ex, "GetOwnerById: Controller");
+                return await NotFoundResponse(ex);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                return await UntreatedException(exception);
+                _logger.LogError(ex, "GetOwnerById: Controller");
+                return await UntreatedException(ex);
             }
         }
 
         [/*Authorize(Roles = "owner,admin"),*/ HttpGet("Page/{page}/PerPage/{perPage}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<OwnerResponseModel>> GetPaginatedListOwner(int page, int perPage)
         {
             PaginatedList<OwnerResponseModel> ownerList;
@@ -108,17 +126,23 @@ namespace MediMax.Application.Controller
                     ;
                 return Ok(response);
             }
-            catch (RecordNotFoundException exception)
+            catch (RecordNotFoundException ex)
             {
-                return await NotFoundResponse(exception);
+                _logger.LogError(ex, "GetOwnerPaginatedList: Controller");
+                return await NotFoundResponse(ex);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                return await UntreatedException(exception);
+                _logger.LogError(ex, "GetOwnerPaginatedList: Controller");
+                return await UntreatedException(ex);
             }
         }
 
         [/*Authorize(Roles = "owner,admin"),*/ HttpGet("Desactives/Page/{page}/PerPage/{perPage}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<OwnerResponseModel>> GetPaginatedListDesactivesOwner(int page, int perPage)
         {
             PaginatedList<OwnerResponseModel> ownerList;
@@ -139,53 +163,24 @@ namespace MediMax.Application.Controller
                     ;
                 return Ok(response);
             }
-            catch (RecordNotFoundException exception)
+            catch (RecordNotFoundException ex)
             {
-                return await NotFoundResponse(exception);
+                _logger.LogError(ex, "GetPaginatedListDesactivesOwner: Controller");
+                return await NotFoundResponse(ex);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                return await UntreatedException(exception);
+                _logger.LogError(ex, "GetPaginatedListDesactivesOwner: Controller");
+                return await UntreatedException(ex);
             }
         }
 
-        //[/*Authorize(Roles = "owner,admin"),*/ HttpPut("Update")]
-        //public async Task<ActionResult<BaseResponse<string>>> UpdateOwner(OwnerUpdateRequestModel request)
-        //{
-        //    BaseResponse<string> response;
-        //    bool success;
-        //    try
-        //    {
-                
-        //        success = await _ownerService.UpdateOwner(request);
-        //        if (!success)
-        //        {
-        //            response = BaseResponse<string>
-        //                    .Builder()
-        //                    .SetMessage("Erro na atualização de proprietario.")
-        //                    .SetData("")
-        //                ;
-        //            return BadRequest(response);
-        //        }
 
-        //        response = BaseResponse<string>
-        //                .Builder()
-        //                .SetMessage("Proprietario atualizado com sucesso")
-        //                .SetData("")
-        //            ;
-        //        return Ok(response);
-        //    }
-        //    catch (CustomValidationException exception)
-        //    {
-        //        return ValidationErrorsBadRequest(exception);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        return await UntreatedException(exception);
-        //    }
-        //}
-
-        [/*Authorize(Roles = "owner,admin"),*/ HttpPost("Desactive/{ownerId}")]
+        [HttpPost("Desactive/{ownerId}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<OwnerResponseModel>>> DesactiveOwner(int ownerId)
         {
             OwnerResponseModel owner;
@@ -200,13 +195,15 @@ namespace MediMax.Application.Controller
                     ;
                 return Ok(response);
             }
-            catch (RecordNotFoundException exception)
+            catch (RecordNotFoundException ex)
             {
-                return await NotFoundResponse(exception);
+                _logger.LogError(ex, "DesactiveOwner: Controller");
+                return await NotFoundResponse(ex);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                return await UntreatedException(exception);
+                _logger.LogError(ex, "DesactiveOwner: Controller");
+                return await UntreatedException(ex);
             }
         }
     }

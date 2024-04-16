@@ -1,15 +1,13 @@
-﻿using MediMax.Business.CoreServices.Interfaces;
-using MediMax.Business.CoreServices;
+﻿using MediMax.Business.CoreServices;
+using MediMax.Business.CoreServices.Interfaces;
 using MediMax.Business.Mappers;
 using MediMax.Business.Mappers.Interfaces;
 using MediMax.Business.Services;
 using MediMax.Business.Services.Interfaces;
+using MediMax.Data.Dao;
+using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Repositories;
 using MediMax.Data.Repositories.Interfaces;
-using MediMax.Data.Dao.Interfaces;
-using MediMax.Data.Dao;
-using MediMax.Business.RealTimeServices.Interfaces;
-using MediMax.Business.RealTimeServices;
 
 namespace MediMax.Application.Configurations
 {
@@ -35,7 +33,6 @@ namespace MediMax.Application.Configurations
             services.AddScoped<IFileManagementService, FileManagementService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<INotificacaoService, NotificacaoService>();
         }
 
         private static void ConfigureDbDependencyInjection(IServiceCollection services) 
@@ -44,13 +41,12 @@ namespace MediMax.Application.Configurations
             services.AddScoped<IAdminAuthDb, AdminAuthDb>();
             services.AddScoped<IOwnerAuthDb, OwnerAuthDb>();
             services.AddScoped<IOwnerDb, OwnerDb>();
-            services.AddScoped<IMedicineDb, MedicineDb>();
+            services.AddScoped<IMedicamentoDb, MedicamentoDb>();
             services.AddScoped<ITratamentoDb, TreatmentDb>();
             services.AddScoped<IUsuarioDb, UserDb>();
             services.AddScoped<IAlimentacaoDb, AlimentacaoDb>();
             services.AddScoped<IHorariosDosagemDb, HorariosDosagemDb>();
             services.AddScoped<IHistoricoDb, HistoricoDb>();
-
         }
 
         private static void ConfigureMapperDependecyInjection(IServiceCollection services) 

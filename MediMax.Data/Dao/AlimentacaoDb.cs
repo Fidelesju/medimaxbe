@@ -37,7 +37,35 @@ namespace MediMax.Data.Dao
             return alimentacaoList;
         }
 
+        public async Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request)
+        {
+            string sql;
+            bool success;
+            sql = $@"
+                UPDATE 
+                    alimentacao a
+                SET a.tipo_refeicao = '{request.tipo_refeicao}', a.horario = '{request.horario}', a.quantidade = {request.quantidade}, a.alimento = '{request.alimento}', a.unidade_medida = '{request.unidade_medida}'
+                WHERE a.id = {request.id}
+                ";
+            await Connect();
+            success = await PersistQuery(sql);
+            await Disconnect();
+            return success;
+        } 
+      
 
+        public async Task<bool> DeletandoAlimentacao(int id)
+        {
+            string sql;
+            bool success;
+            sql = $@"
+                DELETE FROM alimentacao a WHERE a.id = {id}
+                ";
+            await Connect();
+            success = await PersistQuery(sql);
+            await Disconnect();
+            return success;
+        }
         protected override AlimentacaoResponseModel Mapper(DbDataReader reader)
         {
             AlimentacaoResponseModel alimentacao;

@@ -7,5 +7,7 @@ namespace MediMax.Business.Services.Interfaces
     {
         Task<int> CriarRefeicoes(AlimentacaoCreateRequestModel request);
         Task<List<AlimentacaoResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals);
+        Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request);
+        Task<bool> DeletandoAlimentacao(int id);
     }
 }

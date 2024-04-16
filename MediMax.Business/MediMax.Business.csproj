@@ -27,4 +27,8 @@
     <ProjectReference Include="..\MediMax.Data\MediMax.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="RealTimeServices\Interfaces\" />
+  </ItemGroup>
+
 </Project>

@@ -28,6 +28,10 @@ namespace MediMax.Application.Controllers
         }
 
         [HttpPost("Create")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<int>>> CriarRefeicoes(AlimentacaoCreateRequestModel request)
         {
             try
@@ -50,15 +54,96 @@ namespace MediMax.Application.Controllers
             }
             catch (CustomValidationException ex)
             {
+                _logger.LogError(ex, "CriarRefeicoes: Controller");
                 return ValidationErrorsBadRequest(ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "CriarRefeicoes: Controller");
                 return await HandleException(ex);
             }
         }
 
+        [HttpPost("Update")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<bool>>> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request)
+        {
+            try
+            {
+                bool success = await _alimentacaoService.AlterandoAlimentacao(request);
+                if (!success)
+                {
+                    return BadRequest(new BaseResponse<bool>
+                    {
+                        Message = "Falha ao alterar dados de refeição.",
+                        Data = success
+                    });
+                }
+
+                return Ok(new BaseResponse<bool>
+                {
+                    Message = "Refeição alterada com sucesso.",
+                    Data = success
+                });
+            }
+            catch (CustomValidationException ex)
+            {
+                _logger.LogError(ex, "AlterandoAlimentacao: Controller");
+                return ValidationErrorsBadRequest(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "AlterandoAlimentacao: Controller");
+                return await HandleException(ex);
+            }
+        }
+
+        [HttpPost("Delete/{id}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<bool>>> DeletandoAlimentacao(int id)
+        {
+            try
+            {
+                bool success = await _alimentacaoService.DeletandoAlimentacao(id);
+                if (!success)
+                {
+                    return BadRequest(new BaseResponse<bool>
+                    {
+                        Message = "Falha ao deletar refeição.",
+                        Data = success
+                    });
+                }
+
+                return Ok(new BaseResponse<bool>
+                {
+                    Message = "Refeição deletada com sucesso.",
+                    Data = success
+                });
+            }
+            catch (CustomValidationException ex)
+            {
+                _logger.LogError(ex, "DeletandoAlimentacao: Controller");
+                return ValidationErrorsBadRequest(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DeletandoAlimentacao: Controller");
+                return await HandleException(ex);
+            }
+        }
+
+
         [HttpGet("GetMealsByType/TypeMeals/{typeMeals}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<List<AlimentacaoResponseModel>>>> BuscarRefeicoesPorTipo(string typeMeals)
         {
             try
@@ -72,10 +157,12 @@ namespace MediMax.Application.Controllers
             }
             catch (RecordNotFoundException ex)
             {
+                _logger.LogError(ex, "BuscarRefeicoesPorTipo: Controller");
                 return await NotFoundResponse(ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "BuscarRefeicoesPorTipo: Controller");
                 return await HandleException(ex);
             }
         }

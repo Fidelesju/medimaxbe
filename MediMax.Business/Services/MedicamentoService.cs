@@ -20,7 +20,7 @@ namespace MediMax.Business.Services
         private readonly IMedicamentosRepository _medicineRepository;
         private readonly ITratamentoRepository _tratamentoRepository;
         private readonly IHorarioDosagemRepository _horarioDosagemRepository;
-        private readonly IMedicineDb _medicamentoDb;
+        private readonly IMedicamentoDb _medicamentoDb;
         private readonly ITratamentoDb _tratamentoDb;
         private readonly IHorariosDosagemDb _horarioDosagemDb;
         private readonly IHorarioDosagemCreateMapper _horarioDosagemCreateMapper;
@@ -32,7 +32,7 @@ namespace MediMax.Business.Services
             IHorarioDosagemCreateMapper horarioDosagemCreateMapper,
             IHorarioDosagemRepository horarioDosagemRepository,
             IHorariosDosagemDb horarioDosagemDb,
-            IMedicineDb medicineDb,
+            IMedicamentoDb medicineDb,
             ITratamentoDb tratamentoDb)
         {
             _medicamentoCreateMapper = medicineCreateMapper;

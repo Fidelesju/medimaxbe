@@ -7,5 +7,7 @@ namespace MediMax.Data.Dao.Interfaces
     public interface IAlimentacaoDb
     {
         Task<List<AlimentacaoResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals);
+        Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request);
+        Task<bool> DeletandoAlimentacao(int id);
     }
 }

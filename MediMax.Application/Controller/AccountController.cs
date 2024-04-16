@@ -29,6 +29,10 @@ namespace MediMax.Application.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<LoginResponseModel>>> Login(LoginRequestModel request)
         {
             try
@@ -40,71 +44,19 @@ namespace MediMax.Application.Controllers
                         .SetData(loginResponse)
                     );
             }
-            catch (RecordNotFoundException)
+            catch (RecordNotFoundException ex)
             {
+                _logger.LogError(ex, "Login: Controller");
                 return Unauthorized(BaseResponse<string>
                     .Builder()
                     .SetMessage("Acesso não autorizado.")
                     .SetData("")
                 );
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                return HandleException(exception);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("Login/Admin")]
-        public async Task<ActionResult<BaseResponse<LoginAdminResponseModel>>> LoginAdmin(LoginRequestModel loginRequest)
-        {
-            try
-            {
-                var loginResponse = await _accountService.AuthenticateUserAdmin(loginRequest);
-                return Ok(BaseResponse<LoginAdminResponseModel>
-                        .Builder()
-                        .SetMessage("Usuário autenticado.")
-                        .SetData(loginResponse)
-                    );
-            }
-            catch (RecordNotFoundException)
-            {
-                return Unauthorized(BaseResponse<string>
-                    .Builder()
-                    .SetMessage("Acesso não autorizado.")
-                    .SetData("")
-                );
-            }
-            catch (Exception exception)
-            {
-                return HandleException(exception);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("Login/Owner")]
-        public async Task<ActionResult<BaseResponse<LoginOwnerResponseModel>>> LoginOwner(LoginRequestModel loginRequest)
-        {
-            try
-            {
-                var loginResponse = await _accountService.AuthenticateUserOwner(loginRequest);
-                return Ok(BaseResponse<LoginOwnerResponseModel>
-                    .Builder()
-                    .SetMessage("Usuário autenticado.")
-                    .SetData(loginResponse)
-                );
-            }
-            catch (RecordNotFoundException)
-            {
-                return Unauthorized(BaseResponse<string>
-                    .Builder()
-                    .SetMessage("Acesso não autorizado.")
-                    .SetData("")
-                );
-            }
-            catch (Exception exception)
-            {
-                return HandleException(exception);
+                _logger.LogError(ex, "Login: Controller");
+                return HandleException(ex);
             }
         }
 

@@ -23,7 +23,7 @@
           "Serilog": "3.1.1",
           "Serilog.Sinks.MSSqlServer": "6.6.0",
           "Serilog.Sinks.MySQL": "5.0.0",
-          "ServiceStack": "6.11.0",
+          "ServiceStack": "8.2.2",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
         "runtime": {
@@ -33,7 +33,7 @@
       "Azure.Core/1.35.0": {
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
-          "System.Diagnostics.DiagnosticSource": "7.0.2",
+          "System.Diagnostics.DiagnosticSource": "8.0.0",
           "System.Memory.Data": "1.0.2",
           "System.Numerics.Vectors": "4.5.0",
           "System.Text.Encodings.Web": "8.0.0",
@@ -189,7 +189,7 @@
           "Microsoft.Extensions.FileProviders.Physical": "2.1.1",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
           "Microsoft.Extensions.Options": "8.0.2",
-          "System.Diagnostics.DiagnosticSource": "7.0.2",
+          "System.Diagnostics.DiagnosticSource": "8.0.0",
           "System.Reflection.Metadata": "1.6.0"
         }
       },
@@ -215,7 +215,7 @@
           "Microsoft.Extensions.Hosting.Abstractions": "2.1.1",
           "Microsoft.Extensions.Logging": "8.0.0",
           "Microsoft.Extensions.Options": "8.0.2",
-          "System.Diagnostics.DiagnosticSource": "7.0.2",
+          "System.Diagnostics.DiagnosticSource": "8.0.0",
           "System.Reflection.Metadata": "1.6.0"
         }
       },
@@ -489,7 +489,7 @@
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.35.0",
           "Microsoft.SqlServer.Server": "1.0.0",
           "System.Configuration.ConfigurationManager": "6.0.1",
-          "System.Diagnostics.DiagnosticSource": "7.0.2",
+          "System.Diagnostics.DiagnosticSource": "8.0.0",
           "System.Runtime.Caching": "6.0.0",
           "System.Security.Cryptography.Cng": "5.0.0",
           "System.Security.Principal.Windows": "5.0.0",
@@ -947,7 +947,7 @@
           "Portable.BouncyCastle": "1.9.0",
           "System.Buffers": "4.5.1",
           "System.Configuration.ConfigurationManager": "6.0.1",
-          "System.Diagnostics.DiagnosticSource": "7.0.2",
+          "System.Diagnostics.DiagnosticSource": "8.0.0",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0",
           "System.Runtime.Loader": "4.3.0",
           "System.Security.Permissions": "6.0.0",
@@ -993,7 +993,7 @@
       "MySqlConnector/2.3.3": {
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
-          "System.Diagnostics.DiagnosticSource": "7.0.2"
+          "System.Diagnostics.DiagnosticSource": "8.0.0"
         },
         "runtime": {
           "lib/net6.0/MySqlConnector.dll": {
@@ -1080,64 +1080,64 @@
           }
         }
       },
-      "ServiceStack/6.11.0": {
+      "ServiceStack/8.2.2": {
         "dependencies": {
-          "ServiceStack.Client": "6.11.0",
-          "ServiceStack.Common": "6.11.0",
-          "ServiceStack.Interfaces": "6.11.0",
-          "ServiceStack.Text": "6.11.0"
+          "ServiceStack.Client": "8.2.2",
+          "ServiceStack.Common": "8.2.2",
+          "ServiceStack.Interfaces": "8.2.2",
+          "ServiceStack.Text": "8.2.2"
         },
         "runtime": {
           "lib/net6.0/ServiceStack.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.11.0.0"
+            "fileVersion": "8.2.2.0"
           }
         }
       },
-      "ServiceStack.Client/6.11.0": {
+      "ServiceStack.Client/8.2.2": {
         "dependencies": {
           "Microsoft.Extensions.Http": "6.0.0",
-          "ServiceStack.Interfaces": "6.11.0",
-          "ServiceStack.Text": "6.11.0"
+          "ServiceStack.Interfaces": "8.2.2",
+          "ServiceStack.Text": "8.2.2"
         },
         "runtime": {
           "lib/net6.0/ServiceStack.Client.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.11.0.0"
+            "fileVersion": "8.2.2.0"
           }
         }
       },
-      "ServiceStack.Common/6.11.0": {
+      "ServiceStack.Common/8.2.2": {
         "dependencies": {
-          "ServiceStack.Interfaces": "6.11.0",
-          "ServiceStack.Text": "6.11.0",
+          "ServiceStack.Interfaces": "8.2.2",
+          "ServiceStack.Text": "8.2.2",
           "System.Memory": "4.5.5"
         },
         "runtime": {
           "lib/net6.0/ServiceStack.Common.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.11.0.0"
+            "fileVersion": "8.2.2.0"
           }
         }
       },
-      "ServiceStack.Interfaces/6.11.0": {
+      "ServiceStack.Interfaces/8.2.2": {
         "runtime": {
           "lib/net6.0/ServiceStack.Interfaces.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.11.0.0"
+            "fileVersion": "8.2.2.0"
           }
         }
       },
-      "ServiceStack.Text/6.11.0": {
+      "ServiceStack.Text/8.2.2": {
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
-          "System.Diagnostics.DiagnosticSource": "7.0.2",
+          "System.Diagnostics.DiagnosticSource": "8.0.0",
           "System.Memory": "4.5.5"
         },
         "runtime": {
           "lib/net6.0/ServiceStack.Text.dll": {
             "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.11.0.0"
+            "fileVersion": "8.2.2.0"
           }
         }
       },
@@ -1211,14 +1211,14 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
-      "System.Diagnostics.DiagnosticSource/7.0.2": {
+      "System.Diagnostics.DiagnosticSource/8.0.0": {
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         },
         "runtime": {
           "lib/net6.0/System.Diagnostics.DiagnosticSource.dll": {
-            "assemblyVersion": "7.0.0.0",
-            "fileVersion": "7.0.423.11508"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         }
       },
@@ -1511,7 +1511,8 @@
           "MySqlConnector": "2.3.3",
           "Serilog": "3.1.1",
           "Serilog.Sinks.MSSqlServer": "6.6.0",
-          "Serilog.Sinks.MySQL": "5.0.0"
+          "Serilog.Sinks.MySQL": "5.0.0",
+          "ServiceStack": "8.2.2"
         },
         "runtime": {
           "MediMax.Business.dll": {}
@@ -1531,7 +1532,8 @@
           "MySqlConnector": "2.3.3",
           "Serilog": "3.1.1",
           "Serilog.Sinks.MSSqlServer": "6.6.0",
-          "Serilog.Sinks.MySQL": "5.0.0"
+          "Serilog.Sinks.MySQL": "5.0.0",
+          "ServiceStack": "8.2.2"
         },
         "runtime": {
           "MediMax.Data.dll": {}
@@ -2266,40 +2268,40 @@
       "path": "serilog.sinks.periodicbatching/3.1.0",
       "hashPath": "serilog.sinks.periodicbatching.3.1.0.nupkg.sha512"
     },
-    "ServiceStack/6.11.0": {
+    "ServiceStack/8.2.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FZJRxEs6hokYuhmrtZ+iQQ9MjD49y23M5apzcSa9kjJqG+Gfi8cHcZx1a5OzBdLuKzO6cO1CQC3BRr6wdxM6sg==",
-      "path": "servicestack/6.11.0",
-      "hashPath": "servicestack.6.11.0.nupkg.sha512"
+      "sha512": "sha512-t2KPEsutLlFJCrtnnVkKC2E9R3Lmh2Y20ACRWsz7j51H81GszDvs8oX1treL9NM9rG8+78PlSndPdg3lrIHR2Q==",
+      "path": "servicestack/8.2.2",
+      "hashPath": "servicestack.8.2.2.nupkg.sha512"
     },
-    "ServiceStack.Client/6.11.0": {
+    "ServiceStack.Client/8.2.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-sJZEYs3pcEFlN2VmuLOFXyIHhI0PXopHDJN6MT7qfWUdlGdBNC2bMpLGSdDWpbL1GIU20rhWIg+qN+ZIy1CZwA==",
-      "path": "servicestack.client/6.11.0",
-      "hashPath": "servicestack.client.6.11.0.nupkg.sha512"
+      "sha512": "sha512-4rw7tflnTxByCAMRX6B8Qcy3bxO6CGhKRa9L1HTnstTw1fZ0qVdK3RatkwX5dtzROjcpAJGu7jr2nuufG7axdw==",
+      "path": "servicestack.client/8.2.2",
+      "hashPath": "servicestack.client.8.2.2.nupkg.sha512"
     },
-    "ServiceStack.Common/6.11.0": {
+    "ServiceStack.Common/8.2.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-wJav2PU6mvnGjg31YCek6HLVfqhG2nQCnTtQVdEGwp8jI+2QEUqhpaWI0gydWztcviPK9pjoBwTnlqxmjNZMmA==",
-      "path": "servicestack.common/6.11.0",
-      "hashPath": "servicestack.common.6.11.0.nupkg.sha512"
+      "sha512": "sha512-QSXCHFrT2TtkCVdPx2+lGp/XB3pRVJPn4HXXwmQkkcKklraMDM0rk005gN220mHjb7xCViSzYnjaO+skrj1eQg==",
+      "path": "servicestack.common/8.2.2",
+      "hashPath": "servicestack.common.8.2.2.nupkg.sha512"
     },
-    "ServiceStack.Interfaces/6.11.0": {
+    "ServiceStack.Interfaces/8.2.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Hyypiz+zKld5rMiUyOb3S+YElCkhFEC+ISl/f6Iz3uhIROwPUReRO5ifkZJ6z77eUkzyEHmJxZhHxs4uiluT5w==",
-      "path": "servicestack.interfaces/6.11.0",
-      "hashPath": "servicestack.interfaces.6.11.0.nupkg.sha512"
+      "sha512": "sha512-KpQT8tH+d2dPksdGhuLdmBySsd8c8XInSsh6sgdZ/E74PBn/Yay4HBveWXfhiIN7asSXV32IjBw6FvHtWAtv0A==",
+      "path": "servicestack.interfaces/8.2.2",
+      "hashPath": "servicestack.interfaces.8.2.2.nupkg.sha512"
     },
-    "ServiceStack.Text/6.11.0": {
+    "ServiceStack.Text/8.2.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-LGPW32nrQ1uJEgErMlUSEe2R+qnSMDNKXkRnN1RPgVHMbiIejCzOziSDW3MlokN/wFqiKhjgCUWi99q6yGlkkg==",
-      "path": "servicestack.text/6.11.0",
-      "hashPath": "servicestack.text.6.11.0.nupkg.sha512"
+      "sha512": "sha512-2WrX0g2eN6L4SnD8lwRhy3Gcopvs/4l9LHMed67fpfcjIr/WwHhBfKANQx1BL2YZN7t4zWikxOJYsUJI5PB1Aw==",
+      "path": "servicestack.text/8.2.2",
+      "hashPath": "servicestack.text.8.2.2.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/6.2.3": {
       "type": "package",
@@ -2357,12 +2359,12 @@
       "path": "system.data.common/4.3.0",
       "hashPath": "system.data.common.4.3.0.nupkg.sha512"
     },
-    "System.Diagnostics.DiagnosticSource/7.0.2": {
+    "System.Diagnostics.DiagnosticSource/8.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-hYr3I9N9811e0Bjf2WNwAGGyTuAFbbTgX1RPLt/3Wbm68x3IGcX5Cl75CMmgT6WlNwLQ2tCCWfqYPpypjaf2xA==",
-      "path": "system.diagnostics.diagnosticsource/7.0.2",
-      "hashPath": "system.diagnostics.diagnosticsource.7.0.2.nupkg.sha512"
+      "sha512": "sha512-c9xLpVz6PL9lp/djOWtk5KPDZq3cSYpmXoJQY524EOtuFl5z9ZtsotpsyrDW40U1DRnQSYvcPKEUV0X//u6gkQ==",
+      "path": "system.diagnostics.diagnosticsource/8.0.0",
+      "hashPath": "system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512"
     },
     "System.Drawing.Common/6.0.0": {
       "type": "package",

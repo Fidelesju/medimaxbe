@@ -1,4 +1,5 @@
-﻿using MediMax.Business.CoreServices.Interfaces;
+﻿using MediMax.Application.Controllers;
+using MediMax.Business.CoreServices.Interfaces;
 using MediMax.Business.Exceptions;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Data.ApplicationModels;
@@ -12,11 +13,12 @@ namespace MediMax.Application.Controller
     public class MedicamentoController : BaseController<MedicamentoController>
     {
         private readonly IMedicamentoService _medicamentoService;
+        private readonly ILogger<MedicamentoController> _logger;
 
         public MedicamentoController(
             ILogger<MedicamentoController> logger,
-            ILoggerService loggerService,
-            IMedicamentoService medicamentoService) : base(logger, loggerService)
+            IMedicamentoService medicamentoService,
+            ILoggerService loggerService) : base(logger, loggerService)
         {
             _medicamentoService = medicamentoService;
         }
@@ -25,6 +27,10 @@ namespace MediMax.Application.Controller
         /// Cria um novo medicamento e tratamento.
         /// </summary>
         [HttpPost("Create")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<int>>> CriandoMedicamentosETratamento(MedicamentoETratamentoCreateRequestModel request)
         {
             try
@@ -41,10 +47,12 @@ namespace MediMax.Application.Controller
             }
             catch (CustomValidationException ex)
             {
+                _logger.LogError(ex, "CriandoMedicamentosETratamento: Controller");
                 return ValidationErrorsBadRequest(ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "CriandoMedicamentosETratamento: Controller");
                 return await UntreatedException(ex);
             }
         }
@@ -53,6 +61,10 @@ namespace MediMax.Application.Controller
         /// Obtém todos os medicamentos.
         /// </summary>
         [HttpGet("GetAllMedicine")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarTodosMedicamentos()
         {
             try
@@ -69,10 +81,12 @@ namespace MediMax.Application.Controller
             }
             catch (RecordNotFoundException ex)
             {
+                _logger.LogError(ex, "BuscarTodosMedicamentos: Controller");
                 return await NotFoundResponse(ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "BuscarTodosMedicamentos: Controller");
                 return await UntreatedException(ex);
             }
         }
@@ -81,6 +95,10 @@ namespace MediMax.Application.Controller
         /// Obtém lista de medicamentos por nome.
         /// </summary>
         [HttpGet("GetMedicineByName/{name}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarMedicamentosPorNome(string name)
         {
             try
@@ -97,10 +115,12 @@ namespace MediMax.Application.Controller
             }
             catch (RecordNotFoundException ex)
             {
+                _logger.LogError(ex, "BuscarMedicamentosPorNome: Controller");
                 return await NotFoundResponse(ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "BuscarMedicamentosPorNome: Controller");
                 return await UntreatedException(ex);
             }
         }
@@ -109,6 +129,10 @@ namespace MediMax.Application.Controller
         /// Obtém medicamentos por data de vencimento.
         /// </summary>
         [HttpGet("GetMedicineByExpirationDate")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarMedicamentosPorDataVencimento()
         {
             try
@@ -125,10 +149,12 @@ namespace MediMax.Application.Controller
             }
             catch (RecordNotFoundException ex)
             {
+                _logger.LogError(ex, "BuscarMedicamentosPorDataVencimento: Controller");
                 return await NotFoundResponse(ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "BuscarMedicamentosPorDataVencimento: Controller");
                 return await UntreatedException(ex);
             }
         }
@@ -138,9 +164,11 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        /// 
-        //TODO Arrumar update medicamentos
         [HttpPost("Update")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<bool>>> AlterandoMedicamentosETratamento(MedicamentoETratamentoUpdateRequestModel request)
         {
             try
@@ -157,10 +185,12 @@ namespace MediMax.Application.Controller
             }
             catch (CustomValidationException ex)
             {
+                _logger.LogError(ex, "AlterandoMedicamentosETratamento: Controller");
                 return ValidationErrorsBadRequest(ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "AlterandoMedicamentosETratamento: Controller");
                 return await UntreatedException(ex);
             }
         }
@@ -170,9 +200,11 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        /// 
-        //TODO Arrumar update medicamentos
         [HttpPost("Delete/{id}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
         public async Task<ActionResult<BaseResponse<bool>>> DeletandoMedicamento(int id)
         {
             try
@@ -189,14 +221,15 @@ namespace MediMax.Application.Controller
             }
             catch (CustomValidationException ex)
             {
+                _logger.LogError(ex, "DeletandoMedicamento: Controller");
                 return ValidationErrorsBadRequest(ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "DeletandoMedicamento: Controller");
                 return await UntreatedException(ex);
             }
         }
-   
-    
+  
     }
 }
