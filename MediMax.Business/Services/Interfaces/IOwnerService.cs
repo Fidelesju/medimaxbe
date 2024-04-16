@@ -10,7 +10,6 @@ namespace MediMax.Business.Services.Interfaces
         Task<OwnerResponseModel> GetOwnerById(int userId);
         Task<PaginatedList<OwnerResponseModel>> GetOwnerPaginatedList(Pagination pagination);
         Task<PaginatedList<OwnerResponseModel>> GetPaginatedListDesactivesOwner(Pagination pagination);
-        //Task<bool> UpdateOwner(OwnerUpdateRequestModel request);
 
     }
 }

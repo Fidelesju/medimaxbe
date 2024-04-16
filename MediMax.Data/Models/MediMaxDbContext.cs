@@ -12,6 +12,7 @@ namespace MediMax.Data.Models
 
         public DbSet<Owner> Owner { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Notificacao> Notificacao { get; set; }
         public DbSet<Tratamento> Tratamento { get; set; }
         public DbSet<Medicamentos> Medicamentos { get; set; }
         public DbSet<Alimentacao> Alimentacao { get; set; }

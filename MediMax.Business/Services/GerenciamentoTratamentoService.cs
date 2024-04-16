@@ -16,15 +16,18 @@ namespace MediMax.Business.Services
         private readonly IGerenciamentoTratamentoCreateMapper _gerenciamentoTratamentoCreateMapper;
         private readonly IGerenciamentoTratamentoRepository _gerenciamentoTratamentoRepository;
         private readonly ITratamentoDb _treatmentDb;
+        private readonly IHistoricoDb _historicoDb;
 
         public GerenciamentoTratamentoService(
             IGerenciamentoTratamentoCreateMapper gerenciamentoTratamentoCreateMapper,
             IGerenciamentoTratamentoRepository gerenciamentoTratamentoRepository,
-            ITratamentoDb treatmentDb)
+            ITratamentoDb treatmentDb,
+            IHistoricoDb historicoDb)
         {
             _gerenciamentoTratamentoCreateMapper = gerenciamentoTratamentoCreateMapper;
             _gerenciamentoTratamentoRepository = gerenciamentoTratamentoRepository;
             _treatmentDb = treatmentDb;
+            _historicoDb = historicoDb;
         }
 
         public async Task<int> CriandoGerenciamentoTratamento(GerencimentoTratamentoCreateRequestModel request)
@@ -50,7 +53,6 @@ namespace MediMax.Business.Services
                 throw new CustomValidationException(validation.GetPersistenceErrors(exception));
             }
         }
-
         public async Task<List<TratamentoResponseModel>> GetTreatmentByName(string name)
         {
             List<TratamentoResponseModel> treatmentList = await _treatmentDb.BuscarTratamentoPorNome(name);
@@ -62,7 +64,6 @@ namespace MediMax.Business.Services
 
             return treatmentList;
         }
-
         public async Task<List<TratamentoResponseModel>> GetIntervalTreatment(string startTime, string finishTime)
         {
             List<TratamentoResponseModel> treatmentList = await _treatmentDb.BuscarTratamentoPorIntervalo(startTime, finishTime);
@@ -73,6 +74,127 @@ namespace MediMax.Business.Services
             }
 
             return treatmentList;
+        } 
+        public async Task<List<HistoricoResponseModel>> BuscarHistoricoGeral()
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistoricoGeral();
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        }
+        public async Task<List<HistoricoResponseModel>> BuscarHistoricoTomado()
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistoricoTomado();
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        }
+        public async Task<List<HistoricoResponseModel>> BuscarHistoricoNaoTomado()
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistoricoNaoTomado();
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        }
+        public async Task<List<HistoricoResponseModel>> BuscarHistorico7Dias()
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistorico7Dias();
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        }
+        public async Task<List<HistoricoResponseModel>> BuscarHistorico15Dias()
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistorico15Dias();
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        }
+        public async Task<List<HistoricoResponseModel>> BuscarHistorico30Dias()
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistorico30Dias();
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        }
+        public async Task<List<HistoricoResponseModel>> BuscarHistorico60Dias()
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistorico60Dias();
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        }
+        public async Task<List<HistoricoResponseModel>> BuscarHistoricoUltimoAno()
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistoricoUltimoAno();
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        }
+        public async Task<List<HistoricoResponseModel>> BuscarHistoricoDataEspecifica(string data)
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistoricoDataEspecifica(data);
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
+        } 
+        
+        public async Task<List<HistoricoResponseModel>> BuscarHistoricoPorMedicamento(string nome)
+        {
+            List<HistoricoResponseModel> historico;
+            historico = await _historicoDb.BuscarHistoricoPorMedicamento(nome);
+
+            if (historico == null || historico.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            return historico;
         }
     }
 }

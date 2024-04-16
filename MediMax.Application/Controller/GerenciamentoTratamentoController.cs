@@ -1,4 +1,7 @@
-﻿using MediMax.Business.Exceptions;
+﻿using Azure;
+using MediMax.Application.Controller;
+using MediMax.Business.CoreServices.Interfaces;
+using MediMax.Business.Exceptions;
 using MediMax.Business.Services;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Data.ApplicationModels;
@@ -10,17 +13,17 @@ namespace MediMax.Application.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class GerenciamentoTratamentoController : ControllerBase
+    public class GerenciamentoTratamentoController : BaseController<GerenciamentoTratamentoController>
     {
         private readonly IGerenciamentoTratamentoService _gerenciamentoTratamentoService;
         private readonly ILogger<GerenciamentoTratamentoController> _logger;
 
         public GerenciamentoTratamentoController(
             IGerenciamentoTratamentoService gerenciamentoTratamentoService,
-            ILogger<GerenciamentoTratamentoController> logger)
+            ILogger<GerenciamentoTratamentoController> logger,
+            ILoggerService loggerService) : base(logger, loggerService)
         {
-            _gerenciamentoTratamentoService = gerenciamentoTratamentoService ?? throw new ArgumentNullException(nameof(gerenciamentoTratamentoService));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _gerenciamentoTratamentoService = gerenciamentoTratamentoService;
         }
 
         [HttpPost("Create")]
@@ -30,7 +33,7 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
 
-        public async Task<IActionResult> CriandoGerenciamentoTratamento(GerencimentoTratamentoCreateRequestModel request)
+        public async Task<ActionResult> CriandoGerenciamentoTratamento(GerencimentoTratamentoCreateRequestModel request)
         {
             try
             {
@@ -61,14 +64,288 @@ namespace MediMax.Application.Controllers
             }
         }
 
-        private IActionResult ValidationErrorsBadRequest(CustomValidationException ex)
+        /// <summary>
+        /// Obtém historico geral.
+        /// </summary>
+        [HttpGet("GetHistoric")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoGeral()
         {
-            var errors = new BaseResponse<int>
+            try
             {
-                Message = "Validation errors occurred.",
-                Data = 0
-            };
-            return BadRequest(errors);
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoGeral();
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+        
+        /// <summary>
+        /// Obtém historico tomado.
+        /// </summary>
+        [HttpGet("GetWasTaken")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoTomado()
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoTomado();
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+        
+        /// <summary>
+        /// Obtém historico não tomado.
+        /// </summary>
+        [HttpGet("GetNotTaken")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoNaoTomado()
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoNaoTomado();
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Obtém historico ultimos 7 dias.
+        /// </summary>
+        [HttpGet("Get7Days")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico7Dias()
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistorico7Dias();
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Obtém historico ultimos 15 dias.
+        /// </summary>
+        [HttpGet("Get15Days")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico15Dias()
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistorico15Dias();
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Obtém historico ultimos 30 dias.
+        /// </summary>
+        [HttpGet("Get30Days")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico30Dias()
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistorico30Dias();
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Obtém historico ultimos 60 dias.
+        /// </summary>
+        [HttpGet("Get60Days")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico60Dias()
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistorico60Dias();
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Obtém historico ultimo ano.
+        /// </summary>
+        [HttpGet("GetLastYear")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoUltimoAno()
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoUltimoAno();
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Obtém historico data especifica.
+        /// </summary>
+        [HttpGet("GetHistoricByDate/{data}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoDataEspecifica(string data)
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoDataEspecifica(data);
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Obtém historico por medicamento.
+        /// </summary>
+        [HttpGet("GetHistoricByMedicine/{nome}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoPorMedicamento(string nome)
+        {
+            try
+            {
+                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoPorMedicamento(nome);
+
+                var response = new BaseResponse<List<HistoricoResponseModel>>
+                {
+                    Message = "Historico encontrado com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return await UntreatedException(ex);
+            }
         }
     }
 }

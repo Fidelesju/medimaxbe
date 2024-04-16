@@ -217,3 +217,13 @@ C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\Me
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Serilog.Sinks.MySQL.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.Bcl.TimeProvider.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\Microsoft.Extensions.Features.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\System.Threading.Channels.dll

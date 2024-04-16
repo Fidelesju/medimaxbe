@@ -63,6 +63,10 @@
               "target": "Package",
               "version": "[2.1.1, )"
             },
+            "Microsoft.AspNetCore.SignalR.Client": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
               "version": "[7.0.0, )"
@@ -97,7 +101,7 @@
             },
             "ServiceStack": {
               "target": "Package",
-              "version": "[6.11.0, )"
+              "version": "[8.2.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -187,6 +191,10 @@
               "target": "Package",
               "version": "[2.1.1, )"
             },
+            "Microsoft.AspNetCore.SignalR.Client": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
               "version": "[7.0.0, )"
@@ -214,6 +222,10 @@
             "Serilog.Sinks.MySQL": {
               "target": "Package",
               "version": "[5.0.0, )"
+            },
+            "ServiceStack": {
+              "target": "Package",
+              "version": "[8.2.2, )"
             }
           },
           "imports": [
@@ -291,6 +303,10 @@
               "target": "Package",
               "version": "[2.1.1, )"
             },
+            "Microsoft.AspNetCore.SignalR.Client": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.11, )"
@@ -322,6 +338,10 @@
             "Serilog.Sinks.MySQL": {
               "target": "Package",
               "version": "[5.0.0, )"
+            },
+            "ServiceStack": {
+              "target": "Package",
+              "version": "[8.2.2, )"
             }
           },
           "imports": [

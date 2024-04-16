@@ -53,6 +53,5 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "MediMax v1");
 });
 
-
 // Inicia o aplicativo
 app.Run();
