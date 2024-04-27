@@ -15,8 +15,7 @@ namespace MediMax.Business.Mappers
 
         public GerenciamentoTratamento GetGerenciamentoTratamento()
         {
-            _gerenciamentoTratamento.remedio_id = BaseMapping.remedio_id;
-            _gerenciamentoTratamento.id_usuario = BaseMapping.id_usuario;
+            _gerenciamentoTratamento.tratamento_id = BaseMapping.tratamento_id;
             _gerenciamentoTratamento.horario_correto_tratamento = BaseMapping.horario_correto_tratamento;
             _gerenciamentoTratamento.horario_ingestao_medicamento = BaseMapping.horario_ingestao_medicamento;
             _gerenciamentoTratamento.data_ingestao_medicamento = BaseMapping.data_ingestao_medicamento;

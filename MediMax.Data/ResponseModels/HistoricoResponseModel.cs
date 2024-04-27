@@ -11,5 +11,6 @@ namespace MediMax.Data.ResponseModels
         public string? MedicationIntakeSchedule { get; set; }
         public string? DateMedicationIntake { get; set; }
         public int WasTaken { get; set; }
+        public string MedicineName{ get; set; }
     }
 }

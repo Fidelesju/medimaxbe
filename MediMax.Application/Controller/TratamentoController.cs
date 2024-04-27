@@ -1,5 +1,6 @@
 ﻿using MediMax.Business.CoreServices.Interfaces;
 using MediMax.Business.Exceptions;
+using MediMax.Business.Services;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Data.ApplicationModels;
 using MediMax.Data.ResponseModels;
@@ -85,6 +86,42 @@ namespace MediMax.Application.Controller
             {
                 _logger.LogError(ex, "BuscarTratamentoPorIntervalo: Controller");
                 return StatusCode(500, $"Erro ao buscar tratamentos: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Deletando um tratemento
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("Delete/{id}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<bool>>> DeletandoTratamento(int id)
+        {
+            try
+            {
+                bool result = await _tratamentoService.DeletandoTratamento(id);
+
+                var response = new BaseResponse<bool>
+                {
+                    Message = "Medicamento deletado com sucesso.",
+                    Data = result
+                };
+
+                return Ok(response);
+            }
+            catch (CustomValidationException ex)
+            {
+                _logger.LogError(ex, "DeletandoMedicamento: Controller");
+                return ValidationErrorsBadRequest(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DeletandoMedicamento: Controller");
+                return await UntreatedException(ex);
             }
         }
     }

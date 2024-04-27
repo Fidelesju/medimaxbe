@@ -58,7 +58,7 @@ namespace MediMax.Application.Controllers
             catch (CustomValidationException ex)
             {
                 _logger.LogError(ex, "CriandoGerenciamentoTratamento: Controller");
-                return ValidationErrorsBadRequest(ex);
+                return StatusCode(400,ex);
             }
             catch (Exception ex)
             {
@@ -86,7 +86,6 @@ namespace MediMax.Application.Controllers
                     Message = "Historico encontrado com sucesso.",
                     Data = medicine
                 };
-                _logger.LogInformation("Historico encontrado com sucesso", response);
                 return Ok(response);
             }
             catch (RecordNotFoundException ex)

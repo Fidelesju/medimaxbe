@@ -57,10 +57,10 @@ namespace MediMax.Business.Services
             HorariosDosagemCreateRequestModel requestHorario;
             HorariosDosagemResponseModel horarioExistente;
             List<string> horariosDosagem;
-            MedicamentoCreateValidation validation = new MedicamentoCreateValidation();
+            MedicamentoCreateValidation validation; 
             Dictionary<string, string> errors;
 
-            _medicamentoCreateMapper.SetBaseMapping(request);
+            validation = new MedicamentoCreateValidation();
             if (!validation.IsValid(request))
             {
                 errors = validation.GetErrors();
@@ -69,6 +69,7 @@ namespace MediMax.Business.Services
 
             try
             {
+                _medicamentoCreateMapper.SetBaseMapping(request);
                 horariosDosagem = CalcularHorariosDoses(request.horario_inicial_tratamento, request.intervalo_tratamento_horas);
                 medicamentos = _medicamentoCreateMapper.BuscarMedicamentos();
                 _medicineRepository.Create(medicamentos);
@@ -226,6 +227,21 @@ namespace MediMax.Business.Services
         {
             List<MedicamentoResponseModel> medicamentoLista;
             medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorNome(name);
+
+            if (medicamentoLista == null || medicamentoLista.Count == 0)
+            {
+                throw new RecordNotFoundException();
+            }
+            return medicamentoLista;
+        }
+
+          /// <summary>
+        /// Obtém medicamento por nome.
+        /// </summary>
+        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorTratamento(int tratamentoId)
+        {
+            List<MedicamentoResponseModel> medicamentoLista;
+            medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorTratamento(tratamentoId);
 
             if (medicamentoLista == null || medicamentoLista.Count == 0)
             {

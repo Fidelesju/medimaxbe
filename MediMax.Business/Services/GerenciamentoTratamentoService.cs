@@ -8,6 +8,7 @@ using MediMax.Data.Repositories.Interfaces;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace MediMax.Business.Services
 {
@@ -33,8 +34,9 @@ namespace MediMax.Business.Services
         public async Task<int> CriandoGerenciamentoTratamento(GerencimentoTratamentoCreateRequestModel request)
         {
             GerenciamentoTratamento gerenciamentoTratamento;
-            GerenciamentoTratamentoCreateValidation validation = new GerenciamentoTratamentoCreateValidation();
-
+            GerenciamentoTratamentoCreateValidation validation;
+            
+            validation = new GerenciamentoTratamentoCreateValidation();
             if (!validation.IsValid(request))
             {
                 throw new CustomValidationException(validation.GetErrors());
@@ -173,8 +175,11 @@ namespace MediMax.Business.Services
         }
         public async Task<List<HistoricoResponseModel>> BuscarHistoricoDataEspecifica(string data)
         {
+            // Decodifica a string de data
+            string dataDecodificada = HttpUtility.UrlDecode(data);
+
             List<HistoricoResponseModel> historico;
-            historico = await _historicoDb.BuscarHistoricoDataEspecifica(data);
+            historico = await _historicoDb.BuscarHistoricoDataEspecifica(dataDecodificada);
 
             if (historico == null || historico.Count == 0)
             {

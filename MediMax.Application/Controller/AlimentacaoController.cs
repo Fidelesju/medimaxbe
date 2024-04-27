@@ -63,7 +63,7 @@ namespace MediMax.Application.Controllers
                 return await HandleException(ex);
             }
         }
-
+        
         [HttpPost("Update")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]

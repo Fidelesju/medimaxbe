@@ -12,5 +12,6 @@ namespace MediMax.Business.Services.Interfaces
         Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorNome(string name);
         Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorDataVencimento();
         Task<bool> DeletandoMedicamento(int id);
+        Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorTratamento(int tratamentoId);
     }
 }

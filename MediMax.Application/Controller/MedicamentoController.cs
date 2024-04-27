@@ -124,6 +124,39 @@ namespace MediMax.Application.Controller
                 return await UntreatedException(ex);
             }
         }
+        /// <summary>
+        /// Obtém lista de medicamentos por id de tratamento.
+        /// </summary>
+        [HttpGet("GetMedicineByTreatmentId/{treatmentId}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarMedicamentosPorTratamento(int treatmentId)
+        {
+            try
+            {
+                var medicine = await _medicamentoService.BuscarMedicamentosPorTratamento(treatmentId);
+
+                var response = new BaseResponse<List<MedicamentoResponseModel>>
+                {
+                    Message = "Medicamentos encontrados com sucesso.",
+                    Data = medicine
+                };
+
+                return Ok(response);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarMedicamentosPorNome: Controller");
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarMedicamentosPorNome: Controller");
+                return await UntreatedException(ex);
+            }
+        }
         
         /// <summary>
         /// Obtém medicamentos por data de vencimento.

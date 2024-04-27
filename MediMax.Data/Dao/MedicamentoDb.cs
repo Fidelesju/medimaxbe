@@ -23,7 +23,8 @@ namespace MediMax.Data.Dao
                     m.nome AS Name,
                     m.data_vencimento AS ExpirationDate,
                     m.quantidade_embalagem AS PackageQuantity,
-                    m.dosagem AS Dosage
+                    m.dosagem AS Dosage,
+                  m.esta_ativo AS IsActive
                  FROM medicamentos m
                  WHERE m.esta_ativo = 1
                 ";
@@ -45,11 +46,37 @@ namespace MediMax.Data.Dao
                   m.nome AS Name,
                   m.data_vencimento AS ExpirationDate,
                   m.quantidade_embalagem AS PackageQuantity,
-                  m.dosagem AS Dosage
+                  m.dosagem AS Dosage,
+                  m.esta_ativo AS IsActive
                FROM medicamentos m
                WHERE 
 	              m.nome LIKE '%{name}%'
                AND m.esta_ativo = 1
+                ";
+
+            await Connect();
+            await Query(sql);
+            medicamento = await GetQueryResultList();
+            await Disconnect();
+            return medicamento;
+        }
+         public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorTratamento(int tratamentoId)
+        {
+            string sql;
+            List<MedicamentoResponseModel> medicamento;
+            sql = $@"
+                SELECT 
+                    m.id AS Id,
+                    m.nome AS Name,
+                    m.data_vencimento AS ExpirationDate,
+                    m.quantidade_embalagem AS PackageQuantity,
+                    m.dosagem AS Dosage,
+                    m.esta_ativo AS IsActive
+                 FROM medicamentos m
+                 INNER JOIN tratamento t ON t.remedio_id = m.id
+                 WHERE 
+                t.id = {tratamentoId}
+                AND m.esta_ativo = 1
                 ";
 
             await Connect();
@@ -69,7 +96,8 @@ namespace MediMax.Data.Dao
                   m.nome AS Name,
                   m.data_vencimento AS ExpirationDate,
                   m.quantidade_embalagem AS PackageQuantity,
-                  m.dosagem AS Dosage
+                  m.dosagem AS Dosagem,
+                  m.esta_ativo AS IsActive
                FROM medicamentos m
                WHERE m.esta_ativo = 1
                ORDER BY 
@@ -147,6 +175,15 @@ namespace MediMax.Data.Dao
             if (int.TryParse(reader["PackageQuantity"].ToString(), out int packageQuantity))
             {
                 medicine.PackageQuantity = packageQuantity;
+            }
+            else
+            {
+                // Tratar erro de conversão
+            } 
+            // Convertendo PackageQuantity para int
+            if (int.TryParse(reader["IsActive"].ToString(), out int isActive))
+            {
+                medicine.IsActive = isActive;
             }
             else
             {

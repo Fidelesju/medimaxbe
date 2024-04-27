@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediMax.Business.Exceptions;
 using MediMax.Business.Mappers.Interfaces;
 using MediMax.Business.Services.Interfaces;
+using MediMax.Data.Dao;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Repositories.Interfaces;
 using MediMax.Data.ResponseModels;
@@ -77,7 +78,7 @@ namespace MediMax.Business.Services
                 {
                     if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
                     {
-                        treatment.dosageTime = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
+                        treatment.DosageTime = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
                     }
                 }
             }
@@ -105,6 +106,24 @@ namespace MediMax.Business.Services
             }
 
             return dosageTimes;
+        }
+
+        /// <summary>
+        /// Deletando um tratemento
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="RecordNotFoundException"></exception>
+        public async Task<bool> DeletandoTratamento(int id)
+        {
+            bool success;
+            success = await _tratamentoDb.DeletandoTratamento(id);
+
+            if (!success)
+            {
+                throw new RecordNotFoundException();
+            }
+            return success;
         }
     }
 }

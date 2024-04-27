@@ -1,9 +1,11 @@
-﻿namespace MediMax.Data.ApplicationModels
+﻿
+namespace MediMax.Data.ApplicationModels
 {
     public class BaseResponse<T>
     {
         public string Message { get; set; }
         public T Data { get; set; }
+        public List<char> Errors { get; set; }
 
         public static BaseResponse<T> Builder()
         {

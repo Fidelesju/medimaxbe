@@ -16,5 +16,6 @@ namespace MediMax.Data.Dao.Interfaces
                 string recomendacoes_alimentacao,
                 string observacao,
                 int id);
+        Task<bool> DeletandoTratamento(int id);
     }
 }

@@ -25,7 +25,7 @@ namespace MediMax.Application.Configurations
             catch (Exception ex)
             {
                 // Loga a exceção
-                Log.Error(ex, "Ocorreu uma exceção ao processar a requisição");
+                Log.Information(ex, "Ocorreu uma exceção ao processar a requisição");
                 throw;
             }
 
