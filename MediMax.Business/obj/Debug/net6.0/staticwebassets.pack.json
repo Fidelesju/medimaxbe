@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\MediMax.Business.bundle.scp.css",
-      "PackagePath": "staticwebassets\\MediMax.Business.bundle.scp.css"
-    },
-    {
       "Id": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

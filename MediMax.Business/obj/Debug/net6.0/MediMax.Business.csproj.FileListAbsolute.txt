@@ -172,8 +172,6 @@ C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\Me
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\MediMax.Business.csproj.CoreCompileInputs.cache
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\MediMax.Business.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\MediMax.Business.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\MediMax.Business.RazorAssemblyInfo.cache
-C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\MediMax.Business.RazorAssemblyInfo.cs
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\MediMax.Business.sourcelink.json
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\staticwebassets.development.json
@@ -182,9 +180,7 @@ C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\Me
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.MediMax.Business.props
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.MediMax.Business.props
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\staticwebassets.pack.json
-C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\scopedcss\bundle\MediMax.Business.styles.css
-C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\scopedcss\projectbundle\MediMax.Business.bundle.scp.css
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\MediMax.Business.csproj.CopyComplete
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\MediMax.Business.dll
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\obj\Debug\net6.0\refint\MediMax.Business.dll

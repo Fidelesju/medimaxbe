@@ -124,7 +124,8 @@ namespace MediMax.Application.Controller
                 return await UntreatedException(ex);
             }
         }
-        /// <summary>
+        
+        // <summary>
         /// Obtém lista de medicamentos por id de tratamento.
         /// </summary>
         [HttpGet("GetMedicineByTreatmentId/{treatmentId}")]

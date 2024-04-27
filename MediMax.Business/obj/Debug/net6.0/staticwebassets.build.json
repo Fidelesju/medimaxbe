@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5hWKu1yEfCtTRtpuFzdmeZzzTTbDzzSc2CstE5X1s44=",
+  "Hash": "bFEf9ZbgUvMkplsxhNe6VnQGe0HzjaqnWoU85tiovNw=",
   "Source": "MediMax.Business",
   "BasePath": "_content/MediMax.Business",
   "Mode": "Default",
@@ -35,44 +35,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\obj\\Debug\\net6.0\\scopedcss\\bundle\\MediMax.Business.styles.css",
-      "SourceId": "MediMax.Business",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/MediMax.Business",
-      "RelativePath": "MediMax.Business.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\obj\\Debug\\net6.0\\scopedcss\\bundle\\MediMax.Business.styles.css"
-    },
-    {
-      "Identity": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\MediMax.Business.bundle.scp.css",
-      "SourceId": "MediMax.Business",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/MediMax.Business",
-      "RelativePath": "MediMax.Business.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\MediMax.Business.bundle.scp.css"
-    },
     {
       "Identity": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\wwwroot\\css\\site.css",
       "SourceId": "MediMax.Business",
@@ -1212,25 +1174,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
-    },
-    {
-      "Identity": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\MediMax.Data.bundle.scp.css",
-      "SourceId": "MediMax.Data",
-      "SourceType": "Project",
-      "ContentRoot": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/MediMax.Data",
-      "RelativePath": "MediMax.Data.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\MediMax.Data.bundle.scp.css"
     },
     {
       "Identity": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\wwwroot\\css\\site.css",

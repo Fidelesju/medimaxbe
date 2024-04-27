@@ -156,8 +156,6 @@ C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\Me
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\MediMax.Data.AssemblyInfo.cs
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\MediMax.Data.csproj.CoreCompileInputs.cache
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\MediMax.Data.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\MediMax.Data.RazorAssemblyInfo.cache
-C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\MediMax.Data.RazorAssemblyInfo.cs
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\MediMax.Data.sourcelink.json
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\staticwebassets.development.json
@@ -166,9 +164,7 @@ C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\Me
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.MediMax.Data.props
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.MediMax.Data.props
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\staticwebassets.pack.json
-C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\scopedcss\bundle\MediMax.Data.styles.css
-C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\scopedcss\projectbundle\MediMax.Data.bundle.scp.css
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\MediMax.Data.csproj.CopyComplete
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\MediMax.Data.dll
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Data\obj\Debug\net6.0\refint\MediMax.Data.dll
