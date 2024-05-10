@@ -12,5 +12,14 @@ namespace MediMax.Data.ResponseModels
         public string? DateMedicationIntake { get; set; }
         public int WasTaken { get; set; }
         public string MedicineName{ get; set; }
+
+        // Propriedade computada para retornar uma representação legível de WasTaken
+        public string WasTakenDescription
+        {
+            get
+            {
+                return WasTaken == 1 ? "Tomado" : "Não Tomado";
+            }
+        }
     }
 }

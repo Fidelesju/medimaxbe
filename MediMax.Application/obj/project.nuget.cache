@@ -1,14 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "/dRaRsfG+s/7UiA2bmFK3uQebiHeoxCa5Y4B534et9HeDsbwzyGBXQrIXLlQH+Pgn8zCizZs6xQkOU1P7roXpw==",
+  "dgSpecHash": "Ydq2LQd92jtfGxBO6qfnMlAkq4Q5WKOZcudag7e4Uwv8ZFDaYYn00E5iq0coXrU2YCNqXYbqcgAdta9Wu4R1PA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\MediMax.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\Julia Fideles\\.nuget\\packages\\bouncycastle\\1.8.9\\bouncycastle.1.8.9.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\firesharp\\2.0.4\\firesharp.2.0.4.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\fluentvalidation\\11.7.1\\fluentvalidation.11.7.1.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",
+    "C:\\Users\\Julia Fideles\\.nuget\\packages\\itextsharp\\5.5.13.3\\itextsharp.5.5.13.3.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\k4os.compression.lz4\\1.3.5\\k4os.compression.lz4.1.3.5.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\k4os.compression.lz4.streams\\1.3.5\\k4os.compression.lz4.streams.1.3.5.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\k4os.hash.xxhash\\1.0.8\\k4os.hash.xxhash.1.0.8.nupkg.sha512",
@@ -161,8 +163,28 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
+      "message": "O pacote 'BouncyCastle 1.8.9' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' em vez da estrutura de destino do projeto 'net6.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
+      "libraryId": "BouncyCastle",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
       "message": "O pacote 'FireSharp 2.0.4' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' em vez da estrutura de destino do projeto 'net6.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
       "libraryId": "FireSharp",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "O pacote 'iTextSharp 5.5.13.3' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' em vez da estrutura de destino do projeto 'net6.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
+      "libraryId": "iTextSharp",
       "targetGraphs": [
         "net6.0"
       ]

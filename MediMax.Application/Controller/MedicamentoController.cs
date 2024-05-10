@@ -133,13 +133,13 @@ namespace MediMax.Application.Controller
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarMedicamentosPorTratamento(int treatmentId)
+        public async Task<ActionResult<BaseResponse<MedicamentoResponseModel>>> BuscarMedicamentosPorTratamento(int treatmentId)
         {
             try
             {
                 var medicine = await _medicamentoService.BuscarMedicamentosPorTratamento(treatmentId);
 
-                var response = new BaseResponse<List<MedicamentoResponseModel>>
+                var response = new BaseResponse<MedicamentoResponseModel>
                 {
                     Message = "Medicamentos encontrados com sucesso.",
                     Data = medicine
@@ -234,16 +234,16 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("Delete/{id}")]
+        [HttpPost("Delete/{medicineId}/{treatmentId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> DeletandoMedicamento(int id)
+        public async Task<ActionResult<BaseResponse<bool>>> DeletandoMedicamento(int medicineId, int treatmentId)
         {
             try
             {
-                bool result = await _medicamentoService.DeletandoMedicamento(id);
+                bool result = await _medicamentoService.DeletandoMedicamento(medicineId, treatmentId);
 
                 var response = new BaseResponse<bool>
                 {

@@ -228,3 +228,4 @@ C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\Me
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\ServiceStack.Common.dll
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\ServiceStack.Interfaces.dll
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\ServiceStack.Text.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Business\bin\Debug\net6.0\itextsharp.dll

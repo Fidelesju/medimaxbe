@@ -35,6 +35,56 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return historicoResponseModel;
         }
+        public async Task<HistoricoResponseModel> BuscarStatusDoUltimoGerenciamento ( )
+        {
+            string sql;
+            HistoricoResponseModel historicoResponseModel;
+            sql = $@"
+                 SELECT 
+                    gt.id as Id,
+                    gt.tratamento_id as TratamentoId,
+                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
+                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
+                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.foi_tomado as FoiTomado, 
+                    t.nome_medicamento as NomeMedicamento
+                FROM gerenciamento_tratamento gt
+                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                ORDER BY gt.id DESC
+                LIMIT 1
+                ";
+
+            await Connect();
+            await Query(sql);
+            historicoResponseModel = await GetQueryResultObject();
+            await Disconnect();
+            return historicoResponseModel;
+        } 
+        public async Task<HistoricoResponseModel> BuscarUltimoGerenciamento ( )
+        {
+            string sql;
+            HistoricoResponseModel historicoResponseModel;
+            sql = $@"
+                 SELECT 
+                    gt.id as Id,
+                    gt.tratamento_id as TratamentoId,
+                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
+                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
+                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.foi_tomado as FoiTomado, 
+                    t.nome_medicamento as NomeMedicamento
+                FROM gerenciamento_tratamento gt
+                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                ORDER BY gt.id DESC
+                LIMIT 1
+                ";
+
+            await Connect();
+            await Query(sql);
+            historicoResponseModel = await GetQueryResultObject();
+            await Disconnect();
+            return historicoResponseModel;
+        }
         public async Task<List<HistoricoResponseModel>> BuscarHistoricoTomado()
         {
             string sql;
@@ -202,15 +252,39 @@ namespace MediMax.Data.Dao
             historicoResponseModel = await GetQueryResultList();
             await Disconnect();
             return historicoResponseModel;
-        }
+        } 
+        
+        public async Task<List<HistoricoResponseModel>> BuscarHistoricoAnoEspecifico(string year)
+        {
+            string sql;
+            List<HistoricoResponseModel> historicoResponseModel;
+            sql = $@"
+                SELECT 
+                    gt.id as Id,
+                    gt.tratamento_id as TratamentoId,
+                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
+                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
+                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.foi_tomado as FoiTomado, 
+                    t.nome_medicamento as NomeMedicamento
+                FROM gerenciamento_tratamento gt
+                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                WHERE YEAR(STR_TO_DATE(gt.data_ingestao_medicamento, '%d/%m/%Y')) = '{year}'
+                ";
 
+            await Connect();
+            await Query(sql);
+            historicoResponseModel = await GetQueryResultList();
+            await Disconnect();
+            return historicoResponseModel;
+        }
         public async Task<List<HistoricoResponseModel>> BuscarHistoricoDataEspecifica(string data)
         {
             string sql;
             List<HistoricoResponseModel> historicoResponseModel;
             sql = $@"
                 SELECT 
-                                   gt.id as Id,
+                    gt.id as Id,
                     gt.tratamento_id as TratamentoId,
                     gt.data_ingestao_medicamento as DataIngestaoMedicamento,
                     gt.horario_correto_tratamento as HorarioCorretoTratamento,
@@ -228,7 +302,6 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return historicoResponseModel;
         }
-        
         public async Task<List<HistoricoResponseModel>> BuscarHistoricoPorMedicamento(string nome)
         {
             string sql;

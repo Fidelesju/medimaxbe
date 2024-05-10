@@ -238,12 +238,12 @@ namespace MediMax.Business.Services
           /// <summary>
         /// Obtém medicamento por nome.
         /// </summary>
-        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorTratamento(int tratamentoId)
+        public async Task<MedicamentoResponseModel> BuscarMedicamentosPorTratamento(int tratamentoId)
         {
-            List<MedicamentoResponseModel> medicamentoLista;
+            MedicamentoResponseModel medicamentoLista;
             medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorTratamento(tratamentoId);
 
-            if (medicamentoLista == null || medicamentoLista.Count == 0)
+            if (medicamentoLista == null )
             {
                 throw new RecordNotFoundException();
             }
@@ -271,16 +271,22 @@ namespace MediMax.Business.Services
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="RecordNotFoundException"></exception>
-        public async Task<bool> DeletandoMedicamento(int id)
+        public async Task<bool> DeletandoMedicamento(int medicineId, int tratamentoId)
         {
-            bool success;
-            success = await _medicamentoDb.DeletandoMedicamento(id);
+            bool successMedication;
+            bool successTreatment;
+            successMedication = await _medicamentoDb.DeletandoMedicamento(medicineId);
 
-            if (!success)
+            if(successMedication)
+            {
+                successTreatment = await _tratamentoDb.DeletandoTratamento(tratamentoId);
+                await _horarioDosagemDb.DeletandoHorarioDosagem(tratamentoId);
+            }
+            else
             {
                 throw new RecordNotFoundException();
             }
-            return success;
+            return successTreatment;
         }
     }
 }

@@ -166,6 +166,34 @@ namespace MediMax.Application.Controllers
                 return await HandleException(ex);
             }
         }
+        
+        [HttpGet("GetMealsByTime")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<AlimentacaoResponseModel>>> BuscarRefeicoesPorHorario()
+        {
+            try
+            {
+                AlimentacaoResponseModel alimentacao = await _alimentacaoService.BuscarRefeicoesPorHorario();
+                return Ok(new BaseResponse<AlimentacaoResponseModel>
+                {
+                    Message = "Alimentos encontrados com sucesso.",
+                    Data = alimentacao
+                });
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarRefeicoesPorTipo: Controller");
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarRefeicoesPorTipo: Controller");
+                return await HandleException(ex);
+            }
+        }
 
         private async Task<ActionResult> HandleException(Exception exception)
         {

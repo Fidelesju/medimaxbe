@@ -255,3 +255,4 @@ C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\Me
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Application\bin\Debug\net6.0\Microsoft.Bcl.TimeProvider.dll
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Application\bin\Debug\net6.0\Microsoft.Extensions.Features.dll
 C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Application\bin\Debug\net6.0\System.Threading.Channels.dll
+C:\Users\Julia Fideles\OneDrive\Documentos\Documentos\Git\portfolio\medimaxbe\MediMax.Application\bin\Debug\net6.0\itextsharp.dll

@@ -17,5 +17,9 @@ namespace MediMax.Data.Dao.Interfaces
                 string observacao,
                 int id);
         Task<bool> DeletandoTratamento(int id);
+        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( );
+        Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId );
+        Task<TratamentoResponseModel> BuscarTratamentoPorIdParaStatus ( int treatmentId );
+        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoInativos ( );
     }
 }

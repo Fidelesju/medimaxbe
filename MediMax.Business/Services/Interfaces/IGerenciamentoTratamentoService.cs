@@ -18,5 +18,7 @@ namespace MediMax.Business.Services.Interfaces
         Task<List<HistoricoResponseModel>> BuscarHistoricoNaoTomado();
         Task<List<HistoricoResponseModel>> BuscarHistoricoTomado();
         Task<List<HistoricoResponseModel>> BuscarHistoricoPorMedicamento(string nome);
+        Task<bool> BuscarStatusDoUltimoGerenciamento ( );
+        Task<string> BuscarUltimoGerenciamento ( );
     }
 }

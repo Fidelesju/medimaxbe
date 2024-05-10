@@ -15,5 +15,8 @@ namespace MediMax.Data.Dao.Interfaces
         Task<List<HistoricoResponseModel>> BuscarHistoricoNaoTomado();
         Task<List<HistoricoResponseModel>> BuscarHistoricoTomado();
         Task<List<HistoricoResponseModel>> BuscarHistoricoPorMedicamento(string nome);
+        Task<HistoricoResponseModel> BuscarStatusDoUltimoGerenciamento ( );
+        Task<HistoricoResponseModel> BuscarUltimoGerenciamento ( );
+        Task<List<HistoricoResponseModel>> BuscarHistoricoAnoEspecifico ( string year );
     }
 }

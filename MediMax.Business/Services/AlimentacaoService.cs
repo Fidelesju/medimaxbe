@@ -109,5 +109,16 @@ namespace MediMax.Business.Services
             }
             return alimentacao;
         }
+        
+        public async Task<AlimentacaoResponseModel> BuscarRefeicoesPorHorario ( )
+        {
+            AlimentacaoResponseModel alimentacao;
+            alimentacao = await _alimentacaoDb.BuscarRefeicoesPorHorario();
+            if (alimentacao == null)
+            {
+                throw new RecordNotFoundException();
+            }
+            return alimentacao;
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace MediMax.Data.Models
         public DbSet<Alimentacao> Alimentacao { get; set; }
         public DbSet<GerenciamentoTratamento> Gerenciamento_Tratamento { get; set; }
         public DbSet<HorariosDosagem> Horarios_Dosagem { get; set; }
+        public DbSet<StatusDispenser> Status_Dispenser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

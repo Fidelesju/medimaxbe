@@ -36,6 +36,53 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return alimentacaoList;
         }
+        
+        public async Task<List<AlimentacaoResponseModel>> BuscarTodasAlimentacao()
+        {
+            string sql;
+            List<AlimentacaoResponseModel> alimentacaoList;
+            sql = $@"
+              SELECT 
+                 a.id AS Id,
+                 a.tipo_refeicao AS TypeMeals,
+                 a.horario AS Time,
+                 a.alimento AS Meals,
+                 a.quantidade AS QuantityMeals,
+                 a.unidade_medida AS Unit
+              FROM alimentacao a
+                ";
+
+            await Connect();
+            await Query(sql);
+            alimentacaoList = await GetQueryResultList();
+            await Disconnect();
+            return alimentacaoList;
+        }
+         public async Task<AlimentacaoResponseModel> BuscarRefeicoesPorHorario ( )
+        {
+            string sql;
+            AlimentacaoResponseModel alimentacaoList;
+            sql = $@"
+              SELECT 
+                    a.id AS Id,
+                    a.tipo_refeicao AS TypeMeals,
+                    a.horario AS Time,
+                    a.alimento AS Meals,
+                    a.quantidade AS QuantityMeals,
+                    a.unidade_medida AS Unit
+                FROM alimentacao a
+                WHERE 
+                    a.horario >= NOW()  -- Horário atual ou futuro
+                ORDER BY a.horario ASC -- Ordena pelo horário mais próximo primeiro
+                LIMIT 1
+                ";
+
+            await Connect();
+            await Query(sql);
+            alimentacaoList = await GetQueryResultObject();
+            await Disconnect();
+            return alimentacaoList;
+        }
 
         public async Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request)
         {

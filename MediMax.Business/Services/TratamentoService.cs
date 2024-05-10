@@ -59,7 +59,38 @@ namespace MediMax.Business.Services
 
             return tratamentoLista;
         }
+        public async Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId)
+        {
+            TratamentoResponseModel tratamentoLista;
+            try
+            {
+                tratamentoLista = await _tratamentoDb.BuscarTratamentoPorId(treatmentId);
+            }
+            catch (RecordNotFoundException)
+            {
+                throw new RecordNotFoundException($"Nenhum tratamento encontrado com o nome '{treatmentId}'.");
+            }
 
+            return tratamentoLista;
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ()
+        {
+
+            List<TratamentoResponseModel> tratamentoLista;
+            try
+            {
+                tratamentoLista = await _tratamentoDb.BuscarTodosTratamentoAtivos();
+            }
+            catch (RecordNotFoundException)
+            {
+                throw new RecordNotFoundException($"Nenhum tratamento ativo encontrado.");
+            }
+
+            return tratamentoLista;
+        } 
+        
         /// <inheritdoc/>
         public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime)
         {
@@ -73,14 +104,14 @@ namespace MediMax.Business.Services
             {
                 treatmentList = await _tratamentoDb.BuscarTratamentoPorIntervalo(startTime, finishTime);
 
-                // Calcula os horários das doses seguintes para cada tratamento
-                foreach (var treatment in treatmentList)
-                {
-                    if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
-                    {
-                        treatment.DosageTime = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
-                    }
-                }
+                //// Calcula os horários das doses seguintes para cada tratamento
+                //foreach (var treatment in treatmentList)
+                //{
+                //    if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
+                //    {
+                //        treatment.DosageTime = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
+                //    }
+                //}
             }
             catch (RecordNotFoundException)
             {

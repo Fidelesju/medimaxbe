@@ -2,6 +2,8 @@
 using MediMax.Business.Mappers.Interfaces;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Business.Validations;
+using MediMax.Data.ApplicationModels;
+using MediMax.Data.Dao;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
 using MediMax.Data.Repositories.Interfaces;
@@ -125,6 +127,7 @@ namespace MediMax.Business.Services
 
             return historico;
         }
+
         public async Task<List<HistoricoResponseModel>> BuscarHistorico15Dias()
         {
             List<HistoricoResponseModel> historico;
@@ -188,7 +191,6 @@ namespace MediMax.Business.Services
 
             return historico;
         } 
-        
         public async Task<List<HistoricoResponseModel>> BuscarHistoricoPorMedicamento(string nome)
         {
             List<HistoricoResponseModel> historico;
@@ -200,6 +202,32 @@ namespace MediMax.Business.Services
             }
 
             return historico;
+        }
+        public async Task<bool> BuscarStatusDoUltimoGerenciamento ( )
+        {
+            HistoricoResponseModel historico;
+            historico = await _historicoDb.BuscarStatusDoUltimoGerenciamento();
+
+            if (historico == null)
+            {
+                throw new RecordNotFoundException();
+            }
+            else if (historico.WasTaken == 0)
+                return false;
+            return true;
+        } 
+        public async Task<string> BuscarUltimoGerenciamento ( )
+        {
+            HistoricoResponseModel historico;
+            TratamentoResponseModel tratamentoLista;
+            historico = await _historicoDb.BuscarUltimoGerenciamento();
+            tratamentoLista = await _treatmentDb.BuscarTratamentoPorId(historico.TreatmentId);
+            if (historico == null)
+            {
+                throw new RecordNotFoundException();
+            }
+            
+            return tratamentoLista.Name;
         }
     }
 }

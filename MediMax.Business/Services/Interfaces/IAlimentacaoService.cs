@@ -9,5 +9,6 @@ namespace MediMax.Business.Services.Interfaces
         Task<List<AlimentacaoResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals);
         Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request);
         Task<bool> DeletandoAlimentacao(int id);
+        Task<AlimentacaoResponseModel> BuscarRefeicoesPorHorario ( );
     }
 }

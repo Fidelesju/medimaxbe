@@ -56,6 +56,73 @@ namespace MediMax.Application.Controller
             }
         }
 
+        [HttpGet("GetTreatmentById/{treatmentId}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<TratamentoResponseModel>>> BuscarTratamentoPorId ( int treatmentId )
+        {
+            try
+            {
+                var tratamento = await _tratamentoService.BuscarTratamentoPorId(treatmentId);
+                var response = BaseResponse<TratamentoResponseModel>
+                        .Builder()
+                        .SetMessage("Tratamentos encontrados com sucesso.")
+                        .SetData(tratamento);
+                return Ok(response);
+            }
+            catch (InvalidNameException ex)
+            {
+                _logger.LogError(ex, "BuscarTratamentoPorNome: Controller");
+                return BadRequest($"Nome de tratamento inválido: {ex.Message}");
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarTratamentoPorNome: Controller");
+                return NotFound("Nenhum tratamento encontrado com o nome especificado.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarTratamentoPorNome: Controller");
+                return StatusCode(500, $"Erro ao buscar tratamentos: {ex.Message}");
+            }
+        }
+        
+       
+        [HttpGet("GetAllTreatmentActives")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<List<TratamentoResponseModel>>>> BuscarTodosTratamentoAtivos()
+        {
+            try
+            {
+                var tratamento = await _tratamentoService.BuscarTodosTratamentoAtivos();
+                var response = BaseResponse<List<TratamentoResponseModel>>
+                        .Builder()
+                        .SetMessage("Tratamentos encontrados com sucesso.")
+                        .SetData(tratamento);
+                return Ok(response);
+            }
+            catch (InvalidNameException ex)
+            {
+                _logger.LogError(ex, "BuscarTratamentoPorNome: Controller");
+                return BadRequest($"Nome de tratamento inválido: {ex.Message}");
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarTratamentoPorNome: Controller");
+                return NotFound("Nenhum tratamento encontrado com o nome especificado.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarTratamentoPorNome: Controller");
+                return StatusCode(500, $"Erro ao buscar tratamentos: {ex.Message}");
+            }
+        }
+
         [HttpGet("StartTime/{startTime}/FinishTime/{finishTime}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]

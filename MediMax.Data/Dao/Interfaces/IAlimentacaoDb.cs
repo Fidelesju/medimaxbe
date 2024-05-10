@@ -9,5 +9,7 @@ namespace MediMax.Data.Dao.Interfaces
         Task<List<AlimentacaoResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals);
         Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request);
         Task<bool> DeletandoAlimentacao(int id);
+        Task<AlimentacaoResponseModel> BuscarRefeicoesPorHorario ( );
+        Task<List<AlimentacaoResponseModel>> BuscarTodasAlimentacao ( );
     }
 }

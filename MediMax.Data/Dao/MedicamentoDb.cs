@@ -35,6 +35,29 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return medicamentoLista;
         }
+        
+        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosInativos ( )
+        {
+            string sql;
+            List<MedicamentoResponseModel> medicamentoLista;
+            sql = @"
+                 SELECT 
+	                m.id AS Id,
+                    m.nome AS Name,
+                    m.data_vencimento AS ExpirationDate,
+                    m.quantidade_embalagem AS PackageQuantity,
+                    m.dosagem AS Dosage,
+                  m.esta_ativo AS IsActive
+                 FROM medicamentos m
+                 WHERE m.esta_ativo = 0
+                ";
+
+            await Connect();
+            await Query(sql);
+            medicamentoLista = await GetQueryResultList();
+            await Disconnect();
+            return medicamentoLista;
+        }
 
         public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorNome(string name)
         {
@@ -60,10 +83,10 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return medicamento;
         }
-         public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorTratamento(int tratamentoId)
+         public async Task<MedicamentoResponseModel> BuscarMedicamentosPorTratamento(int tratamentoId)
         {
             string sql;
-            List<MedicamentoResponseModel> medicamento;
+            MedicamentoResponseModel medicamento;
             sql = $@"
                 SELECT 
                     m.id AS Id,
@@ -81,7 +104,7 @@ namespace MediMax.Data.Dao
 
             await Connect();
             await Query(sql);
-            medicamento = await GetQueryResultList();
+            medicamento = await GetQueryResultObject();
             await Disconnect();
             return medicamento;
         }

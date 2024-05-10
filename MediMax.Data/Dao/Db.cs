@@ -1,11 +1,10 @@
-﻿using MySql.Data.MySqlClient;
-using System.Collections.Specialized;
-using System.Data.Common;
-using System.Data;
-using System.Text.RegularExpressions;
-using MediMax.Data.ApplicationModels;
+﻿using MediMax.Data.ApplicationModels;
 using MediMax.Data.Exceptions;
 using MediMax.Data.Models;
+using MySql.Data.MySqlClient;
+using System.Data;
+using System.Data.Common;
+using System.Text.RegularExpressions;
 
 namespace MediMax.Data.Dao
 {
