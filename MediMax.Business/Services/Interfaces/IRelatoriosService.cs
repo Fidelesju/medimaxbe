@@ -5,6 +5,6 @@ namespace MediMax.Business.Services.Interfaces
 {
     public interface IRelatoriosService
     {
-        Task<bool> GeradorPdf ( RelatorioRequestModel request );
+        Task<byte[]> GeradorPdf ( RelatorioRequestModel request );
     }
 }

@@ -8,8 +8,8 @@ namespace MediMax.Business.Services.Interfaces
     {
         Task<int> CreateOwner(OwnerCreateRequestModel request);
         Task<OwnerResponseModel> GetOwnerById(int userId);
-        Task<PaginatedList<OwnerResponseModel>> GetOwnerPaginatedList(Pagination pagination);
-        Task<PaginatedList<OwnerResponseModel>> GetPaginatedListDesactivesOwner(Pagination pagination);
-
+        Task<bool> DesactiveOwner ( int ownerId );
+        Task<bool> ReactiveOwner ( int ownerId );
+        Task<int> UpateOwner ( OwnerUpdateRequestModel request );
     }
 }

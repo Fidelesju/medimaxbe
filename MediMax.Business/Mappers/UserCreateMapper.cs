@@ -22,7 +22,8 @@ namespace MediMax.Business.Mappers
             _user.senha = hashMd5.EncryptMD5(BaseMapping.Password);
             _user.nome = BaseMapping.UserName;
             _user.esta_ativo = 1;
-            _user.id_tipo_usuario = BaseMapping.typeUserId;
+            _user.id_tipo_usuario = BaseMapping.TypeUserId;
+            _user.id_proprietario = BaseMapping.OwnerId;
             return _user;
         }
     }

@@ -2,6 +2,8 @@
 using MediMax.Business.CoreServices.Interfaces;
 using MediMax.Business.Mappers;
 using MediMax.Business.Mappers.Interfaces;
+using MediMax.Business.RealTimeServices;
+using MediMax.Business.RealTimeServices.Interfaces;
 using MediMax.Business.Services;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Data.Dao;
@@ -35,6 +37,7 @@ namespace MediMax.Application.Configurations
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IStatusDispenserService, StatusDispenserService>();
             services.AddScoped<IRelatoriosService, RelatoriosService>();
+            services.AddScoped<INotificationService, NotificationService>();
         }
 
         private static void ConfigureDbDependencyInjection(IServiceCollection services) 
@@ -55,6 +58,7 @@ namespace MediMax.Application.Configurations
         private static void ConfigureMapperDependecyInjection(IServiceCollection services) 
         {
             services.AddScoped<IUsuarioCreateMapper, UserCreateMapper>();
+            services.AddScoped<IUsuarioUpdateMapper, UserUpdateMapper>();
             services.AddScoped<IMedicamentoCreateMapper, MedicamentoCreateMapper>();
             services.AddScoped<ITratamentoCreateMapper, TratamentoCreateMapper>();
             services.AddScoped<IGerenciamentoTratamentoCreateMapper, GerenciamentoTratamentoCreateMapper>();

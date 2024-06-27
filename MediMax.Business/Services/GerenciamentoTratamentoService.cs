@@ -2,8 +2,6 @@
 using MediMax.Business.Mappers.Interfaces;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Business.Validations;
-using MediMax.Data.ApplicationModels;
-using MediMax.Data.Dao;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
 using MediMax.Data.Repositories.Interfaces;
@@ -222,12 +220,15 @@ namespace MediMax.Business.Services
             TratamentoResponseModel tratamentoLista;
             historico = await _historicoDb.BuscarUltimoGerenciamento();
             tratamentoLista = await _treatmentDb.BuscarTratamentoPorId(historico.TreatmentId);
-            if (historico == null)
-            {
-                throw new RecordNotFoundException();
-            }
             
+            if (historico == null || tratamentoLista == null)
+            {
+                return null; 
+            }
+
             return tratamentoLista.Name;
+
+
         }
     }
 }

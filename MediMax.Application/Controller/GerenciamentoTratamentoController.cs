@@ -70,42 +70,31 @@ namespace MediMax.Application.Controllers
                 return StatusCode(500, "Internal server error occurred.");
             }
         }
-        
-        /// <summary>
-        /// Criando gerenciamento de tratamento
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+
         [HttpPost("PDF")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>>GeradorPdf( RelatorioRequestModel request)
+        public async Task<ActionResult<byte[]>> GeradorPdf ( RelatorioRequestModel request )
         {
             try
             {
-                var result = await _relatoriosService.GeradorPdf(request);
-
-                var response = new BaseResponse<bool>
-                {
-                    Message = "PDF criado com sucesso.",
-                    Data = result
-                };
-                return Ok(response);
-
+                var pdfBytes = await _relatoriosService.GeradorPdf(request);
+                return pdfBytes;
             }
             catch (CustomValidationException ex)
             {
-                _logger.LogError(ex, "CriandoGerenciamentoTratamento: Controller");
-                return StatusCode(400,ex);
+                _logger.LogError(ex, "GeradorPdf: Controller");
+                return StatusCode(400, ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "CriandoGerenciamentoTratamento: Controller");
+                _logger.LogError(ex, "GeradorPdf: Controller");
                 return StatusCode(500, "Internal server error occurred.");
             }
         }
+
 
         /// <summary>
         /// Obtém historico geral.
@@ -187,12 +176,25 @@ namespace MediMax.Application.Controllers
             {
                 var medicine = await _gerenciamentoTratamentoService.BuscarUltimoGerenciamento();
 
-                var response = new BaseResponse<string>
+                if(medicine == null)
                 {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-                return Ok(response);
+                    var response = new BaseResponse<string>
+                    {
+                        Message = "Historico não encontrado.",
+                        Data = medicine
+                    };
+                    return BadRequest(response);
+                }
+                else
+                {
+                    var response = new BaseResponse<string>
+                    {
+                        Message = "Historico encontrado com sucesso.",
+                        Data = medicine
+                    };
+                    return Ok(medicine);
+                }
+
             }
             catch (RecordNotFoundException ex)
             {

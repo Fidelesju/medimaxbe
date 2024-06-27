@@ -10,6 +10,7 @@ using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
 using MediMax.Data.Dao;
 using MediMax.Data.ApplicationModels;
+using Funq;
 
 namespace MediMax.Business.Services
 {
@@ -33,7 +34,7 @@ namespace MediMax.Business.Services
 
         public async Task<int> CreateOwner(OwnerCreateRequestModel request)
         {
-            Owner owner;
+            Proprietarios owner;
             OwnerCreateValidation validation;
             Dictionary<string, string> errors;
 
@@ -48,7 +49,36 @@ namespace MediMax.Business.Services
             {
                 owner = _ownerCreateMapper.GetOwner();
                 _ownerRepository.Create(owner);
-                return owner.ownerId;
+                return owner.id_proprietario;
+            }
+            catch (DbUpdateException exception)
+            {
+                errors = validation.GetPersistenceErrors(exception);
+                if (errors.Count == 0)
+                {
+                    throw;
+                }
+                throw new CustomValidationException(errors);
+            }
+        }
+        public async Task<int> UpateOwner( OwnerUpdateRequestModel request )
+        {
+            Proprietarios owner;
+            OwnerUpdateValidation validation;
+            Dictionary<string, string> errors;
+
+          
+            validation = new OwnerUpdateValidation();
+            if (!validation.IsValid(request))
+            {
+                errors = validation.GetErrors();
+                throw new CustomValidationException(errors);
+            }
+            try
+            {
+                _ownerUpdateMapper.SetBaseMapping(request);
+                _ownerDb.UpdateOwner(request);
+                return request.OwnerId;
             }
             catch (DbUpdateException exception)
             {
@@ -71,32 +101,24 @@ namespace MediMax.Business.Services
             }
             return owner;
         }
-
-
-        public async Task<PaginatedList<OwnerResponseModel>> GetOwnerPaginatedList(
-           Pagination pagination)
+        
+        public async Task<bool> DesactiveOwner ( int ownerId)
         {
-            PaginatedList<OwnerResponseModel> ownerList;
-            ownerList = await _ownerDb.GetPaginatedListOwners(pagination);
-            if (PaginatedList<OwnerResponseModel>.IsEmpty(ownerList))
+            bool success = await _ownerDb.DesactiveOwner(ownerId);
+            if (success == null)
             {
                 throw new RecordNotFoundException();
             }
-
-            return ownerList;
+            return success;
         }
-
-        public async Task<PaginatedList<OwnerResponseModel>> GetPaginatedListDesactivesOwner(
-          Pagination pagination)
+        public async Task<bool> ReactiveOwner ( int ownerId)
         {
-            PaginatedList<OwnerResponseModel> ownerList;
-            ownerList = await _ownerDb.GetPaginatedListDesactivesOwner(pagination);
-            if (PaginatedList<OwnerResponseModel>.IsEmpty(ownerList))
+            bool success = await _ownerDb.ReactiveOwner(ownerId);
+            if (success == null)
             {
                 throw new RecordNotFoundException();
             }
-
-            return ownerList;
+            return success;
         }
 
         //public async Task<bool> UpdateOwner(OwnerUpdateRequestModel request)

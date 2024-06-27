@@ -8,26 +8,26 @@ namespace MediMax.Business.Mappers
 {
     public class OwnerUpdateMapper : Mapper<OwnerUpdateRequestModel>, IOwnerUpdateMapper
     {
-        private readonly Owner? _owner;
+        private readonly Proprietarios? _owner;
 
         public OwnerUpdateMapper()
         {
-            _owner = new Owner();
+            _owner = new Proprietarios();
         }
 
-        public Owner GetOwner()
+        public Proprietarios GetOwner()
         {
-            _owner.firstName = BaseMapping.FirstName;
-            _owner.lastName = BaseMapping.LastName;
+            _owner.primeiro_nome = BaseMapping.FirstName;
+            _owner.ultimo_nome = BaseMapping.LastName;
             _owner.email = BaseMapping.Email;
-            _owner.phoneNumber = BaseMapping.PhoneNumber;
-            _owner.address = BaseMapping.Address;
-            _owner.state = BaseMapping.State;
-            _owner.city = BaseMapping.City;
-            _owner.country = BaseMapping.Country;
-            _owner.postalCode = BaseMapping.PostalCode;
-            _owner.CpfCnpj = BaseMapping.CpfCnpj;
-            _owner.isActive = 1;
+            _owner.numero_telefone = BaseMapping.PhoneNumber;
+            _owner.endereco = BaseMapping.Address;
+            _owner.estado = BaseMapping.State;
+            _owner.cidade = BaseMapping.City;
+            _owner.pais = BaseMapping.Country;
+            _owner.codigo_postal = BaseMapping.PostalCode;
+            _owner.cpf_cnpj = BaseMapping.CpfCnpj;
+            _owner.esta_ativo = 1;
             return _owner;
         }
     }

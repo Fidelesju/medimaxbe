@@ -5,6 +5,7 @@ using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Repositories.Interfaces;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
+using ServiceStack.NativeTypes.Php;
 
 namespace MediMax.Business.Services
 {
@@ -50,7 +51,7 @@ namespace MediMax.Business.Services
             return dosageTimes;
         }
 
-        public async Task<bool> GeradorPdf ( RelatorioRequestModel request )
+        public async Task<byte[]> GeradorPdf ( RelatorioRequestModel request )
         {
 
             /*
@@ -90,10 +91,12 @@ namespace MediMax.Business.Services
             List<HistoricoResponseModel> historicoAnoEspecifico;
             List<HistoricoResponseModel> historicoDataEspecifica;
 
+            MemoryStream memoryStream = null;
 
+            RelatorioResponseModel response = new RelatorioResponseModel();
             switch (request.type)
             {
-                case 1:
+                case 0:
                     medicamentoAtivos = await _medicamentoDb.BuscarTodosMedicamentos();
                     var pdfGenerator1 = new PdfGenerator<MedicamentoResponseModel>();
                     string fileName1 = filePath + "Medicamentos_Ativos.pdf";
@@ -104,9 +107,10 @@ namespace MediMax.Business.Services
                         { "Dosage", "Dosagem" },
                         { "ExpirationDate", "Data de Vencimento" }
                     };
-                    pdfGenerator1.GeneratePdf(medicamentoAtivos, fileName1, columnNames1);
-                    break;
-                case 2:
+                    memoryStream = pdfGenerator1.GeneratePdf(medicamentoAtivos, fileName1, columnNames1, "Relatório de Medicamentos Ativos");
+
+                break;
+                case 1:
                     medicamentoInativos = await _medicamentoDb.BuscarMedicamentosInativos();
                     var pdfGenerator2 = new PdfGenerator<MedicamentoResponseModel>();
                     string fileName2 = filePath + "Medicamentos_Inativos.pdf";
@@ -117,9 +121,9 @@ namespace MediMax.Business.Services
                             { "Dosage", "Dosagem" },
                             { "ExpirationDate", "Data de Vencimento" }
                         };
-                    pdfGenerator2.GeneratePdf(medicamentoInativos, fileName2, columnNames2);
+                memoryStream = pdfGenerator2.GeneratePdf(medicamentoInativos, fileName2, columnNames2, "Relatório de Medicamentos Inativos");
                     break;
-                case 3:
+                case 2:
                     tratamentoAtivos = await _treatmentDb.BuscarTodosTratamentoAtivos();
                     foreach (var treatment in tratamentoAtivos)
                     {
@@ -141,9 +145,9 @@ namespace MediMax.Business.Services
                         { "Observation", "Observação" },
                         { "DosageTime", "Horário Dosagem" }
                     };
-                    pdfGenerator3.GeneratePdf(tratamentoAtivos, fileName3, columnNames3);
+                memoryStream = pdfGenerator3.GeneratePdf(tratamentoAtivos, fileName3, columnNames3, "Relatório de Tratamentos Ativos");
                     break;
-                case 4:
+                case 3:
                     tratamentoInativos = await _treatmentDb.BuscarTodosTratamentoInativos();
                     foreach (var treatment in tratamentoInativos)
                     {
@@ -165,9 +169,9 @@ namespace MediMax.Business.Services
                         { "Observation", "Observação" },
                         { "DosageTime", "Horário Dosagem" }
                     };
-                    pdfGenerator4.GeneratePdf(tratamentoInativos, fileName4, columnNames4);
+                memoryStream = pdfGenerator4.GeneratePdf(tratamentoInativos, fileName4, columnNames4, "Relatório de Tratamento Inativos");
                     break;
-                case 5:
+                case 4:
                     historicoGeral = await _historicoDb.BuscarHistoricoGeral();
                     var pdfGenerator5 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName5 = filePath + "Historico_Geral.pdf";
@@ -179,9 +183,9 @@ namespace MediMax.Business.Services
                         { "MedicineName", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
-                    pdfGenerator5.GeneratePdf(historicoGeral, fileName5, columnNames5);
+                memoryStream = pdfGenerator5.GeneratePdf(historicoGeral, fileName5, columnNames5, "Relatório de Geral");
                     break;
-                case 6:
+                case 5:
                     historicoTomado = await _historicoDb.BuscarHistoricoTomado();
                     var pdfGenerator6 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName6 = filePath + "Historico_Medicamentos_Tomados.pdf";
@@ -192,9 +196,9 @@ namespace MediMax.Business.Services
                             { "MedicationIntakeSchedule", "Horário de Ingestão" },
                             { "MedicineName", "Nome do Medicamento" }
                         };
-                    pdfGenerator6.GeneratePdf(historicoTomado, fileName6, columnNames6);
+                memoryStream = pdfGenerator6.GeneratePdf(historicoTomado, fileName6, columnNames6, "Relatório de Tratamentos Inativos");
                     break;
-                case 7:
+                case 6:
                     historicoNaoTomado = await _historicoDb.BuscarHistoricoNaoTomado();
                     var pdfGenerator7 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName7 = filePath + "Historico_Medicamentos_Nao_Tomados.pdf";
@@ -205,9 +209,9 @@ namespace MediMax.Business.Services
                                 { "MedicationIntakeSchedule", "Horário de Ingestão" },
                                 { "MedicineName", "Nome do Medicamento" }
                             };
-                    pdfGenerator7.GeneratePdf(historicoNaoTomado, fileName7, columnNames7);
+                    pdfGenerator7.GeneratePdf(historicoNaoTomado, fileName7, columnNames7, "Relatório de Medicamentos Não Tomados");
                     break;
-                case 8:
+                case 7:
                     historico7Dias = await _historicoDb.BuscarHistorico7Dias();
                     var pdfGenerator8 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName8 = filePath + "Historico_Ultimos_7_Dias.pdf";
@@ -219,9 +223,9 @@ namespace MediMax.Business.Services
                         { "MedicineName", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
-                    pdfGenerator8.GeneratePdf(historico7Dias, fileName8, columnNames8);
+                memoryStream = pdfGenerator8.GeneratePdf(historico7Dias, fileName8, columnNames8, "Relatório de Ultimos 7 dias");
                     break;
-                case 9:
+                case 8:
                     historico15Dias = await _historicoDb.BuscarHistorico15Dias();
                     var pdfGenerator9 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName9 = filePath + "Historico_Ultimos_15_Dias.pdf";
@@ -233,9 +237,9 @@ namespace MediMax.Business.Services
                             { "MedicineName", "Nome do Medicamento" },
                             { "WasTakenDescription", "Foi Tomado" }
                         };
-                    pdfGenerator9.GeneratePdf(historico15Dias, fileName9, columnNames9);
+                memoryStream = pdfGenerator9.GeneratePdf(historico15Dias, fileName9, columnNames9, "Relatório de Ultimos 15 dias");
                     break;
-                case 10:
+                case 9:
                     historico30Dias = await _historicoDb.BuscarHistorico30Dias();
                     var pdfGenerator10 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName10 = filePath + "Historico_Ultimos_30_Dias.pdf";
@@ -247,9 +251,9 @@ namespace MediMax.Business.Services
                                 { "MedicineName", "Nome do Medicamento" },
                                 { "WasTakenDescription", "Foi Tomado" }
                             };
-                    pdfGenerator10.GeneratePdf(historico30Dias, fileName10, columnNames10);
+                memoryStream = pdfGenerator10.GeneratePdf(historico30Dias, fileName10, columnNames10, "Relatório de Ultimos 30 dias");
                     break;
-                case 11:
+                case 10:
                     historico60Dias = await _historicoDb.BuscarHistorico60Dias();
                     var pdfGenerator11 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName11 = filePath + "Historico_Ultimos_60_Dias.pdf";
@@ -261,9 +265,9 @@ namespace MediMax.Business.Services
                                     { "MedicineName", "Nome do Medicamento" },
                                     { "WasTakenDescription", "Foi Tomado" }
                                 };
-                    pdfGenerator11.GeneratePdf(historico60Dias, fileName11, columnNames11);
+                memoryStream = pdfGenerator11.GeneratePdf(historico60Dias, fileName11, columnNames11, "Relatório de Ultimos 60 dias");
                     break;
-                case 12:
+                case 11:
                     historicoUltimoAno = await _historicoDb.BuscarHistoricoUltimoAno();
                     var pdfGenerator12 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName12 = filePath + "Historico_Ultimo_Ano.pdf";
@@ -276,9 +280,9 @@ namespace MediMax.Business.Services
                         { "WasTakenDescription", "Foi Tomado" }
                     };
 
-                    pdfGenerator12.GeneratePdf(historicoUltimoAno, fileName12, columnNames12);
+                memoryStream = pdfGenerator12.GeneratePdf(historicoUltimoAno, fileName12, columnNames12, "Relatório de Ultimo Ano");
                     break;
-                case 13:
+                case 12:
                     historicoAnoEspecifico = await _historicoDb.BuscarHistoricoAnoEspecifico(request.year);
                     var pdfGenerator13= new PdfGenerator<HistoricoResponseModel>();
                     string fileName13= filePath + "Historico_Ano_" +request.year + ".pdf";
@@ -290,9 +294,9 @@ namespace MediMax.Business.Services
                         { "MedicineName", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
-                    pdfGenerator13.GeneratePdf(historicoAnoEspecifico, fileName13, columnNames13);
+                memoryStream = pdfGenerator13.GeneratePdf(historicoAnoEspecifico, fileName13, columnNames13, "Relatório " + request.year);
                     break;
-                case 14:
+                case 13:
                     historicoDataEspecifica = await _historicoDb.BuscarHistoricoDataEspecifica(request.date);
                     var pdfGenerator14 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName14 = filePath + "Historico.pdf";
@@ -304,9 +308,9 @@ namespace MediMax.Business.Services
                         { "MedicineName", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
-                    pdfGenerator14.GeneratePdf(historicoDataEspecifica, fileName14, columnNames14);
+                memoryStream = pdfGenerator14.GeneratePdf(historicoDataEspecifica, fileName14, columnNames14, "Relatório " + request.date);
                     break;
-                case 15:
+                case 14:
                     alimentacao = await _alimentacaoDb.BuscarTodasAlimentacao();
                     var pdfGenerator15 = new PdfGenerator<AlimentacaoResponseModel>();
                     string fileName15 = filePath + "Historico_Refeições.pdf";
@@ -318,10 +322,18 @@ namespace MediMax.Business.Services
                         { "quantidade", "Quantidade" },
                         { "unidade_medida", "Unidade de Medida" }
                     };
-                    pdfGenerator15.GeneratePdf(alimentacao, fileName15, columnNames15);
+                memoryStream = pdfGenerator15.GeneratePdf(alimentacao, fileName15, columnNames15, "Relatório de Refeições");
                     break;
             }
-            return true;
+
+            if (memoryStream != null)
+            {
+                return memoryStream.ToArray();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

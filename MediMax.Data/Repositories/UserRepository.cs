@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using MediMax.Data.Models;
 using MediMax.Data.Repositories.Interfaces;
+using MediMax.Data.RequestModels;
 
 namespace MediMax.Data.Repositories
 {

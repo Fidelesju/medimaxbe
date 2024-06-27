@@ -6,20 +6,20 @@ using MySqlConnector;
 
 namespace MediMax.Data.Repositories
 {
-    public class OwnerRepository : Repository<Owner>, IOwnerRepository
+    public class OwnerRepository : Repository<Proprietarios>, IOwnerRepository
     {
         public OwnerRepository(MediMaxDbContext context) : base(context)
         {
         }
 
-        public int Create(Owner owner)
+        public int Create(Proprietarios owner)
         {
             DbSet.Add(owner);
             Context.SaveChanges();
-            return owner.ownerId;
+            return owner.id_proprietario;
         }
 
-        public void Update(Owner owner)
+        public void Update(Proprietarios owner)
         {
             DbSet.Update(owner);
             Context.SaveChanges();

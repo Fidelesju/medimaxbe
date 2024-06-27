@@ -6,6 +6,6 @@ namespace MediMax.Business.Mappers.Interfaces
 {
     public interface IOwnerUpdateMapper : IMapper<OwnerUpdateRequestModel>
     {
-        Owner GetOwner();
+        Proprietarios GetOwner();
     }
 }

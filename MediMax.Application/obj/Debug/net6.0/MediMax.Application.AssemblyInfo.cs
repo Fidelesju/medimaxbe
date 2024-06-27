@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediMax.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0931e180d3dbee03d132ccdc48a012b8b8fc06d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96aad5b1050cece54b9f8a7454f6ef140094156a")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediMax.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediMax.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

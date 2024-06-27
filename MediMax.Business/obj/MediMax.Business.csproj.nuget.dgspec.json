@@ -52,6 +52,10 @@
               "target": "Package",
               "version": "[11.7.1, )"
             },
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.6.0, )"
+            },
             "Microsoft.AspNetCore": {
               "target": "Package",
               "version": "[2.1.7, )"
@@ -75,6 +79,10 @@
             "Microsoft.OpenApi": {
               "target": "Package",
               "version": "[1.6.9, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.6.0, )"
             },
             "MySql.Data": {
               "target": "Package",

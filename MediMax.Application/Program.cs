@@ -1,4 +1,5 @@
 using MediMax.Application.Configurations;
+using MediMax.Data.ApplicationModels;
 using MediMax.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -26,7 +27,7 @@ builder.Services.RegisterService();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddJwtConfiguration(builder.Configuration);
-
+builder.Services.AddSignalR();
 var app = builder.Build();
 app.MapControllers();
 
@@ -53,5 +54,11 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "MediMax v1");
 });
 
+//Configurações SignalR
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<NotificationHub>("/notificationHub");
+    // Outros mapeamentos de endpoints
+});
 // Inicia o aplicativo
 app.Run();

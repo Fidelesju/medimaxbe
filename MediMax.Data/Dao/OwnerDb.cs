@@ -1,7 +1,9 @@
 ﻿using System.Data.Common;
+using Funq;
 using MediMax.Data.ApplicationModels;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
+using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao
@@ -18,22 +20,78 @@ namespace MediMax.Data.Dao
             string sql;
             OwnerResponseModel owner;
             sql = $@"
-                 SELECT 
-                    o.ownerId AS ownerId,
-                    o.firstName AS firstName,
-                    o.lastName AS lastName,
-                    o.email AS email,
-                    o.phoneNumber AS phoneNumber,
-                    o.address AS address,
-                    o.city AS city,
-                    o.state AS state,
-                    o.postalCode AS postalCode,
-                    o.country AS country,
-                    o.CpfCnpj AS CpfCnpj,
-                    o.isActive AS isActive
-                FROM owner o
-                WHERE o.ownerId = {ownerId}
-                    AND o.isActive = 1
+                  SELECT 
+                    p.id_proprietario AS OwnerId,
+                    p.primeiro_nome AS FirstName,
+                    p.ultimo_nome AS LastName,
+                    p.email AS Email,
+                    p.numero_telefone AS PhoneNumber,
+                    p.endereco AS Address,
+                    p.cidade AS City,
+                    p.estado AS State,
+                    p.codigo_postal AS PostalCode,
+                    p.pais AS Country,
+                    p.cpf_cnpj AS CpfCnpj,
+                    p.esta_ativo AS IsActive
+                FROM proprietarios p
+                WHERE p.id_proprietario = {ownerId}
+                AND p.esta_ativo = 1
+                ;";
+
+            await Connect();
+            await Query(sql);
+            owner = await GetQueryResultObject();
+            await Disconnect();
+            return owner;
+        }
+        public async Task<bool> DesactiveOwner ( int ownerId )
+        {
+            string sql;
+            sql = $@"
+                   UPDATE  proprietarios p 
+                   SET p.esta_ativo = 0
+                   WHERE p.id_proprietario = {ownerId}
+                ;";
+
+            await Connect();
+            await Query(sql);
+            await Disconnect();
+            return true;
+        }
+        
+        public async Task<bool> ReactiveOwner ( int ownerId )
+        {
+            string sql;
+            sql = $@"
+                   UPDATE  proprietarios p 
+                   SET p.esta_ativo = 1
+                   WHERE p.id_proprietario = {ownerId}
+                ;";
+
+            await Connect();
+            await Query(sql);
+            await Disconnect();
+            return true;
+        }
+        public async Task<OwnerResponseModel> UpdateOwner ( OwnerUpdateRequestModel request )
+        {
+            string sql;
+            OwnerResponseModel owner;
+            sql = $@"
+                   UPDATE proprietarios p 
+                    SET 
+                        p.primeiro_nome = '{request.FirstName}',
+                        p.ultimo_nome = '{request.LastName}',
+                        p.email = '{request.Email}',
+                        p.numero_telefone = '{request.PhoneNumber}',
+                        p.endereco = '{request.Address}',
+                        p.cidade = '{request.City}',
+                        p.estado = '{request.State}',
+                        p.codigo_postal = '{request.PostalCode}',
+                        p.pais = '{request.Country}',
+                        p.cpf_cnpj = '{request.CpfCnpj}'
+                    WHERE p.id_proprietario = {request.OwnerId}
+                    AND p.esta_ativo = 1
                 ;";
 
             await Connect();
@@ -43,84 +101,22 @@ namespace MediMax.Data.Dao
             return owner;
         }
 
-        public async Task<PaginatedList<OwnerResponseModel>> GetPaginatedListOwners(Pagination pagination)
-        {
-            string sql;
-            PaginatedList<OwnerResponseModel> owner;
-            sql = @"
-               SELECT 
-                    o.ownerId AS ownerId,
-                    o.firstName AS firstName,
-                    o.lastName AS lastName,
-                    o.email AS email,
-                    o.phoneNumber AS phoneNumber,
-                    o.address AS address,
-                    o.city AS city,
-                    o.state AS state,
-                    o.postalCode AS postalCode,
-                    o.country AS country,
-                    o.CpfCnpj AS CpfCnpj,
-                    o.isActive AS isActive
-                FROM owner o
-                WHERE o.isActive = 1
-            ";
-            await Connect();
-            SetPagination(pagination);
-            await Query(sql);
-            owner = new PaginatedList<OwnerResponseModel>();
-            owner.List = await GetQueryResultList();
-            owner.Pagination = await GetPagination();
-            await Disconnect();
-            return owner;
-        }
-
-        public async Task<PaginatedList<OwnerResponseModel>> GetPaginatedListDesactivesOwner(Pagination pagination)
-        {
-            string sql;
-            PaginatedList<OwnerResponseModel> owner;
-            sql = @"
-               SELECT 
-                    o.ownerId AS ownerId,
-                    o.firstName AS firstName,
-                    o.lastName AS lastName,
-                    o.email AS email,
-                    o.phoneNumber AS phoneNumber,
-                    o.address AS address,
-                    o.city AS city,
-                    o.state AS state,
-                    o.postalCode AS postalCode,
-                    o.country AS country,
-                    o.CpfCnpj AS CpfCnpj,
-                    o.isActive AS isActive
-                FROM owner o
-                WHERE o.isActive = 0
-            ";
-            await Connect();
-            SetPagination(pagination);
-            await Query(sql);
-            owner = new PaginatedList<OwnerResponseModel>();
-            owner.List = await GetQueryResultList();
-            owner.Pagination = await GetPagination();
-            await Disconnect();
-            return owner;
-        }
-
         protected override OwnerResponseModel Mapper(DbDataReader reader)
         {
             OwnerResponseModel _owner;
             _owner = new OwnerResponseModel();
-            _owner.Id = Convert.ToInt32(reader["ownerId"]);
-            _owner.FirstName = Convert.ToString(reader["firstName"]);
-            _owner.LastName = Convert.ToString(reader["lastName"]);
-            _owner.Email = Convert.ToString(reader["email"]);
-            _owner.PhoneNumber = Convert.ToString(reader["phoneNumber"]);
-            _owner.Address = Convert.ToString(reader["address"]);
-            _owner.City = Convert.ToString(reader["city"]);
-            _owner.State = Convert.ToString(reader["state"]);
-            _owner.PostalCode = Convert.ToString(reader["postalCode"]);
-            _owner.Country = Convert.ToString(reader["country"]);
+            _owner.Id = Convert.ToInt32(reader["OwnerId"]);
+            _owner.FirstName = Convert.ToString(reader["FirstName"]);
+            _owner.LastName = Convert.ToString(reader["LastName"]);
+            _owner.Email = Convert.ToString(reader["Email"]);
+            _owner.PhoneNumber = Convert.ToString(reader["PhoneNumber"]);
+            _owner.Address = Convert.ToString(reader["Address"]);
+            _owner.City = Convert.ToString(reader["City"]);
+            _owner.State = Convert.ToString(reader["State"]);
+            _owner.PostalCode = Convert.ToString(reader["PostalCode"]);
+            _owner.Country = Convert.ToString(reader["Country"]);
             _owner.CpfCnpj = Convert.ToString(reader["CpfCnpj"]);
-            _owner.IsActive = Convert.ToInt32(reader["isActive"]);
+            _owner.IsActive = Convert.ToInt32(reader["IsActive"]);
             return _owner;
         }
     }
