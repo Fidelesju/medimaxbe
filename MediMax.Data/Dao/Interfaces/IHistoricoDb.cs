@@ -5,18 +5,18 @@ namespace MediMax.Data.Dao.Interfaces
 {
     public interface IHistoricoDb
     {
-        Task<List<HistoricoResponseModel>> BuscarHistoricoGeral();
-        Task<List<HistoricoResponseModel>> BuscarHistoricoDataEspecifica(string data);
-        Task<List<HistoricoResponseModel>> BuscarHistoricoUltimoAno();
-        Task<List<HistoricoResponseModel>> BuscarHistorico60Dias();
-        Task<List<HistoricoResponseModel>> BuscarHistorico30Dias();
-        Task<List<HistoricoResponseModel>> BuscarHistorico15Dias();
-        Task<List<HistoricoResponseModel>> BuscarHistorico7Dias();
-        Task<List<HistoricoResponseModel>> BuscarHistoricoNaoTomado();
-        Task<List<HistoricoResponseModel>> BuscarHistoricoTomado();
-        Task<List<HistoricoResponseModel>> BuscarHistoricoPorMedicamento(string nome);
-        Task<HistoricoResponseModel> BuscarStatusDoUltimoGerenciamento ( );
-        Task<HistoricoResponseModel> BuscarUltimoGerenciamento ( );
-        Task<List<HistoricoResponseModel>> BuscarHistoricoAnoEspecifico ( string year );
+        Task<List<HistoricoResponseModel>> BuscarHistoricoGeral( int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistoricoDataEspecifica(string data, int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistoricoUltimoAno( int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistorico60Dias( int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistorico30Dias(int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistorico15Dias( int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistorico7Dias( int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistoricoNaoTomado( int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistoricoTomado( int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistoricoPorMedicamento(string nome, int userId );
+        Task<HistoricoResponseModel> BuscarStatusDoUltimoGerenciamento (int userId );
+        Task<HistoricoResponseModel> BuscarUltimoGerenciamento ( int userId );
+        Task<List<HistoricoResponseModel>> BuscarHistoricoAnoEspecifico ( string year, int userId );
     }
 }

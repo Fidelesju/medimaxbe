@@ -14,20 +14,12 @@ namespace MediMax.Business.Validations
 
         private void ValidateAlimentacao()
         {
-            RuleFor(food => food.alimento)
-                .NotEmpty()
-                .WithMessage(DefaultErrorMessages.RequiredField)
-                .Must(food => CustomValidations.IsInLengthInterval(3, 150, food))
-                .WithMessage(DefaultErrorMessages.TextOutOfBounds(3, 150))
-                ;
+           
         }
 
         private void ValidateQuantidade()
         {
-            RuleFor(u => u.quantidade)
-                .NotEmpty()
-                .WithMessage(DefaultErrorMessages.RequiredField)
-                ;
+           
         }
 
         protected override List<PersistenceError> GetPersistenceValidations()

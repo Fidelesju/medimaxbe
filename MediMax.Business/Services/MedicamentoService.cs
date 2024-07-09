@@ -10,6 +10,7 @@ using MediMax.Data.Repositories.Interfaces;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
 using Microsoft.EntityFrameworkCore;
+using ServiceStack;
 
 namespace MediMax.Business.Services
 {
@@ -71,12 +72,13 @@ namespace MediMax.Business.Services
             {
                 _medicamentoCreateMapper.SetBaseMapping(request);
                 horariosDosagem = CalcularHorariosDoses(request.horario_inicial_tratamento, request.intervalo_tratamento_horas);
+                if (request.observacao.IsNullOrEmpty()) 
+                    request.observacao = "Não há observações";
                 medicamentos = _medicamentoCreateMapper.BuscarMedicamentos();
                 _medicineRepository.Create(medicamentos);
                 tratamentos = _tratamentoCreateMapper.BuscarTratemento(request, medicamentos.id);
 
                 _tratamentoRepository.Create(tratamentos);
-
 
                 // Criar horários de dosagem e salvar no banco de dados
                 foreach (string horario in horariosDosagem)
@@ -138,7 +140,7 @@ namespace MediMax.Business.Services
             {
                 await _horarioDosagemDb.DeletandoHorarioDosagem(request.tratamento_id);
                 horariosDosagem = CalcularHorariosDoses(request.horario_inicial_tratamento, request.intervalo_tratamento_horas);
-                successMedicamento = await _medicamentoDb.AlterandoMedicamento(request.nome, request.data_vencimento_medicamento, request.quantidade_embalagem, request.dosagem, request.medicamento_id);
+                successMedicamento = await _medicamentoDb.AlterandoMedicamento(request.nome, request.data_vencimento_medicamento, request.quantidade_embalagem, request.dosagem, request.medicamento_id, request.usuario_id);
                 if (successMedicamento)
                 {
                     successTratamento = await _tratamentoDb.AlterandoTratamento(request.medicamento_id, request.nome, request.quantidade_medicamento_dosagem, request.horario_inicial_tratamento, request.intervalo_tratamento_horas, request.intervalo_tratamento_dias,
@@ -208,10 +210,10 @@ namespace MediMax.Business.Services
         /// <summary>
         /// Obtém todos os medicamentos.
         /// </summary>
-        public async Task<List<MedicamentoResponseModel>> BuscarTodosMedicamentos()
+        public async Task<List<MedicamentoResponseModel>> BuscarTodosMedicamentos( int userId )
         {
             List<MedicamentoResponseModel> medicamentoLista;
-            medicamentoLista = await _medicamentoDb.BuscarTodosMedicamentos();
+            medicamentoLista = await _medicamentoDb.BuscarTodosMedicamentos( userId );
 
             if (medicamentoLista == null || medicamentoLista.Count == 0)
             {
@@ -223,10 +225,10 @@ namespace MediMax.Business.Services
         /// <summary>
         /// Obtém medicamento por nome.
         /// </summary>
-        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorNome(string name)
+        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorNome(string name, int userId )
         {
             List<MedicamentoResponseModel> medicamentoLista;
-            medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorNome(name);
+            medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorNome(name, userId);
 
             if (medicamentoLista == null || medicamentoLista.Count == 0)
             {
@@ -238,10 +240,10 @@ namespace MediMax.Business.Services
           /// <summary>
         /// Obtém medicamento por nome.
         /// </summary>
-        public async Task<MedicamentoResponseModel> BuscarMedicamentosPorTratamento(int tratamentoId)
+        public async Task<MedicamentoResponseModel> BuscarMedicamentosPorTratamento(int tratamentoId, int userId )
         {
             MedicamentoResponseModel medicamentoLista;
-            medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorTratamento(tratamentoId);
+            medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorTratamento(tratamentoId, userId);
 
             if (medicamentoLista == null )
             {
@@ -253,10 +255,10 @@ namespace MediMax.Business.Services
         /// <summary>
         /// Obtém medicamento por data de vencimento.
         /// </summary>
-        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorDataVencimento()
+        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorDataVencimento( int userId )
         {
             List<MedicamentoResponseModel> medicamentoLista;
-            medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorDataVencimento();
+            medicamentoLista = await _medicamentoDb.BuscarMedicamentosPorDataVencimento( userId );
 
             if (medicamentoLista == null || medicamentoLista.Count == 0)
             {
@@ -271,11 +273,11 @@ namespace MediMax.Business.Services
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="RecordNotFoundException"></exception>
-        public async Task<bool> DeletandoMedicamento(int medicineId, int tratamentoId)
+        public async Task<bool> DeletandoMedicamento(int medicineId, int tratamentoId, int userId )
         {
             bool successMedication;
             bool successTreatment;
-            successMedication = await _medicamentoDb.DeletandoMedicamento(medicineId);
+            successMedication = await _medicamentoDb.DeletandoMedicamento(medicineId, userId);
 
             if(successMedication)
             {

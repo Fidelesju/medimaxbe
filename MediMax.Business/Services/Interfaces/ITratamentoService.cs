@@ -6,10 +6,10 @@ namespace MediMax.Business.Services.Interfaces
 {
     public interface ITratamentoService
     {
-        Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name);
-        Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime);
+        Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name, int userId );
+        Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime, int userId );
         Task<bool> DeletandoTratamento(int id);
-        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( );
-        Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId );
+        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( int userId );
+        Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId, int userId );
     }
 }

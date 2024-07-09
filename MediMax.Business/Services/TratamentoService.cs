@@ -40,7 +40,7 @@ namespace MediMax.Business.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string nome)
+        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string nome, int userId )
         {
             if (string.IsNullOrEmpty(nome))
             {
@@ -50,7 +50,7 @@ namespace MediMax.Business.Services
             List<TratamentoResponseModel> tratamentoLista;
             try
             {
-                tratamentoLista = await _tratamentoDb.BuscarTratamentoPorNome(nome);
+                tratamentoLista = await _tratamentoDb.BuscarTratamentoPorNome(nome, userId);
             }
             catch (RecordNotFoundException)
             {
@@ -59,12 +59,12 @@ namespace MediMax.Business.Services
 
             return tratamentoLista;
         }
-        public async Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId)
+        public async Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId, int userId )
         {
             TratamentoResponseModel tratamentoLista;
             try
             {
-                tratamentoLista = await _tratamentoDb.BuscarTratamentoPorId(treatmentId);
+                tratamentoLista = await _tratamentoDb.BuscarTratamentoPorId(treatmentId, userId);
             }
             catch (RecordNotFoundException)
             {
@@ -75,13 +75,13 @@ namespace MediMax.Business.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ()
+        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( int userId )
         {
 
             List<TratamentoResponseModel> tratamentoLista;
             try
             {
-                tratamentoLista = await _tratamentoDb.BuscarTodosTratamentoAtivos();
+                tratamentoLista = await _tratamentoDb.BuscarTodosTratamentoAtivos(userId);
             }
             catch (RecordNotFoundException)
             {
@@ -92,7 +92,7 @@ namespace MediMax.Business.Services
         } 
         
         /// <inheritdoc/>
-        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime)
+        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime, int userId )
         {
             if (string.IsNullOrEmpty(startTime) || string.IsNullOrEmpty(finishTime))
             {
@@ -102,7 +102,7 @@ namespace MediMax.Business.Services
             List<TratamentoResponseModel> treatmentList;
             try
             {
-                treatmentList = await _tratamentoDb.BuscarTratamentoPorIntervalo(startTime, finishTime);
+                treatmentList = await _tratamentoDb.BuscarTratamentoPorIntervalo(startTime, finishTime, userId);
 
                 //// Calcula os horários das doses seguintes para cada tratamento
                 //foreach (var treatment in treatmentList)

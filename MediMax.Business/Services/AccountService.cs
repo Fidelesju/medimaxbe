@@ -40,7 +40,7 @@ namespace MediMax.Business.Services
             string role;
             string encryptPassword = hashMd5.EncryptMD5(loginRequest.Password);
 
-            loginResponse = await _authDb.AuthenticateUser(loginRequest.Email, encryptPassword);
+            loginResponse = await _authDb.AuthenticateUser(loginRequest.Email, loginRequest.Login, encryptPassword);
 
             switch (loginResponse.TypeUserId)
             {

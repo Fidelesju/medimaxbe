@@ -5,8 +5,8 @@ namespace MediMax.Data.Dao.Interfaces
 {
     public interface ITratamentoDb
     {
-        Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name);
-        Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime);
+        Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name, int userId );
+        Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime, int userId );
         Task<bool> AlterandoTratamento(int remedio_id,
                 string nome,
                 int quantidade_medicamentos,
@@ -17,9 +17,9 @@ namespace MediMax.Data.Dao.Interfaces
                 string observacao,
                 int id);
         Task<bool> DeletandoTratamento(int id);
-        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( );
-        Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId );
-        Task<TratamentoResponseModel> BuscarTratamentoPorIdParaStatus ( int treatmentId );
-        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoInativos ( );
+        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( int userId );
+        Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId, int userId );
+        Task<TratamentoResponseModel> BuscarTratamentoPorIdParaStatus ( int treatmentId, int userId );
+        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoInativos ( int userId );
     }
 }

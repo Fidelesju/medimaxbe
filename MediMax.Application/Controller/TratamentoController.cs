@@ -23,16 +23,16 @@ namespace MediMax.Application.Controller
             _tratamentoService = tratamentoService;
         }
 
-        [HttpGet("Name/{name}")]
+        [HttpGet("Name/{name}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<TratamentoResponseModel>>>> BuscarTratamentoPorNome(string name)
+        public async Task<ActionResult<BaseResponse<List<TratamentoResponseModel>>>> BuscarTratamentoPorNome(string name, int userId )
         {
             try
             {
-                var tratamento = await _tratamentoService.BuscarTratamentoPorNome(name);
+                var tratamento = await _tratamentoService.BuscarTratamentoPorNome(name, userId);
                 var response = BaseResponse<List<TratamentoResponseModel>>
                         .Builder()
                         .SetMessage("Tratamentos encontrados com sucesso.")
@@ -56,16 +56,16 @@ namespace MediMax.Application.Controller
             }
         }
 
-        [HttpGet("GetTreatmentById/{treatmentId}")]
+        [HttpGet("GetTreatmentById/{treatmentId}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<TratamentoResponseModel>>> BuscarTratamentoPorId ( int treatmentId )
+        public async Task<ActionResult<BaseResponse<TratamentoResponseModel>>> BuscarTratamentoPorId ( int treatmentId , int userId )
         {
             try
             {
-                var tratamento = await _tratamentoService.BuscarTratamentoPorId(treatmentId);
+                var tratamento = await _tratamentoService.BuscarTratamentoPorId(treatmentId, userId);
                 var response = BaseResponse<TratamentoResponseModel>
                         .Builder()
                         .SetMessage("Tratamentos encontrados com sucesso.")
@@ -90,16 +90,16 @@ namespace MediMax.Application.Controller
         }
         
        
-        [HttpGet("GetAllTreatmentActives")]
+        [HttpGet("GetAllTreatmentActives/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<TratamentoResponseModel>>>> BuscarTodosTratamentoAtivos()
+        public async Task<ActionResult<BaseResponse<List<TratamentoResponseModel>>>> BuscarTodosTratamentoAtivos( int userId )
         {
             try
             {
-                var tratamento = await _tratamentoService.BuscarTodosTratamentoAtivos();
+                var tratamento = await _tratamentoService.BuscarTodosTratamentoAtivos(userId);
                 var response = BaseResponse<List<TratamentoResponseModel>>
                         .Builder()
                         .SetMessage("Tratamentos encontrados com sucesso.")
@@ -123,16 +123,16 @@ namespace MediMax.Application.Controller
             }
         }
 
-        [HttpGet("StartTime/{startTime}/FinishTime/{finishTime}")]
+        [HttpGet("StartTime/{startTime}/FinishTime/{finishTime}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<TratamentoResponseModel>>>> BuscarTratamentoPorIntervalo(string startTime, string finishTime)
+        public async Task<ActionResult<BaseResponse<List<TratamentoResponseModel>>>> BuscarTratamentoPorIntervalo(string startTime, string finishTime, int userId )
         {
             try
             {
-                var tratamento = await _tratamentoService.BuscarTratamentoPorIntervalo(startTime, finishTime);
+                var tratamento = await _tratamentoService.BuscarTratamentoPorIntervalo(startTime, finishTime, userId);
                 var response = BaseResponse<List<TratamentoResponseModel>>
                         .Builder()
                         .SetMessage("Tratamentos encontrados com sucesso.")

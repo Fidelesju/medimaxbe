@@ -19,7 +19,7 @@ namespace MediMax.Data.Models
         public DbSet<GerenciamentoTratamento> Gerenciamento_Tratamento { get; set; }
         public DbSet<HorariosDosagem> Horarios_Dosagem { get; set; }
         public DbSet<StatusDispenser> Status_Dispenser { get; set; }
-
+        public DbSet<DetalheAlimentacao> Detalhe_Alimentacao { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>().HasKey(u => u.id_usuario);

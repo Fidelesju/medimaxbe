@@ -6,6 +6,7 @@ using MediMax.Data.ApplicationModels;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI.Common;
 
 namespace MediMax.Application.Controller
 {
@@ -35,15 +36,20 @@ namespace MediMax.Application.Controller
         {
             try
             {
-                int id = await _medicamentoService.CriandoMedicamentosETratamento(request);
+                int result = await _medicamentoService.CriandoMedicamentosETratamento(request);
 
-                var response = new BaseResponse<int>
-                {
-                    Message = "Medicamento cadastrado com sucesso.",
-                    Data = id
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<int>
+                          .Builder()
+                          .SetMessage("Medicamentos deletado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<int>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (CustomValidationException ex)
             {
@@ -60,24 +66,29 @@ namespace MediMax.Application.Controller
         /// <summary>
         /// Obtém todos os medicamentos.
         /// </summary>
-        [HttpGet("GetAllMedicine")]
+        [HttpGet("GetAllMedicine/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarTodosMedicamentos()
+        public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarTodosMedicamentos( int userId )
         {
             try
             {
-                var medicine = await _medicamentoService.BuscarTodosMedicamentos();
+                var result = await _medicamentoService.BuscarTodosMedicamentos(userId);
 
-                var response = new BaseResponse<List<MedicamentoResponseModel>>
-                {
-                    Message = "Medicamentos encontrados com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<MedicamentoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos deletado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<MedicamentoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -94,24 +105,29 @@ namespace MediMax.Application.Controller
         /// <summary>
         /// Obtém lista de medicamentos por nome.
         /// </summary>
-        [HttpGet("GetMedicineByName/{name}")]
+        [HttpGet("GetMedicineByName/{name}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarMedicamentosPorNome(string name)
+        public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarMedicamentosPorNome(string name, int userId )
         {
             try
             {
-                var medicine = await _medicamentoService.BuscarMedicamentosPorNome(name);
+                var result = await _medicamentoService.BuscarMedicamentosPorNome(name, userId);
 
-                var response = new BaseResponse<List<MedicamentoResponseModel>>
-                {
-                    Message = "Medicamentos encontrados com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if ( result != null )
+                    return Ok(BaseResponse<List<MedicamentoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrados com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<MedicamentoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -128,24 +144,29 @@ namespace MediMax.Application.Controller
         // <summary>
         /// Obtém lista de medicamentos por id de tratamento.
         /// </summary>
-        [HttpGet("GetMedicineByTreatmentId/{treatmentId}")]
+        [HttpGet("GetMedicineByTreatmentId/{treatmentId}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<MedicamentoResponseModel>>> BuscarMedicamentosPorTratamento(int treatmentId)
+        public async Task<ActionResult<BaseResponse<MedicamentoResponseModel>>> BuscarMedicamentosPorTratamento(int treatmentId, int userId )
         {
             try
             {
-                var medicine = await _medicamentoService.BuscarMedicamentosPorTratamento(treatmentId);
+                var result = await _medicamentoService.BuscarMedicamentosPorTratamento(treatmentId, userId);
 
-                var response = new BaseResponse<MedicamentoResponseModel>
-                {
-                    Message = "Medicamentos encontrados com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<MedicamentoResponseModel>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrados com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<MedicamentoResponseModel>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -162,24 +183,29 @@ namespace MediMax.Application.Controller
         /// <summary>
         /// Obtém medicamentos por data de vencimento.
         /// </summary>
-        [HttpGet("GetMedicineByExpirationDate")]
+        [HttpGet("GetMedicineByExpirationDate/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarMedicamentosPorDataVencimento()
+        public async Task<ActionResult<BaseResponse<List<MedicamentoResponseModel>>>> BuscarMedicamentosPorDataVencimento( int userId )
         {
             try
             {
-                var medicine = await _medicamentoService.BuscarMedicamentosPorDataVencimento();
+                var result = await _medicamentoService.BuscarMedicamentosPorDataVencimento(userId);
 
-                var response = new BaseResponse<List<MedicamentoResponseModel>>
-                {
-                    Message = "Medicamentos encontrados com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<MedicamentoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrados com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<MedicamentoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -209,13 +235,18 @@ namespace MediMax.Application.Controller
             {
                 bool result = await _medicamentoService.AlterandoMedicamentosETratamento(request);
 
-                var response = new BaseResponse<bool>
-                {
-                    Message = "Medicamento alterado com sucesso.",
-                    Data = result
-                };
-
-                return Ok(response);
+                if (result == true)
+                    return Ok(BaseResponse<bool>
+                          .Builder()
+                          .SetMessage("Medicamentos alterado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<bool>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (CustomValidationException ex)
             {
@@ -234,24 +265,29 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("Delete/{medicineId}/{treatmentId}")]
+        [HttpPost("Delete/{medicineId}/{treatmentId}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> DeletandoMedicamento(int medicineId, int treatmentId)
+        public async Task<ActionResult<BaseResponse<bool>>> DeletandoMedicamento(int medicineId, int treatmentId, int userId )
         {
             try
             {
-                bool result = await _medicamentoService.DeletandoMedicamento(medicineId, treatmentId);
+                bool result = await _medicamentoService.DeletandoMedicamento(medicineId, treatmentId, userId);
 
-                var response = new BaseResponse<bool>
-                {
-                    Message = "Medicamento deletado com sucesso.",
-                    Data = result
-                };
-
-                return Ok(response);
+                if (result == true)
+                    return Ok(BaseResponse<bool>
+                          .Builder()
+                          .SetMessage("Medicamentos deletado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<bool>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (CustomValidationException ex)
             {

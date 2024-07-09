@@ -8,6 +8,7 @@ using MediMax.Data.ApplicationModels;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI.Common;
 
 namespace MediMax.Application.Controllers
 {
@@ -19,11 +20,11 @@ namespace MediMax.Application.Controllers
         private readonly IRelatoriosService _relatoriosService;
         private readonly ILogger<GerenciamentoTratamentoController> _logger;
 
-        public GerenciamentoTratamentoController(
+        public GerenciamentoTratamentoController (
             IGerenciamentoTratamentoService gerenciamentoTratamentoService,
             IRelatoriosService relatoriosService,
             ILogger<GerenciamentoTratamentoController> logger,
-            ILoggerService loggerService) : base(logger, loggerService)
+            ILoggerService loggerService ) : base(logger, loggerService)
         {
             _gerenciamentoTratamentoService = gerenciamentoTratamentoService;
             _relatoriosService = relatoriosService;
@@ -39,30 +40,30 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult> CriandoGerenciamentoTratamento(GerencimentoTratamentoCreateRequestModel request)
+        public async Task<ActionResult> CriandoGerenciamentoTratamento ( GerencimentoTratamentoCreateRequestModel request )
         {
             try
             {
-                int id = await _gerenciamentoTratamentoService.CriandoGerenciamentoTratamento(request);
-                if (id == 0)
-                {
-                    return BadRequest(new BaseResponse<int>
-                    {
-                        Message = "Falha ao cadastrar gerenciamento de tratamento."
-                    });
-                }
+                int result = await _gerenciamentoTratamentoService.CriandoGerenciamentoTratamento(request);
 
-                return Ok(new BaseResponse<int>
-                {
-                    Message = "Gerenciamento de tratamento cadastrado com sucesso.",
-                    Data = id
-                });
-                
+                if (result != null)
+                    return Ok(BaseResponse<int>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<int>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
+
             }
             catch (CustomValidationException ex)
             {
                 _logger.LogError(ex, "CriandoGerenciamentoTratamento: Controller");
-                return StatusCode(400,ex);
+                return StatusCode(400, ex);
             }
             catch (Exception ex)
             {
@@ -103,97 +104,103 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetHistoric")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoGeral()
+        [HttpGet("GetHistoric/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoGeral ( int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoGeral();
+                var result = await _gerenciamentoTratamentoService.BuscarHistoricoGeral(userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-                return Ok(response);
-            }
-            catch (RecordNotFoundException ex)
-            {
-                _logger.LogError(ex, "BuscarHistoricoGeral: Controller");
-                return await NotFoundResponse(ex);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "BuscarHistoricoGeral: Controller");
-                return await UntreatedException(ex);
-            }
-        }
-
-        /// <summary>
-        /// Obtém historico geral.
-        /// </summary>
-        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
-        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
-        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
-        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetLastStatusTreatment")]
-        public async Task<ActionResult<BaseResponse<bool>>> BuscarStatusDoUltimoGerenciamento()
-        {
-            try
-            {
-                var medicine = await _gerenciamentoTratamentoService.BuscarStatusDoUltimoGerenciamento();
-
-                var response = new BaseResponse<bool>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-                return Ok(response);
-            }
-            catch (RecordNotFoundException ex)
-            {
-                _logger.LogError(ex, "BuscarHistoricoGeral: Controller");
-                return await NotFoundResponse(ex);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "BuscarHistoricoGeral: Controller");
-                return await UntreatedException(ex);
-            }
-        }
-
-        /// <summary>
-        /// Obtém historico geral.
-        /// </summary>
-        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
-        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
-        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
-        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetLastTreatment")]
-        public async Task<ActionResult<BaseResponse<string>>> BuscarUltimoGerenciamento()
-        {
-            try
-            {
-                var medicine = await _gerenciamentoTratamentoService.BuscarUltimoGerenciamento();
-
-                if(medicine == null)
-                {
-                    var response = new BaseResponse<string>
-                    {
-                        Message = "Historico não encontrado.",
-                        Data = medicine
-                    };
-                    return BadRequest(response);
-                }
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
                 else
-                {
-                    var response = new BaseResponse<string>
-                    {
-                        Message = "Historico encontrado com sucesso.",
-                        Data = medicine
-                    };
-                    return Ok(medicine);
-                }
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarHistoricoGeral: Controller");
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarHistoricoGeral: Controller");
+                return await UntreatedException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Obtém historico geral.
+        /// </summary>
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        [HttpGet("GetLastStatusTreatment/{userId}")]
+        public async Task<ActionResult<BaseResponse<bool>>> BuscarStatusDoUltimoGerenciamento ( int userId )
+        {
+            try
+            {
+                var result = await _gerenciamentoTratamentoService.BuscarStatusDoUltimoGerenciamento(userId);
+
+                if (result == true)
+                    return Ok(BaseResponse<bool>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<bool>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarHistoricoGeral: Controller");
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarHistoricoGeral: Controller");
+                return await UntreatedException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Obtém historico geral.
+        /// </summary>
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        [HttpGet("GetLastTreatment/{userId}")]
+        public async Task<ActionResult<BaseResponse<string>>> BuscarUltimoGerenciamento ( int userId )
+        {
+            try
+            {
+                var result = await _gerenciamentoTratamentoService.BuscarUltimoGerenciamento(userId);
+
+                if (result != null)
+                    return Ok(BaseResponse<string>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<string>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
 
             }
             catch (RecordNotFoundException ex)
@@ -215,20 +222,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetWasTaken")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoTomado()
+        [HttpGet("GetWasTaken/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoTomado ( int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoTomado();
+                var result = await _gerenciamentoTratamentoService.BuscarHistoricoTomado(userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -249,20 +261,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetNotTaken")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoNaoTomado()
+        [HttpGet("GetNotTaken/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoNaoTomado ( int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoNaoTomado();
+                var result = await _gerenciamentoTratamentoService.BuscarHistoricoNaoTomado(userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -284,20 +301,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("Get7Days")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico7Dias()
+        [HttpGet("Get7Days/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico7Dias ( int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistorico7Dias();
+                var result = await _gerenciamentoTratamentoService.BuscarHistorico7Dias(userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -319,20 +341,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("Get15Days")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico15Dias()
+        [HttpGet("Get15Days/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico15Dias ( int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistorico15Dias();
+                var result = await _gerenciamentoTratamentoService.BuscarHistorico15Dias(userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -354,20 +381,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("Get30Days")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico30Dias()
+        [HttpGet("Get30Days/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico30Dias (int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistorico30Dias();
+                var result = await _gerenciamentoTratamentoService.BuscarHistorico30Dias(userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -389,20 +421,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("Get60Days")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico60Dias()
+        [HttpGet("Get60Days/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico60Dias ( int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistorico60Dias();
+                var result = await _gerenciamentoTratamentoService.BuscarHistorico60Dias(userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -423,20 +460,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetLastYear")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoUltimoAno()
+        [HttpGet("GetLastYear/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoUltimoAno ( int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoUltimoAno();
+                var result = await _gerenciamentoTratamentoService.BuscarHistoricoUltimoAno(userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -457,20 +499,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetHistoricByDate/{data}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoDataEspecifica(string data)
+        [HttpGet("GetHistoricByDate/{data}/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoDataEspecifica ( string data, int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoDataEspecifica(data);
+                var result = await _gerenciamentoTratamentoService.BuscarHistoricoDataEspecifica(data, userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {
@@ -491,20 +538,25 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetHistoricByMedicine/{nome}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoPorMedicamento(string nome)
+        [HttpGet("GetHistoricByMedicine/{nome}/{userId}")]
+        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoPorMedicamento ( string nome, int userId )
         {
             try
             {
-                var medicine = await _gerenciamentoTratamentoService.BuscarHistoricoPorMedicamento(nome);
+                var result = await _gerenciamentoTratamentoService.BuscarHistoricoPorMedicamento(nome, userId);
 
-                var response = new BaseResponse<List<HistoricoResponseModel>>
-                {
-                    Message = "Historico encontrado com sucesso.",
-                    Data = medicine
-                };
-
-                return Ok(response);
+                if (result != null)
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrado com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                         .Builder()
+                         .SetMessage("Medicamentos não encontrado")
+                         .SetData(result)
+                     );
             }
             catch (RecordNotFoundException ex)
             {

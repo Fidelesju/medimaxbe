@@ -14,7 +14,7 @@ namespace MediMax.Data.Dao
         }
 
        
-        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name)
+        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name, int userId )
         {
             string sql;
             List<TratamentoResponseModel> TreatmentList;
@@ -46,7 +46,7 @@ namespace MediMax.Data.Dao
             return TreatmentList;
         }
         
-        public async Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId )
+        public async Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId, int userId )
         {
             string sql;
             TratamentoResponseModel treatment;
@@ -75,6 +75,7 @@ namespace MediMax.Data.Dao
             WHERE t.esta_ativo = 1
             AND m.esta_ativo = 1
             AND t.id = {treatmentId}
+            AND m.usuarioId = {userId}
                 ";
 
             await Connect();
@@ -84,7 +85,7 @@ namespace MediMax.Data.Dao
             return treatment;
         }
         
-        public async Task<TratamentoResponseModel> BuscarTratamentoPorIdParaStatus ( int treatmentId )
+        public async Task<TratamentoResponseModel> BuscarTratamentoPorIdParaStatus ( int treatmentId, int userId )
         {
             string sql;
             TratamentoResponseModel treatment;
@@ -114,6 +115,7 @@ namespace MediMax.Data.Dao
             WHERE t.esta_ativo = 1
             AND m.esta_ativo = 1
             AND t.id = {treatmentId}
+            AND m.usuarioId = {userId}
             ORDER BY id DESC
             LIMIT 1
 
@@ -126,7 +128,7 @@ namespace MediMax.Data.Dao
             return treatment;
         }
 
-        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( )
+        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( int userId )
         {
             string sql;
             List<TratamentoResponseModel> TreatmentList;
@@ -154,7 +156,7 @@ namespace MediMax.Data.Dao
             INNER JOIN medicamentos m ON t.remedio_id = m.id
             WHERE t.esta_ativo = 1
             AND m.esta_ativo = 1
-
+            AND m.usuarioId = {userId}
                 ";
 
             await Connect();
@@ -163,7 +165,7 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return TreatmentList;
         }
-        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoInativos ( )
+        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoInativos ( int userId )
         {
             string sql;
             List<TratamentoResponseModel> TreatmentList;
@@ -191,6 +193,7 @@ namespace MediMax.Data.Dao
                 INNER JOIN medicamentos m ON t.remedio_id = m.id
                 WHERE t.esta_ativo = 0
                 AND m.esta_ativo = 1
+                AND m.usuarioId = {userId}
                 ";
 
             await Connect();
@@ -200,7 +203,7 @@ namespace MediMax.Data.Dao
             return TreatmentList;
         }
 
-        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime)
+        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime, int userId )
         {
             string sql;
             List<TratamentoResponseModel> TreatmentList;
@@ -229,6 +232,7 @@ namespace MediMax.Data.Dao
                 INNER JOIN medicamentos m ON t.remedio_id = m.id
                 WHERE t.esta_ativo = 1
                 AND m.esta_ativo = 1
+                AND m.usuarioId = {userId}
                 AND NOT EXISTS (
                     SELECT 1
                     FROM gerenciamento_tratamento gt

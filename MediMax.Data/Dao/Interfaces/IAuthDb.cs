@@ -4,6 +4,6 @@ namespace MediMax.Data.Dao.Interfaces
 {
     public interface IAuthDb 
     {
-        Task<LoginResponseModel> AuthenticateUser(string email, string password);
+        Task<LoginResponseModel> AuthenticateUser(string email, string login,string password);
     }
 }

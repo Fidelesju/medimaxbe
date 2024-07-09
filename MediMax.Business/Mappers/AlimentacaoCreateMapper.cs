@@ -16,12 +16,10 @@ namespace MediMax.Business.Mappers
 
         public Alimentacao GetFood()
         {
-
+            _alimentacao.usuarioId = BaseMapping.usuarioId;
             _alimentacao.tipo_refeicao = BaseMapping.tipo_refeicao;
             _alimentacao.horario = BaseMapping.horario;
-            _alimentacao.alimento = BaseMapping.alimento;
-            _alimentacao.quantidade = BaseMapping.quantidade;
-            _alimentacao.unidade_medida = BaseMapping.unidade_medida;
+            _alimentacao.detalhe_alimentacao_id = BaseMapping.detalhe_alimentacao_id;
             return _alimentacao;
         }
     }

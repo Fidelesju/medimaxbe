@@ -17,6 +17,7 @@ namespace MediMax.Business.Mappers
 
         public Medicamentos BuscarMedicamentos()
         {
+            _medicamentos.usuarioId = BaseMapping.usuarioId;
             _medicamentos.nome = BaseMapping.nome;
             _medicamentos.quantidade_embalagem = BaseMapping.quantidade_embalagem;
             _medicamentos.dosagem = BaseMapping.dosagem;

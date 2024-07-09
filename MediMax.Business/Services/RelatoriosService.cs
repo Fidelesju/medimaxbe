@@ -1,6 +1,7 @@
 ﻿using MediMax.Business.Mappers.Interfaces;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Data.ApplicationModels;
+using MediMax.Data.Dao;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Repositories.Interfaces;
 using MediMax.Data.RequestModels;
@@ -97,7 +98,7 @@ namespace MediMax.Business.Services
             switch (request.type)
             {
                 case 0:
-                    medicamentoAtivos = await _medicamentoDb.BuscarTodosMedicamentos();
+                    medicamentoAtivos = await _medicamentoDb.BuscarTodosMedicamentos(request.userId);
                     var pdfGenerator1 = new PdfGenerator<MedicamentoResponseModel>();
                     string fileName1 = filePath + "Medicamentos_Ativos.pdf";
                     Dictionary<string, string> columnNames1 = new Dictionary<string, string>
@@ -111,7 +112,7 @@ namespace MediMax.Business.Services
 
                 break;
                 case 1:
-                    medicamentoInativos = await _medicamentoDb.BuscarMedicamentosInativos();
+                    medicamentoInativos = await _medicamentoDb.BuscarMedicamentosInativos(request.userId);
                     var pdfGenerator2 = new PdfGenerator<MedicamentoResponseModel>();
                     string fileName2 = filePath + "Medicamentos_Inativos.pdf";
                     Dictionary<string, string> columnNames2 = new Dictionary<string, string>
@@ -124,7 +125,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator2.GeneratePdf(medicamentoInativos, fileName2, columnNames2, "Relatório de Medicamentos Inativos");
                     break;
                 case 2:
-                    tratamentoAtivos = await _treatmentDb.BuscarTodosTratamentoAtivos();
+                    tratamentoAtivos = await _treatmentDb.BuscarTodosTratamentoAtivos(request.userId);
                     foreach (var treatment in tratamentoAtivos)
                     {
                         if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
@@ -148,7 +149,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator3.GeneratePdf(tratamentoAtivos, fileName3, columnNames3, "Relatório de Tratamentos Ativos");
                     break;
                 case 3:
-                    tratamentoInativos = await _treatmentDb.BuscarTodosTratamentoInativos();
+                    tratamentoInativos = await _treatmentDb.BuscarTodosTratamentoInativos(request.userId);
                     foreach (var treatment in tratamentoInativos)
                     {
                         if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
@@ -172,7 +173,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator4.GeneratePdf(tratamentoInativos, fileName4, columnNames4, "Relatório de Tratamento Inativos");
                     break;
                 case 4:
-                    historicoGeral = await _historicoDb.BuscarHistoricoGeral();
+                    historicoGeral = await _historicoDb.BuscarHistoricoGeral(request.userId);
                     var pdfGenerator5 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName5 = filePath + "Historico_Geral.pdf";
                     Dictionary<string, string> columnNames5 = new Dictionary<string, string>
@@ -186,7 +187,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator5.GeneratePdf(historicoGeral, fileName5, columnNames5, "Relatório de Geral");
                     break;
                 case 5:
-                    historicoTomado = await _historicoDb.BuscarHistoricoTomado();
+                    historicoTomado = await _historicoDb.BuscarHistoricoTomado(request.userId);
                     var pdfGenerator6 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName6 = filePath + "Historico_Medicamentos_Tomados.pdf";
                     Dictionary<string, string> columnNames6 = new Dictionary<string, string>
@@ -199,7 +200,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator6.GeneratePdf(historicoTomado, fileName6, columnNames6, "Relatório de Tratamentos Inativos");
                     break;
                 case 6:
-                    historicoNaoTomado = await _historicoDb.BuscarHistoricoNaoTomado();
+                    historicoNaoTomado = await _historicoDb.BuscarHistoricoNaoTomado(request.userId);
                     var pdfGenerator7 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName7 = filePath + "Historico_Medicamentos_Nao_Tomados.pdf";
                     Dictionary<string, string> columnNames7 = new Dictionary<string, string>
@@ -212,7 +213,7 @@ namespace MediMax.Business.Services
                     pdfGenerator7.GeneratePdf(historicoNaoTomado, fileName7, columnNames7, "Relatório de Medicamentos Não Tomados");
                     break;
                 case 7:
-                    historico7Dias = await _historicoDb.BuscarHistorico7Dias();
+                    historico7Dias = await _historicoDb.BuscarHistorico7Dias(request.userId);
                     var pdfGenerator8 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName8 = filePath + "Historico_Ultimos_7_Dias.pdf";
                     Dictionary<string, string> columnNames8 = new Dictionary<string, string>
@@ -226,7 +227,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator8.GeneratePdf(historico7Dias, fileName8, columnNames8, "Relatório de Ultimos 7 dias");
                     break;
                 case 8:
-                    historico15Dias = await _historicoDb.BuscarHistorico15Dias();
+                    historico15Dias = await _historicoDb.BuscarHistorico15Dias(request.userId);
                     var pdfGenerator9 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName9 = filePath + "Historico_Ultimos_15_Dias.pdf";
                     Dictionary<string, string> columnNames9 = new Dictionary<string, string>
@@ -240,7 +241,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator9.GeneratePdf(historico15Dias, fileName9, columnNames9, "Relatório de Ultimos 15 dias");
                     break;
                 case 9:
-                    historico30Dias = await _historicoDb.BuscarHistorico30Dias();
+                    historico30Dias = await _historicoDb.BuscarHistorico30Dias(request.userId);
                     var pdfGenerator10 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName10 = filePath + "Historico_Ultimos_30_Dias.pdf";
                     Dictionary<string, string> columnNames10 = new Dictionary<string, string>
@@ -254,7 +255,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator10.GeneratePdf(historico30Dias, fileName10, columnNames10, "Relatório de Ultimos 30 dias");
                     break;
                 case 10:
-                    historico60Dias = await _historicoDb.BuscarHistorico60Dias();
+                    historico60Dias = await _historicoDb.BuscarHistorico60Dias(request.userId);
                     var pdfGenerator11 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName11 = filePath + "Historico_Ultimos_60_Dias.pdf";
                     Dictionary<string, string> columnNames11 = new Dictionary<string, string>
@@ -268,7 +269,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator11.GeneratePdf(historico60Dias, fileName11, columnNames11, "Relatório de Ultimos 60 dias");
                     break;
                 case 11:
-                    historicoUltimoAno = await _historicoDb.BuscarHistoricoUltimoAno();
+                    historicoUltimoAno = await _historicoDb.BuscarHistoricoUltimoAno(request.userId);
                     var pdfGenerator12 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName12 = filePath + "Historico_Ultimo_Ano.pdf";
                     Dictionary<string, string> columnNames12 = new Dictionary<string, string>
@@ -283,7 +284,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator12.GeneratePdf(historicoUltimoAno, fileName12, columnNames12, "Relatório de Ultimo Ano");
                     break;
                 case 12:
-                    historicoAnoEspecifico = await _historicoDb.BuscarHistoricoAnoEspecifico(request.year);
+                    historicoAnoEspecifico = await _historicoDb.BuscarHistoricoAnoEspecifico(request.year, request.userId);
                     var pdfGenerator13= new PdfGenerator<HistoricoResponseModel>();
                     string fileName13= filePath + "Historico_Ano_" +request.year + ".pdf";
                     Dictionary<string, string> columnNames13= new Dictionary<string, string>
@@ -297,7 +298,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator13.GeneratePdf(historicoAnoEspecifico, fileName13, columnNames13, "Relatório " + request.year);
                     break;
                 case 13:
-                    historicoDataEspecifica = await _historicoDb.BuscarHistoricoDataEspecifica(request.date);
+                    historicoDataEspecifica = await _historicoDb.BuscarHistoricoDataEspecifica(request.date, request.userId);
                     var pdfGenerator14 = new PdfGenerator<HistoricoResponseModel>();
                     string fileName14 = filePath + "Historico.pdf";
                     Dictionary<string, string> columnNames14 = new Dictionary<string, string>
@@ -311,7 +312,7 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator14.GeneratePdf(historicoDataEspecifica, fileName14, columnNames14, "Relatório " + request.date);
                     break;
                 case 14:
-                    alimentacao = await _alimentacaoDb.BuscarTodasAlimentacao();
+                    alimentacao = await _alimentacaoDb.BuscarTodasAlimentacao(request.userId);
                     var pdfGenerator15 = new PdfGenerator<AlimentacaoResponseModel>();
                     string fileName15 = filePath + "Historico_Refeições.pdf";
                     Dictionary<string, string> columnNames15 = new Dictionary<string, string>

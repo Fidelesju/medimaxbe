@@ -7,6 +7,7 @@ namespace MediMax.Data.ResponseModels
     {
         public int Id { get; set; }
         public int TreatmentId { get; set; }
+        public int UserId { get; set; }
         public string? CorrectTreatmentSchedule { get; set; }
         public string? MedicationIntakeSchedule { get; set; }
         public string? DateMedicationIntake { get; set; }

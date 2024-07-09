@@ -6,10 +6,12 @@ namespace MediMax.Data.Dao.Interfaces
 {
     public interface IAlimentacaoDb
     {
-        Task<List<AlimentacaoResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals);
+        Task<List<AlimentacaoResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals, int userId);
         Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request);
-        Task<bool> DeletandoAlimentacao(int id);
-        Task<AlimentacaoResponseModel> BuscarRefeicoesPorHorario ( );
-        Task<List<AlimentacaoResponseModel>> BuscarTodasAlimentacao ( );
+        Task<bool> AlterandoDetalheAlimentacao ( string quantidade, string alimento, string unidade_medida, int id );
+        Task<bool> DeletandoAlimentacao(int id, int userId );
+        Task<AlimentacaoResponseModel> BuscarRefeicoesPorHorario ( int userId );
+        Task<List<AlimentacaoResponseModel>> BuscarTodasAlimentacao ( int userId );
+
     }
 }

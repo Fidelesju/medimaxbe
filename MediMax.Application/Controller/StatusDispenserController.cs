@@ -45,14 +45,14 @@ namespace MediMax.Application.Controller
             }
         }
 
-        [HttpGet("GetStatusDispenser/{treatmentId}")]
-        public async Task<ActionResult<BaseResponse<StatusDispenserListaResponseModel>>> BuscandoStatusDispenser(int treatmentId)
+        [HttpGet("GetStatusDispenser/{treatmentId}/{userId}")]
+        public async Task<ActionResult<BaseResponse<StatusDispenserListaResponseModel>>> BuscandoStatusDispenser(int treatmentId, int userId )
         {
             try
             {
                 StatusDispenserListaResponseModel statusDispenserResponse;
 
-                statusDispenserResponse = await _statusDispenserService.BuscandoStatusDispenser(treatmentId);
+                statusDispenserResponse = await _statusDispenserService.BuscandoStatusDispenser(treatmentId, userId);
                 var response = BaseResponse<StatusDispenserListaResponseModel>.Builder()
                     .SetMessage("Abastecimento feito com sucesso!")
                     .SetData(statusDispenserResponse);

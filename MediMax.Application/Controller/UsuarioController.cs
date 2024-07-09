@@ -159,17 +159,18 @@ namespace MediMax.Application.Controller
                 return await UntreatedException(ex);
             }
         }
-        [HttpPost("UpdatePassword/{password}/{codeSend}/{codeCorrect}/{userId}")]
+       
+        [HttpPost("UpdatePassword/{password}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<string>>> AlterarSenha(int userId, string password , string codeSend , string codeCorrect )
+        public async Task<ActionResult<BaseResponse<bool>>> AlterarSenha(int userId, string password)
         {
             try
             {
-                var user = await _usuarioService.AlterarSenha(password, codeSend, codeCorrect,userId);
-                var response = BaseResponse<string>.Builder()
+                var user = await _usuarioService.AlterarSenha(password,userId);
+                var response = BaseResponse<bool>.Builder()
                     .SetMessage("Senha alterada com sucesso!")
                     .SetData(user);
                 return Ok(response);

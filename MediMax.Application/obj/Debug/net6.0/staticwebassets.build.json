@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rjJCwegqyrOAV23LynFm1DyrmlHBgDXnRCh0Spgv6u0=",
+  "Hash": "yKj1IKAvhTHrhYXh6RZjmjAChqsXjyBcwnmca37qauQ=",
   "Source": "MediMax.Application",
   "BasePath": "_content/MediMax.Application",
   "Mode": "Default",
@@ -1249,6 +1249,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\logs\\log-2024-5-6_segunda-feira.log"
+    },
+    {
+      "Identity": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\wwwroot\\logs\\log-2024-7-7_domingo.log",
+      "SourceId": "MediMax.Application",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\wwwroot\\",
+      "BasePath": "_content/MediMax.Application",
+      "RelativePath": "logs/log-2024-7-7_domingo.log",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logs\\log-2024-7-7_domingo.log"
     },
     {
       "Identity": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\wwwroot\\css\\site.css",

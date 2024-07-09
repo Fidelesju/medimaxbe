@@ -4,10 +4,10 @@ namespace MediMax.Data.RequestModels
 {
     public class AlimentacaoCreateRequestModel
     {
-        public string? tipo_refeicao { get; set; }
-        public string? horario { get; set; }
-        public string? alimento { get; set; }
-        public double? quantidade { get; set; }
-        public string? unidade_medida { get; set; }
+        public int usuarioId{ get; set; }
+        public string tipo_refeicao { get; set; }
+        public string horario { get; set; }
+        public List<DetalheAlimentacaoCreateRequestModel> detalhe_alimentacao{ get; set; }
+        public int detalhe_alimentacao_id { get; set; }
     }
 }

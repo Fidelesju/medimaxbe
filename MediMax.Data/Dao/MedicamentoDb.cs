@@ -3,6 +3,7 @@ using MediMax.Data.ApplicationModels;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
 using MediMax.Data.ResponseModels;
+using ServiceStack;
 
 namespace MediMax.Data.Dao
 {
@@ -13,20 +14,22 @@ namespace MediMax.Data.Dao
         {
         }
 
-        public async Task<List<MedicamentoResponseModel>> BuscarTodosMedicamentos()
+        public async Task<List<MedicamentoResponseModel>> BuscarTodosMedicamentos(int userId)
         {
             string sql;
             List<MedicamentoResponseModel> medicamentoLista;
-            sql = @"
+            sql = $@"
                  SELECT 
-	                m.id AS Id,
-                    m.nome AS Name,
-                    m.data_vencimento AS ExpirationDate,
-                    m.quantidade_embalagem AS PackageQuantity,
-                    m.dosagem AS Dosage,
-                  m.esta_ativo AS IsActive
-                 FROM medicamentos m
-                 WHERE m.esta_ativo = 1
+                   m.id AS Id,
+                   m.nome AS Name,
+                   m.data_vencimento AS ExpirationDate,
+                   m.quantidade_embalagem AS PackageQuantity,
+                   m.dosagem AS Dosage,
+                   m.esta_ativo AS IsActive,
+                   m.usuarioId AS UserId
+                FROM medicamentos m
+                WHERE m.esta_ativo = 1
+                AND m.usuarioId = {userId}
                 ";
 
             await Connect();
@@ -36,7 +39,7 @@ namespace MediMax.Data.Dao
             return medicamentoLista;
         }
         
-        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosInativos ( )
+        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosInativos ( int userId )
         {
             string sql;
             List<MedicamentoResponseModel> medicamentoLista;
@@ -47,9 +50,11 @@ namespace MediMax.Data.Dao
                     m.data_vencimento AS ExpirationDate,
                     m.quantidade_embalagem AS PackageQuantity,
                     m.dosagem AS Dosage,
-                  m.esta_ativo AS IsActive
+                  m.esta_ativo AS IsActive,
+                  m.usuarioId AS UserId
                  FROM medicamentos m
                  WHERE m.esta_ativo = 0
+                 AND m.usuarioId = {userId}
                 ";
 
             await Connect();
@@ -59,7 +64,7 @@ namespace MediMax.Data.Dao
             return medicamentoLista;
         }
 
-        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorNome(string name)
+        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorNome(string name, int userId)
         {
             string sql;
             List<MedicamentoResponseModel> medicamento;
@@ -70,11 +75,13 @@ namespace MediMax.Data.Dao
                   m.data_vencimento AS ExpirationDate,
                   m.quantidade_embalagem AS PackageQuantity,
                   m.dosagem AS Dosage,
-                  m.esta_ativo AS IsActive
+                  m.esta_ativo AS IsActive,
+                  m.usuarioId AS UserId
                FROM medicamentos m
                WHERE 
 	              m.nome LIKE '%{name}%'
-               AND m.esta_ativo = 1
+                AND m.esta_ativo = 1
+                AND m.usuarioId = {userId}
                 ";
 
             await Connect();
@@ -83,7 +90,7 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return medicamento;
         }
-         public async Task<MedicamentoResponseModel> BuscarMedicamentosPorTratamento(int tratamentoId)
+         public async Task<MedicamentoResponseModel> BuscarMedicamentosPorTratamento(int tratamentoId, int userId)
         {
             string sql;
             MedicamentoResponseModel medicamento;
@@ -94,12 +101,13 @@ namespace MediMax.Data.Dao
                     m.data_vencimento AS ExpirationDate,
                     m.quantidade_embalagem AS PackageQuantity,
                     m.dosagem AS Dosage,
-                    m.esta_ativo AS IsActive
+                    m.esta_ativo AS IsActive,
+                    m.usuarioId AS UserId
                  FROM medicamentos m
                  INNER JOIN tratamento t ON t.remedio_id = m.id
-                 WHERE 
-                t.id = {tratamentoId}
+                WHERE t.id = {tratamentoId}
                 AND m.esta_ativo = 1
+                AND m.usuarioId = {userId}
                 ";
 
             await Connect();
@@ -109,20 +117,22 @@ namespace MediMax.Data.Dao
             return medicamento;
         }
          
-        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorDataVencimento()
+        public async Task<List<MedicamentoResponseModel>> BuscarMedicamentosPorDataVencimento(int userId)
         {
             string sql;
             List<MedicamentoResponseModel> medicamento;
-            sql = @"
+            sql = $@"
                SELECT 
                   m.id AS Id,
                   m.nome AS Name,
                   m.data_vencimento AS ExpirationDate,
                   m.quantidade_embalagem AS PackageQuantity,
-                  m.dosagem AS Dosagem,
-                  m.esta_ativo AS IsActive
+                  m.dosagem AS Dosage,
+                  m.esta_ativo AS IsActive,
+                  m.usuarioId AS UserId
                FROM medicamentos m
                WHERE m.esta_ativo = 1
+               AND m.usuarioId = {userId}
                ORDER BY 
 	              m.data_vencimento ASC
                 ";
@@ -134,7 +144,7 @@ namespace MediMax.Data.Dao
             return medicamento;
         }
 
-        public async Task<bool> DeletandoMedicamento(int id)
+        public async Task<bool> DeletandoMedicamento(int id, int userId)
         {
             string sql;
             bool success;
@@ -142,6 +152,7 @@ namespace MediMax.Data.Dao
                UPDATE medicamentos m
                 SET m.esta_ativo = 0
                 WHERE m.id = {id}
+                AND m.usuarioId = {userId}
                 ";
             await Connect();
             success = await PersistQuery(sql);
@@ -149,7 +160,7 @@ namespace MediMax.Data.Dao
             return success;
         }
         
-        public async Task<bool> AlterandoMedicamento(string nome, string data_vencimento, int quantidade_embalagem, float dosagem, int id)
+        public async Task<bool> AlterandoMedicamento(string nome, string data_vencimento, int quantidade_embalagem, float dosagem, int id, int userId)
         {
             string sql;
             bool success;
@@ -157,6 +168,7 @@ namespace MediMax.Data.Dao
                UPDATE medicamentos m
                SET m.nome = '{nome}', m.data_vencimento = '{data_vencimento}', m.quantidade_embalagem = {quantidade_embalagem}, m.dosagem = {dosagem}
                WHERE m.id = {id}
+               AND m.usuarioId = {userId}
                 ";
             await Connect();
             success = await PersistQuery(sql);
@@ -176,10 +188,19 @@ namespace MediMax.Data.Dao
             else
             {
                 // Tratar erro de conversão
+            } 
+            
+            if (int.TryParse(reader["UserId"].ToString(), out int userId))
+            {
+                medicine.UserId = id;
+            }
+            else
+            {
+                // Tratar erro de conversão
             }
 
-            // Convertendo Name para string
             medicine.Name = reader["Name"].ToString();
+
 
             // Convertendo ExpirationDate para string
             medicine.ExpirationDate = reader["ExpirationDate"].ToString();
@@ -193,7 +214,7 @@ namespace MediMax.Data.Dao
             {
                 // Tratar erro de conversão
             }
-
+          
             // Convertendo PackageQuantity para int
             if (int.TryParse(reader["PackageQuantity"].ToString(), out int packageQuantity))
             {

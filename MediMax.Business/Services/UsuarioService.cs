@@ -61,24 +61,19 @@ namespace MediMax.Business.Services
             }
         }  
       
-        public async Task<string> AlterarSenha(string password, string codeSend, string codeCorrect, int userId)
+        public async Task<bool> AlterarSenha(string password, int userId)
         {
             HashMd5 hashMd5 = new HashMd5();
-            if(ValidateCode(codeSend, codeCorrect))
-            {
-                bool success = await _usuarioDb.AlterarSenha(userId, hashMd5.EncryptMD5(password));
+            bool success = await _usuarioDb.AlterarSenha(userId, hashMd5.EncryptMD5(password));
 
-                if (!success)
-                {
-                    throw new RecordNotFoundException("Senha não alterada!");
-                }
-                return "Senha alterada com sucesso!";
-            }
-            else
+            if (!success)
             {
-                return "Codigo incorreto!";
+                throw new RecordNotFoundException("Senha não alterada!");
+                return false;
             }
-        }
+            return true;
+            
+    }
 
         public async Task<int> AtualizarUsuario( UsuarioUpdateRequestModel request )
         {
@@ -107,6 +102,7 @@ namespace MediMax.Business.Services
                 throw;
             }
         }
+        
         public async Task<UsuarioResponseModel> BuscarUsuarioPorId(int userId)
         {
             UsuarioResponseModel user = await _usuarioDb.GetUserById(userId);
@@ -212,6 +208,7 @@ namespace MediMax.Business.Services
                 response = new EmailCodigoResponseModel()
                 {
                     Code = code,
+                    UserId = user.Id,
                     Email = email,
                     Message = "Codigo enviado com sucesso!",
                     Success = true
@@ -262,15 +259,6 @@ namespace MediMax.Business.Services
                 throw new RecordNotFoundException("Usuário não encontrado para o email fornecido.");
             }
             return user;
-        }
-
-        private static bool ValidateCode ( string codeSend, string codeCorrect )
-        {
-            if (codeSend == codeCorrect)
-            {
-                return true;
-            }
-            return false;
         }
 
         private static string GenerateRandomCode ( )

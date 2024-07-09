@@ -219,7 +219,7 @@ namespace MediMax.Business.Services
             return quantidadeMedicamentoFaltanteParaFimTratamento - quantidadeMedicamentoSemanal;
         }
 
-        public async Task<StatusDispenserListaResponseModel> BuscandoStatusDispenser ( int treatmentId )
+        public async Task<StatusDispenserListaResponseModel> BuscandoStatusDispenser ( int treatmentId, int userId )
         {
 
             StatusDispenserListaResponseModel statusDispenserResponse;
@@ -228,8 +228,8 @@ namespace MediMax.Business.Services
             List<string> horarioDosagens = new List<string>();
             try
             {
-                tratamentoResponse = await _tratamentoDb.BuscarTratamentoPorIdParaStatus(treatmentId);
-                medicamentoResponse = await _medicamentoDb.BuscarMedicamentosPorTratamento(treatmentId);
+                tratamentoResponse = await _tratamentoDb.BuscarTratamentoPorIdParaStatus(treatmentId, userId);
+                medicamentoResponse = await _medicamentoDb.BuscarMedicamentosPorTratamento(treatmentId, userId);
 
                 if (tratamentoResponse != null)
                     horarioDosagens = CalcularHorariosDoses(tratamentoResponse.StartTime, tratamentoResponse.TreatmentInterval.Value);

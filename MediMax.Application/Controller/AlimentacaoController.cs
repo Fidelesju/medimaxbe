@@ -101,16 +101,16 @@ namespace MediMax.Application.Controllers
             }
         }
 
-        [HttpPost("Delete/{id}")]
+        [HttpPost("Delete/{id}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> DeletandoAlimentacao(int id)
+        public async Task<ActionResult<BaseResponse<bool>>> DeletandoAlimentacao(int id, int userId )
         {
             try
             {
-                bool success = await _alimentacaoService.DeletandoAlimentacao(id);
+                bool success = await _alimentacaoService.DeletandoAlimentacao(id, userId);
                 if (!success)
                 {
                     return BadRequest(new BaseResponse<bool>
@@ -139,16 +139,16 @@ namespace MediMax.Application.Controllers
         }
 
 
-        [HttpGet("GetMealsByType/TypeMeals/{typeMeals}")]
+        [HttpGet("GetMealsByType/{typeMeals}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<AlimentacaoResponseModel>>>> BuscarRefeicoesPorTipo(string typeMeals)
+        public async Task<ActionResult<BaseResponse<List<AlimentacaoResponseModel>>>> BuscarRefeicoesPorTipo(string typeMeals, int userId )
         {
             try
             {
-                List<AlimentacaoResponseModel> alimentacao = await _alimentacaoService.BuscarAlimentacaoPorTipo(typeMeals);
+                List<AlimentacaoResponseModel> alimentacao = await _alimentacaoService.BuscarAlimentacaoPorTipo(typeMeals, userId);
                 return Ok(new BaseResponse<List<AlimentacaoResponseModel>>
                 {
                     Message = "Alimentos encontrados com sucesso.",
@@ -167,21 +167,28 @@ namespace MediMax.Application.Controllers
             }
         }
         
-        [HttpGet("GetMealsByTime")]
+        [HttpGet("GetMealsByTime/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<AlimentacaoResponseModel>>> BuscarRefeicoesPorHorario()
+        public async Task<ActionResult<BaseResponse<AlimentacaoResponseModel>>> BuscarRefeicoesPorHorario( int userId )
         {
             try
             {
-                AlimentacaoResponseModel alimentacao = await _alimentacaoService.BuscarRefeicoesPorHorario();
+                AlimentacaoResponseModel alimentacao = await _alimentacaoService.BuscarRefeicoesPorHorario(userId);
+                if(alimentacao != null)
                 return Ok(new BaseResponse<AlimentacaoResponseModel>
                 {
                     Message = "Alimentos encontrados com sucesso.",
                     Data = alimentacao
                 });
+                else
+                    return Ok(new BaseResponse<AlimentacaoResponseModel>
+                    {
+                        Message = "Alimentos não encontrados.",
+                        Data = alimentacao
+                    });
             }
             catch (RecordNotFoundException ex)
             {
