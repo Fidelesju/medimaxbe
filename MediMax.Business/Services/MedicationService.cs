@@ -51,7 +51,7 @@ namespace MediMax.Business.Services
         public async Task<BaseResponse<int>> CreateMedication(MedicationCreateRequestModel request)
         {
             var result = new BaseResponse<int>();
-            Medicamentos medication;
+            Medication medication;
             MedicationCreateValidation validation = new MedicationCreateValidation();
             Dictionary<string, string> errors;
 
@@ -68,7 +68,7 @@ namespace MediMax.Business.Services
             {
                 medication = _medicationCreateMapper.GetMedication();
                 _medicationRepository.Create(medication);
-                result.Data = medication.id;
+                result.Data = medication.Id;
                 result.IsSuccess = true;
             }
             catch (DbUpdateException exception)
@@ -90,7 +90,7 @@ namespace MediMax.Business.Services
         {
             var result = new BaseResponse<bool>();
             MedicationtUpdateValidation validation = new MedicationtUpdateValidation();
-            Medicamentos medication;
+            Medication medication;
             Dictionary<string, string> errors;
             bool successMedicamento;
 

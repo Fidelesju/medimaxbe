@@ -4,8 +4,8 @@ namespace MediMax.Data.Repositories.Interfaces
 {
     public interface IHorarioDosagemRepository
     {
-        int Create(HorariosDosagem horarioDosagem);
-        void Update(HorariosDosagem horarioDosagem);
+        int Create(TimeDosage horarioDosagem);
+        void Update(TimeDosage horarioDosagem);
         Task<bool> Update(string horario_dosagem, int Treatment_id);
     }
 }

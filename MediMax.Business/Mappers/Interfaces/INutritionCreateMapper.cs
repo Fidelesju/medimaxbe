@@ -6,6 +6,6 @@ namespace MediMax.Business.Mappers.Interfaces
 {
     public interface INutritionCreateMapper : IMapper<NutritionCreateRequestModel>
     {
-        Alimentacao GetFood();
+        Nutrition GetFood();
     }
 }

@@ -34,7 +34,7 @@ namespace MediMax.Business.Services
 
         public async Task<int> CreateNutrition(NutritionCreateRequestModel request)
         {
-            Alimentacao nutrition = null;
+            Nutrition nutrition = null;
             DetalheAlimentacao detailFood;
             DetalheAlimentacaoCreateRequestModel detailRequest;
             NutritionCreateValidation validation;
@@ -60,10 +60,10 @@ namespace MediMax.Business.Services
                     _detalheAlimentacaoRepository.Create(detailFood);
                     request.detalhe_alimentacao_id = detailFood.id;
                     nutrition = _nutritionCreateMapper.GetFood();
-                    nutrition.id = 0;
+                    nutrition.Id = 0;
                     _nutritionRepository.Create(nutrition);
                 }
-                return nutrition.detalhe_alimentacao_id;
+                return nutrition.NutritionDetailId;
             }
             catch (DbUpdateException exception)
             {
@@ -80,7 +80,7 @@ namespace MediMax.Business.Services
         {
             AlimentacaoUpdateValidation validation;
             Dictionary<string, string> errors;
-            Alimentacao alimentacao;
+            Nutrition alimentacao;
             bool success;
 
             validation = new AlimentacaoUpdateValidation();

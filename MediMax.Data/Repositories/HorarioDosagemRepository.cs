@@ -5,20 +5,20 @@ using MediMax.Data.Repositories.Interfaces;
 
 namespace MediMax.Data.Repositories
 {
-    public class HorarioDosagemRepository : Repository<HorariosDosagem>, IHorarioDosagemRepository
+    public class HorarioDosagemRepository : Repository<TimeDosage>, IHorarioDosagemRepository
     {
         public HorarioDosagemRepository(MediMaxDbContext context) : base(context)
         {
         }
 
-        public int Create(HorariosDosagem horarioDosagem)
+        public int Create(TimeDosage horarioDosagem)
         {
             DbSet.Add(horarioDosagem);
             Context.SaveChanges();
-            return horarioDosagem.id;
+            return horarioDosagem.Id;
         }
 
-        public void Update(HorariosDosagem horarioDosagem)
+        public void Update(TimeDosage horarioDosagem)
         {
             DbSet.Update(horarioDosagem);
             Context.SaveChanges();
@@ -33,8 +33,8 @@ namespace MediMax.Data.Repositories
             }
 
             // Atualizando os campos do medicamento
-            horarioDosagem.horario_dosagem = horario_dosagem;
-            horarioDosagem.tratamento_id = Treatment_id;
+            horarioDosagem.Time = horario_dosagem;
+            horarioDosagem.TreatmentId = Treatment_id;
 
             // Salvando alterações
             Context.Update(horarioDosagem);

@@ -48,7 +48,7 @@ namespace MediMax.Business.Services
             try
             {
                 _TreatmentManagementRepository.Create(TreatmentManagement);
-                return TreatmentManagement.id;
+                return TreatmentManagement.Id;
             }
             catch (DbUpdateException exception)
             {

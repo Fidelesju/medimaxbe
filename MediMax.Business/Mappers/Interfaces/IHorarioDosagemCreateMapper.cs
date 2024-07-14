@@ -6,6 +6,6 @@ namespace MediMax.Business.Mappers.Interfaces
 {
     public interface IHorarioDosagemCreateMapper : IMapper<HorariosDosagemCreateRequestModel>
     {
-        HorariosDosagem BuscarHorariosDosagem(HorariosDosagemCreateRequestModel request);
+        TimeDosage BuscarHorariosDosagem(HorariosDosagemCreateRequestModel request);
     }
 }

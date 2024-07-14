@@ -6,6 +6,6 @@ namespace MediMax.Business.Mappers.Interfaces
 {
     public interface IMedicationUpdateMapper : IMapper<MedicationUpdateRequestModel>
     {
-        Medicamentos GetMedication();
+        Medication GetMedication();
     }
 }

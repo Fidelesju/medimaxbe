@@ -5,8 +5,8 @@ namespace MediMax.Data.Repositories.Interfaces
 {
     public interface IOwnerRepository
     {
-        int Create(Proprietarios owner);
-        void Update(Proprietarios owner);
+        int Create(Owner owner);
+        void Update(Owner owner);
         //Task<bool> Update(OwnerUpdateRequestModel request);
     }
 }

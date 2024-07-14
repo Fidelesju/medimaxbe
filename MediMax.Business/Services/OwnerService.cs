@@ -34,7 +34,7 @@ namespace MediMax.Business.Services
 
         public async Task<int> CreateOwner(OwnerCreateRequestModel request)
         {
-            Proprietarios owner;
+            Data.Models.Owner owner;
             OwnerCreateValidation validation;
             Dictionary<string, string> errors;
 
@@ -49,7 +49,7 @@ namespace MediMax.Business.Services
             {
                 owner = _ownerCreateMapper.GetOwner();
                 _ownerRepository.Create(owner);
-                return owner.id_proprietario;
+                return owner.Id;
             }
             catch (DbUpdateException exception)
             {
@@ -63,7 +63,7 @@ namespace MediMax.Business.Services
         }
         public async Task<int> UpateOwner( OwnerUpdateRequestModel request )
         {
-            Proprietarios owner;
+            Data.Models.Owner owner;
             OwnerUpdateValidation validation;
             Dictionary<string, string> errors;
 

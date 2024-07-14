@@ -1,32 +1,66 @@
 ﻿using MediMax.Data.Dao;
 using MediMax.Data.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MediMax.Data.Models
 {
-    public class DispenserStatus
+    public class StatusDispenser
     {
         [Key]
-        public int id { get; set; }
-        public int Treatment_id { get; set; }
-        public int medicamento_id { get; set; }
-        public int quantidade_total_medication_caixa { get; set; }
-        public int quantidade_total_caixa_Treatment { get; set; }
-        public int intervalo_Treatment_horas { get; set; }
-        public int intervalo_Treatment_dias { get; set; }
-        public int quantidade_medication_por_dosagem { get; set; }
-        public int frenquecia_dosagem_diaria { get; set; }
-        public int quantidade_total_medication_dosagem_dia { get; set; }
-        public int quantidade_total_medications_Treatment { get; set; }
-        public int quantidade_medication_semanal { get; set; }
-        public int quantidade_atual_medication_caixa_Treatment { get; set; }
-        public int quantidade_medication_faltante_para_fim_Treatment { get; set; }
-        public int quantidade_dias_faltante_para_fim_Treatment { get; set; }
-        public string data_criacao { get; set; }
-        public string data_atualizacao_semanal { get; set; }
-        public string data_inicio_Treatment { get; set; }
-        public string data_final_previsto_Treatment { get; set; }
-        public string data_final_marcado_Treatment { get; set; }
-        public int status_Treatment { get; set; }
+        public int Id { get; set; }
+
+        public int TreatmentStatus { get; set; }
+
+        public int TotalQuantityBoxTreatment { get; set; }
+
+        public int TotalQuantityMedicationBox { get; set; }
+
+        public int TotalQuantityMedicationDosageDay { get; set; }
+
+        public int TotalQuantityMedicamentosTreatment { get; set; }
+
+        public int WeeklyMedicationQuantity { get; set; }
+
+        public int QuantityMedicinePerDosage { get; set; }
+
+        public int MissingMedicineQuantityToEndTreatment { get; set; }
+
+        public int QuantityDaysMissingToEndTreatment { get; set; }
+
+        public int CurrentQuantityMedicationBoxTreatment { get; set; }
+
+        public int TreatmentIntervalHours { get; set; }
+
+        public int TreatmentIntervalDays { get; set; }
+
+        public int DailyDosageFrequency { get; set; }
+
+        [StringLength(25)]
+        public string TreatmentStartDate { get; set; }
+
+        [StringLength(25)]
+        public string FinalDateExpectedTreatment { get; set; }
+
+        [StringLength(25)]
+        public string FinalDateMarkedTreatment { get; set; }
+
+        [StringLength(25)]
+        public string CreationData { get; set; }
+
+        [StringLength(25)]
+        public string WeeklyUpdateDate { get; set; }
+
+        public int TreatmentId { get; set; }
+
+        [ForeignKey("TreatmentId")]
+        public Treatment Treatment { get; set; }
+
+        public int MedicationId { get; set; }
+
+        [ForeignKey("MedicationId")]
+        public Medication Medication { get; set; }
+
+        public int TreatmentUserId { get; set; }
     }
 }

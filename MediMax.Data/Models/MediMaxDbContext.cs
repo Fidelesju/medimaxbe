@@ -10,19 +10,22 @@ namespace MediMax.Data.Models
 
         }
 
-        public DbSet<Proprietarios> Proprietarios { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Owner> Owner { get; set; }
+        public DbSet<User> User { get; set; }
         public DbSet<Notification> Notification { get; set; }
-        public DbSet<Treatment> Tratamento { get; set; }
-        public DbSet<Medicamentos> Medicamentos { get; set; }
-        public DbSet<Alimentacao> Alimentacao { get; set; }
-        public DbSet<TreatmentManagement> Gerenciamento_Treatment { get; set; }
-        public DbSet<HorariosDosagem> Horarios_Dosagem { get; set; }
-        public DbSet<DispenserStatus> Status_Dispenser { get; set; }
-        public DbSet<DetalheAlimentacao> Detalhe_Alimentacao { get; set; }
+        public DbSet<Treatment> Treatment { get; set; }
+        public DbSet<Medication> Medication { get; set; }
+        public DbSet<Nutrition> Nutrition { get; set; }
+        public DbSet<NutritionDetail> Nutrition_Detail { get; set; }
+        public DbSet<TreatmentManagement> Treatment_Management { get; set; }
+        public DbSet<TimeDosage> Time_Dosage { get; set; }
+        public DbSet<StatusDispenser> Status_Dispenser { get; set; }
+        public DbSet<Restrition> Restrition { get; set; }
+        public DbSet<RestritionDetail> Restrition_Detail { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasKey(u => u.id_User);
+            modelBuilder.Entity<User>().HasKey(u => u.Id);
 
             // Outras configurações do modelo
 

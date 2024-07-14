@@ -32,7 +32,7 @@ namespace MediMax.Business.Validations
                 .WithMessage("A quantidade na embalagem deve ser maior que zero");
 
             RuleFor(u => u.dosage)
-                .GreaterThan(0f)
+                .Length(0, 5)
                 .WithMessage("A dosagem deve ser maior que zero");
         }
         private bool BeAValidDate ( string date )

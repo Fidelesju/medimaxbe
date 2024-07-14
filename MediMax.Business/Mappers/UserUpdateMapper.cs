@@ -18,13 +18,13 @@ namespace MediMax.Business.Mappers
         {
             HashMd5 hashMd5 = new HashMd5();
 
-            _user.id_User = BaseMapping.UserId;
-            _user.email = BaseMapping.Email;
-            _user.nome = BaseMapping.UserName;
-            _user.id_tipo_User = BaseMapping.TypeUserId;
-            _user.id_proprietario = _user.id_proprietario;
-            _user.senha = _user.senha;
-            _user.esta_ativo = _user.esta_ativo;
+            _user.Id = BaseMapping.UserId;
+            _user.Email = BaseMapping.Email;
+            _user.NameUser = BaseMapping.UserName;
+            _user.TypeUserId = BaseMapping.TypeUserId;
+            _user.OwnerId = _user.OwnerId;
+            _user.Password = _user.Password;
+            _user.IsActive = _user.IsActive;
             return _user;
         }
     }

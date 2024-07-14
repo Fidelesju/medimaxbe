@@ -4,7 +4,7 @@ namespace MediMax.Data.Repositories.Interfaces
 {
     public interface INutritionRepository
     {
-        int Create(Alimentacao food);
-        void Update(Alimentacao food);
+        int Create(Nutrition food);
+        void Update(Nutrition food);
     }
 }

@@ -5,20 +5,20 @@ using MySqlConnector;
 
 namespace MediMax.Data.Repositories
 {
-    public class MedicamentoRepository : Repository<Medicamentos>, IMedicationRepository
+    public class MedicamentoRepository : Repository<Medication>, IMedicationRepository
     {
         public MedicamentoRepository(MediMaxDbContext context) : base(context)
         {
         }
 
-        public int Create(Medicamentos medicine)
+        public int Create(Medication medicine)
         {
             DbSet.Add(medicine);
             Context.SaveChanges();
-            return medicine.id;
+            return medicine.Id;
         }
 
-        public void Update(Medicamentos medicine)
+        public void Update(Medication medicine)
         {
             DbSet.Update(medicine);
             Context.SaveChanges();

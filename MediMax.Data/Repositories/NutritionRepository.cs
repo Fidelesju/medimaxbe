@@ -5,20 +5,20 @@ using MediMax.Data.Repositories.Interfaces;
 
 namespace MediMax.Data.Repositories
 {
-    public class NutritionRepository : Repository<Alimentacao>, INutritionRepository
+    public class NutritionRepository : Repository<Nutrition>, INutritionRepository
     {
         public NutritionRepository(MediMaxDbContext context) : base(context)
         {
         }
 
-        public int Create(Alimentacao alimentacao)
+        public int Create(Nutrition alimentacao)
         {
             DbSet.Add(alimentacao);
             Context.SaveChanges();
-            return alimentacao.id;
+            return alimentacao.Id;
         }
 
-        public void Update(Alimentacao alimentacao)
+        public void Update(Nutrition alimentacao)
         {
             DbSet.Update(alimentacao);
             Context.SaveChanges();

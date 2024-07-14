@@ -6,6 +6,6 @@ namespace MediMax.Business.Mappers.Interfaces
 {
     public interface IDispenserStatusCreateMapper : IMapper<DispenserStatusCreateRequestModel>
     {
-        DispenserStatus BuscarDispenserStatus();
+        StatusDispenser BuscarDispenserStatus();
     }
 }

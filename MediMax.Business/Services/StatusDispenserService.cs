@@ -35,7 +35,6 @@ namespace MediMax.Business.Services
             _medicationDb = medicamentoDb;
             _DispenserStatusRepository = DispenserStatusRepository;
            
-           
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace MediMax.Business.Services
         /// </summary>
         public async Task<int> CriandoOuAtualizandoDispenserStatus(DispenserStatusCreateRequestModel request)
         {
-            DispenserStatus DispenserStatus;
+            StatusDispenser DispenserStatus;
             DispenserStatusCreateValidation validation;
             DispenserStatusResponseModel existeAbastencimentoCadastrado;
             DateTime dataAtual = DateTime.Today;
@@ -122,7 +121,7 @@ namespace MediMax.Business.Services
                     }
                 }
 
-                return DispenserStatus.id;
+                return DispenserStatus.Id;
             }
             catch (DbUpdateException exception)
             {

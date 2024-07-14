@@ -5,7 +5,7 @@ namespace MediMax.Data.RequestModels
 {
     public class HorariosDosagemCreateRequestModel
     {
-        public int? tratamento_id { get; set; }
-        public string? horario_dosagem { get; set; }
+        public int tratamento_id { get; set; }
+        public string horario_dosagem { get; set; }
     }
 }

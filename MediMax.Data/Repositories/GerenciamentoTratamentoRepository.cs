@@ -18,7 +18,7 @@ namespace MediMax.Data.Repositories
 
             DbSet.Add(TreatmentManagements);
             Context.SaveChanges();
-            return TreatmentManagements.id;
+            return TreatmentManagements.Id;
         }
 
         public void Update(TreatmentManagement TreatmentManagements)

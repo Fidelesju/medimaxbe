@@ -48,7 +48,7 @@ namespace MediMax.Business.Services
                 _UserCreateMapper.SetBaseMapping(request);
                 User user = _UserCreateMapper.GetUser();
                 _UserRepository.Create(user);
-                return user.id_User;
+                return user.Id;
             }
             catch (DbUpdateException ex)
             {
@@ -90,7 +90,7 @@ namespace MediMax.Business.Services
                 _UserUpdateMapper.SetBaseMapping(request);
                 await _UserDb.UpdateUser(request);
                 user = _UserUpdateMapper.GetUser();
-                return user.id_User;
+                return user.Id;
             }
             catch (DbUpdateException ex)
             {

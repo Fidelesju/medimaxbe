@@ -15,16 +15,16 @@ namespace MediMax.Business.Mappers
 
         public Treatment GetTreatment()
         {
-            _treatment.id = BaseMapping.treatment_id;
-            _treatment.quantidade_medicamentos = BaseMapping.medication_quantity;
-            _treatment.horario_inicio = BaseMapping.treatment_start_time;
-            _treatment.intervalo_tratamento = BaseMapping.treatment_interval_hours;
-            _treatment.tempo_tratamento_dias= BaseMapping.treatment_interval_days;
-            _treatment.recomendacoes_alimentacao = BaseMapping.dietary_recommendations;
-            _treatment.observacao = BaseMapping.observation;
-            _treatment.esta_ativo = 1;
-            _treatment.remedio_id = BaseMapping.medication_id;
-            _treatment.nome_medicamento = BaseMapping.medicine_name;
+            _treatment.Id = BaseMapping.treatment_id;
+            _treatment.MedicationQuantity = BaseMapping.medication_quantity;
+            _treatment.StartTime = BaseMapping.treatment_start_time;
+            _treatment.TreatmentIntervalHours = BaseMapping.treatment_interval_hours;
+            _treatment.TreatmentIntervalDays= BaseMapping.treatment_interval_days;
+            _treatment.DietaryRecommendations = BaseMapping.dietary_recommendations;
+            _treatment.Observation = BaseMapping.observation;
+            _treatment.IsActive = 1;
+            _treatment.MedicationId = BaseMapping.medication_id;
+            _treatment.NameMedication = BaseMapping.medicine_name;
             return _treatment;
         }
     }

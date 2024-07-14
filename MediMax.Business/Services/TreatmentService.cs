@@ -61,7 +61,7 @@ namespace MediMax.Business.Services
         public async Task<int> CreateTreatment ( TreatmentCreateRequestModel request )
         {
             Treatment treatments;
-            HorariosDosagem horarioDosagem;
+            TimeDosage horarioDosagem;
             HorariosDosagemCreateRequestModel requestHorario;
             HorariosDosagemResponseModel horarioExistente;
             TreatmentCreateValidation validation;
@@ -87,12 +87,12 @@ namespace MediMax.Business.Services
                 {
                     HorariosDosagemCreateRequestModel horarioDosagemRequest = new HorariosDosagemCreateRequestModel
                     {
-                        tratamento_id = treatments.id,
+                        tratamento_id = treatments.Id,
                         horario_dosagem = horario
                     };
 
                     // Verifica se já existe um horário de dosagem com os mesmos valores na tabela
-                    horarioExistente = await _horariosDosagemDb.BuscarHorarioDosagemExistente(treatments.id, horario);
+                    horarioExistente = await _horariosDosagemDb.BuscarHorarioDosagemExistente(treatments.Id, horario);
                     if (horarioExistente != null)
                     {
                         // O horário de dosagem já existe, pode optar por atualizar ou pular a inserção
@@ -103,7 +103,7 @@ namespace MediMax.Business.Services
                     _horarioDosagemRepository.Create(horarioDosagem);
                 }
 
-                return treatments.id;
+                return treatments.Id;
             }
             catch (DbUpdateException exception)
             {
@@ -126,9 +126,9 @@ namespace MediMax.Business.Services
         {
             var result = new BaseResponse<bool>();
             TreatmentUpdateValidation validation = new TreatmentUpdateValidation();
-            Medicamentos medication = new Medicamentos();
+            Medication medication = new Medication();
             HorariosDosagemResponseModel horarioExistente = new HorariosDosagemResponseModel();
-            HorariosDosagem horarioDosagem = new HorariosDosagem();
+            TimeDosage horarioDosagem = new TimeDosage();
             Treatment treatment = new Treatment();
             List<string> horariosDosagem;
             Dictionary<string, string> errors;

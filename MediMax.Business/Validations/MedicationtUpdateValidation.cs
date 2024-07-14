@@ -32,7 +32,7 @@ namespace MediMax.Business.Validations
             RuleFor(u => u.dosage)
                 .NotNull()
                 .WithMessage(DefaultErrorMessages.RequiredField)
-                .GreaterThan(0)
+                .Length(0, 5)
                 .WithMessage("A dosagem deve ser maior que zero.");
 
         }
