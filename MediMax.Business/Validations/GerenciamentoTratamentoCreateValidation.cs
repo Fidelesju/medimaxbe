@@ -4,9 +4,9 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Validations
 {
-    public class GerenciamentoTratamentoCreateValidation : Validation<GerencimentoTratamentoCreateRequestModel>
+    public class TreatmentManagementCreateValidation : Validation<GerencimentoTreatmentCreateRequestModel>
     {
-        public GerenciamentoTratamentoCreateValidation()
+        public TreatmentManagementCreateValidation()
         {
             ValidarSeMedicamentoFoiTomado();
             ValidarHorarioCorreto();
@@ -15,7 +15,7 @@ namespace MediMax.Business.Validations
 
         private void ValidarHorarioCorreto()
         {
-            RuleFor(u => u.horario_correto_tratamento)
+            RuleFor(u => u.horario_correto_Treatment)
                  .NotEmpty().WithMessage(DefaultErrorMessages.RequiredField)
                  .Must(name => CustomValidations.IsInLengthInterval(3, 150, name))
                  .WithMessage(DefaultErrorMessages.TextOutOfBounds(3, 150));
@@ -24,7 +24,7 @@ namespace MediMax.Business.Validations
         private void ValidarHorarioTomado()
         {
 
-            RuleFor(u => u.horario_ingestao_medicamento)
+            RuleFor(u => u.horario_ingestao_medication)
                 .NotEmpty().WithMessage(DefaultErrorMessages.RequiredField)
                 .Must(name => CustomValidations.IsInLengthInterval(3, 150, name))
                 .WithMessage(DefaultErrorMessages.TextOutOfBounds(3, 150));

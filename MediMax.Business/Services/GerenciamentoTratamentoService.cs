@@ -12,59 +12,59 @@ using System.Web;
 
 namespace MediMax.Business.Services
 {
-    public class GerenciamentoTratamentoService : IGerenciamentoTratamentoService
+    public class TreatmentManagementService : ITreatmentManagementService
     {
-        private readonly IGerenciamentoTratamentoCreateMapper _gerenciamentoTratamentoCreateMapper;
-        private readonly IGerenciamentoTratamentoRepository _gerenciamentoTratamentoRepository;
-        private readonly ITratamentoDb _treatmentDb;
+        private readonly ITreatmentManagementCreateMapper _TreatmentManagementCreateMapper;
+        private readonly ITreatmentManagementRepository _TreatmentManagementRepository;
+        private readonly ITreatmentDb _treatmentDb;
         private readonly IHistoricoDb _historicoDb;
 
-        public GerenciamentoTratamentoService(
-            IGerenciamentoTratamentoCreateMapper gerenciamentoTratamentoCreateMapper,
-            IGerenciamentoTratamentoRepository gerenciamentoTratamentoRepository,
-            ITratamentoDb treatmentDb,
+        public TreatmentManagementService(
+            ITreatmentManagementCreateMapper TreatmentManagementCreateMapper,
+            ITreatmentManagementRepository TreatmentManagementRepository,
+            ITreatmentDb treatmentDb,
             IHistoricoDb historicoDb)
         {
-            _gerenciamentoTratamentoCreateMapper = gerenciamentoTratamentoCreateMapper;
-            _gerenciamentoTratamentoRepository = gerenciamentoTratamentoRepository;
+            _TreatmentManagementCreateMapper = TreatmentManagementCreateMapper;
+            _TreatmentManagementRepository = TreatmentManagementRepository;
             _treatmentDb = treatmentDb;
             _historicoDb = historicoDb;
         }
 
-        public async Task<int> CriandoGerenciamentoTratamento(GerencimentoTratamentoCreateRequestModel request)
+        public async Task<int> CriandoTreatmentManagement(GerencimentoTreatmentCreateRequestModel request)
         {
-            GerenciamentoTratamento gerenciamentoTratamento;
-            GerenciamentoTratamentoCreateValidation validation;
+            TreatmentManagement TreatmentManagement;
+            TreatmentManagementCreateValidation validation;
             
-            validation = new GerenciamentoTratamentoCreateValidation();
+            validation = new TreatmentManagementCreateValidation();
             if (!validation.IsValid(request))
             {
                 throw new CustomValidationException(validation.GetErrors());
             }
 
-            _gerenciamentoTratamentoCreateMapper.SetBaseMapping(request);
-            gerenciamentoTratamento = _gerenciamentoTratamentoCreateMapper.GetGerenciamentoTratamento();
+            _TreatmentManagementCreateMapper.SetBaseMapping(request);
+            TreatmentManagement = _TreatmentManagementCreateMapper.GetTreatmentManagement();
 
             try
             {
-                _gerenciamentoTratamentoRepository.Create(gerenciamentoTratamento);
-                return gerenciamentoTratamento.id;
+                _TreatmentManagementRepository.Create(TreatmentManagement);
+                return TreatmentManagement.id;
             }
             catch (DbUpdateException exception)
             {
                 throw new CustomValidationException(validation.GetPersistenceErrors(exception));
             }
         }
-        public async Task<List<TratamentoResponseModel>> GetTreatmentByName(string name, int userId )
+        public async Task<List<TreatmentResponseModel>> BuscarTreatmentPorMedicamentoId( int medicineId, int userId )
         {
-            List<TratamentoResponseModel> treatmentList;
-            treatmentList = await _treatmentDb.BuscarTratamentoPorNome(name, userId);
+            List<TreatmentResponseModel> treatmentList;
+            treatmentList = await _treatmentDb.GetTreatmentByMedicationId(medicineId, userId);
             return treatmentList;
         }
-        public async Task<List<TratamentoResponseModel>> GetIntervalTreatment(string startTime, string finishTime, int userId )
+        public async Task<List<TreatmentResponseModel>> GetIntervalTreatment(string startTime, string finishTime, int userId )
         {
-            List<TratamentoResponseModel> treatmentList;
-            treatmentList = await _treatmentDb.BuscarTratamentoPorIntervalo(startTime, finishTime, userId);
+            List<TreatmentResponseModel> treatmentList;
+            treatmentList = await _treatmentDb.GetTreatmentByInterval(startTime, finishTime, userId);
             return treatmentList;
         } 
         public async Task<List<HistoricoResponseModel>> BuscarHistoricoGeral ( int userId )
@@ -131,23 +131,30 @@ namespace MediMax.Business.Services
             return historico;
         }
         public async Task<bool> BuscarStatusDoUltimoGerenciamento ( int userId )
-        {
+       {
             HistoricoResponseModel historico;
             historico = await _historicoDb.BuscarStatusDoUltimoGerenciamento(userId);
-            if (historico.WasTaken == 0)
+            if (historico == null)
+                return false;
+            else if(historico.WasTaken == 0)
                 return false;
             return true;
         } 
         public async Task<string> BuscarUltimoGerenciamento ( int userId )
         {
             HistoricoResponseModel historico;
-            TratamentoResponseModel tratamentoLista;
+            TreatmentResponseModel TreatmentLista = null;
+            int treatmentId = 0;
+
             historico = await _historicoDb.BuscarUltimoGerenciamento(userId);
-            tratamentoLista = await _treatmentDb.BuscarTratamentoPorId(historico.TreatmentId, userId);
-            if( tratamentoLista == null )
+            if (historico != null)
+                treatmentId = historico.TreatmentId;
+
+            TreatmentLista = await _treatmentDb.GetTreatmentById(treatmentId, userId);
+            if (TreatmentLista == null)
                 return "";
             else
-                return tratamentoLista.Name;
+                return TreatmentLista.Name;
         }
     }
 }

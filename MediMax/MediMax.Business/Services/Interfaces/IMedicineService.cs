@@ -6,7 +6,7 @@ namespace MediMax.Business.Services.Interfaces
 {
     public interface IMedicineService
     {
-        Task<int> CreateMedicineAndTreatment(MedicamentoETratamentoCreateRequestModel request);
+        Task<int> CreateMedicineAndTreatment(MedicamentoETreatmentCreateRequestModel request);
         Task<List<MedicineResponseModel>> GetAllMedicine();
         //Task<UserResponseModel> GetUserByName(string name);
     }

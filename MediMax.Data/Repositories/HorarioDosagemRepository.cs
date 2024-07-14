@@ -23,9 +23,9 @@ namespace MediMax.Data.Repositories
             DbSet.Update(horarioDosagem);
             Context.SaveChanges();
         }
-        public async Task<bool> Update(string horario_dosagem, int tratamento_id)
+        public async Task<bool> Update(string horario_dosagem, int Treatment_id)
         {
-            var horarioDosagem = await DbSet.FindAsync(tratamento_id);
+            var horarioDosagem = await DbSet.FindAsync(Treatment_id);
 
             if (horarioDosagem == null)
             {
@@ -34,7 +34,7 @@ namespace MediMax.Data.Repositories
 
             // Atualizando os campos do medicamento
             horarioDosagem.horario_dosagem = horario_dosagem;
-            horarioDosagem.tratamento_id = tratamento_id;
+            horarioDosagem.tratamento_id = Treatment_id;
 
             // Salvando alterações
             Context.Update(horarioDosagem);

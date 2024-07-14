@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KRvIOBKi7trRZTsr4NgKtTXtdzegR6KJy5ARFkIQRWS2t65Fi8uY/Xb6P9AEahvwh+9ib9Q1lIrxiF4LBNbHog==",
+  "dgSpecHash": "sF3HPumnaClVXQO2wEvwKPkGS6FJiX0yBVto6dZHmw16XTTE4jPFmBR7idVsopvFeSPg5IIHGPy09syRXMuAhg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Data\\MediMax.Data.csproj",
   "expectedPackageFiles": [
@@ -55,6 +55,7 @@
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.11\\microsoft.entityframeworkcore.7.0.11.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.11\\microsoft.entityframeworkcore.abstractions.7.0.11.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.11\\microsoft.entityframeworkcore.analyzers.7.0.11.nupkg.sha512",
+    "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.9\\microsoft.entityframeworkcore.relational.7.0.9.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.extensions.caching.memory\\7.0.0\\microsoft.extensions.caching.memory.7.0.0.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.extensions.configuration\\7.0.0\\microsoft.extensions.configuration.7.0.0.nupkg.sha512",

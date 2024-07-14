@@ -4,8 +4,8 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers.Interfaces
 {
-    public interface IUsuarioUpdateMapper : IMapper<UsuarioUpdateRequestModel>
+    public interface IUserUpdateMapper : IMapper<UserUpdateRequestModel>
     {
-        Usuario GetUser();
+        User GetUser();
     }
 }

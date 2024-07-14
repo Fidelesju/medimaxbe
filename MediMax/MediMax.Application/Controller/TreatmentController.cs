@@ -26,15 +26,15 @@ namespace MediMax.Application.Controller
         [/*Authorize(Roles = "owner,admin"),*/ HttpGet("Name/{name}")]
         public async Task<ActionResult<BaseResponse<List<TreatmentResponseModel>>>> GetTreatmentByName(string name)
         {
-            List<TreatmentResponseModel> tratamento;
+            List<TreatmentResponseModel> Treatment;
             BaseResponse<List<TreatmentResponseModel>> response;
             try
             {
-                tratamento = await _treatmentService.GetTreatmentByName(name);
+                Treatment = await _treatmentService.GetTreatmentByName(name);
                 response = BaseResponse<List<TreatmentResponseModel>>
                         .Builder()
-                        .SetMessage("Tratamentos encontrados com sucesso.")
-                        .SetData(tratamento)
+                        .SetMessage("Treatments encontrados com sucesso.")
+                        .SetData(Treatment)
                     ;
                 return Ok(response);
             }

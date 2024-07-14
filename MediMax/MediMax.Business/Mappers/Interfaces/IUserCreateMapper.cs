@@ -6,6 +6,6 @@ namespace MediMax.Business.Mappers.Interfaces
 {
     public interface IUserCreateMapper : IMapper<UserCreateRequestModel>
     {
-        Usuario GetUser();
+        User GetUser();
     }
 }

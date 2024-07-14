@@ -4,9 +4,9 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Validations
 {
-    public class UsuarioUpdateValidation : Validation<UsuarioUpdateRequestModel>
+    public class UserUpdateValidation : Validation<UserUpdateRequestModel>
     {
-        public UsuarioUpdateValidation ( )
+        public UserUpdateValidation ( )
         {
             ValidateEmail();
             ValidateName();

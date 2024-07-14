@@ -5,22 +5,22 @@ using MediMax.Data.Repositories.Interfaces;
 
 namespace MediMax.Data.Repositories
 {
-    public class TratamentoRepository : Repository<Tratamento>, ITratamentoRepository
+    public class TreatmentRepository : Repository<Treatment>, ITreatmentRepository
     {
-        public TratamentoRepository(MediMaxDbContext context) : base(context)
+        public TreatmentRepository(MediMaxDbContext context) : base(context)
         {
         }
 
-        public int Create(Tratamento tratamentos)
+        public int Create(Treatment Treatments)
         {
-            DbSet.Add(tratamentos);
+            DbSet.Add(Treatments);
             Context.SaveChanges();
-            return tratamentos.id;
+            return Treatments.id;
         }
 
-        public void Update(Tratamento tratamentos)
+        public void Update(Treatment Treatments)
         {
-            DbSet.Update(tratamentos);
+            DbSet.Update(Treatments);
             Context.SaveChanges();
         }
     }

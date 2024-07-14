@@ -3,8 +3,8 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao.Interfaces
 {
-    public interface IStatusDispenserDb
+    public interface IDispenserStatusDb
     {
-        Task<StatusDispenserResponseModel> BuscandoSeExisteAbastacimentoCadastrado ( int tratamentoId );
+        Task<DispenserStatusResponseModel> BuscandoSeExisteAbastacimentoCadastrado ( int TreatmentId );
     }
 }

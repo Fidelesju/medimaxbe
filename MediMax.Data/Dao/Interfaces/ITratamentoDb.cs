@@ -3,23 +3,23 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao.Interfaces
 {
-    public interface ITratamentoDb
+    public interface ITreatmentDb
     {
-        Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name, int userId );
-        Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime, int userId );
-        Task<bool> AlterandoTratamento(int remedio_id,
+        Task<List<TreatmentResponseModel>> GetTreatmentByMedicationId( int treatmentId, int userId );
+        Task<List<TreatmentResponseModel>> GetTreatmentByInterval(string startTime, string finishTime, int userId );
+        Task<bool> AlterandoTreatment(int remedio_id,
                 string nome,
-                int quantidade_medicamentos,
+                int quantidade_medications,
                 string horario_inicio,
-                int intervalo_tratamento,
-                int tempo_tratamento_dias,
+                int intervalo_Treatment,
+                int tempo_Treatment_dias,
                 string recomendacoes_alimentacao,
                 string observacao,
                 int id);
-        Task<bool> DeletandoTratamento(int id);
-        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( int userId );
-        Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId, int userId );
-        Task<TratamentoResponseModel> BuscarTratamentoPorIdParaStatus ( int treatmentId, int userId );
-        Task<List<TratamentoResponseModel>> BuscarTodosTratamentoInativos ( int userId );
+        Task<bool> DeleteTreatment(int id);
+        Task<List<TreatmentResponseModel>> GetTreatmentActives ( int userId );
+        Task<TreatmentResponseModel> GetTreatmentById ( int treatmentId, int userId );
+        Task<TreatmentResponseModel> BuscarTreatmentPorIdParaStatus ( int treatmentId, int userId );
+        Task<List<TreatmentResponseModel>> BuscarTodosTreatmentInativos ( int userId );
     }
 }

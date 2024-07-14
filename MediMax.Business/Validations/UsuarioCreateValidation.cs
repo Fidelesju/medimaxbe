@@ -4,9 +4,9 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Validations
 {
-    public class UsuarioCreateValidation : Validation<UsuarioCreateRequestModel>
+    public class UserCreateValidation : Validation<UserCreateRequestModel>
     {
-        public UsuarioCreateValidation()
+        public UserCreateValidation()
         {
             ValidateEmail();
             ValidateName();

@@ -6,26 +6,26 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers
 {
-    public class TratamentoCreateMapper : Mapper<MedicamentoETratamentoCreateRequestModel>, ITratamentoCreateMapper
+    public class TreatmentCreateMapper : Mapper<MedicamentoETreatmentCreateRequestModel>, ITreatmentCreateMapper
     {
-        private readonly Tratamento? _tratamento;
+        private readonly Treatment? _Treatment;
 
-        public TratamentoCreateMapper()
+        public TreatmentCreateMapper()
         {
-            _tratamento = new Tratamento();
+            _Treatment = new Treatment();
         }
 
-        public Tratamento GetTratemento(MedicamentoETratamentoCreateRequestModel request)
+        public Treatment GetTratemento(MedicamentoETreatmentCreateRequestModel request)
         {
-            _tratamento.quantidade_medicamentos = request.quantidade_medicamento_por_dia;
-            _tratamento.horario_inicio = request.horario_inicial_tratamento;
-            _tratamento.intervalo_tratamento = request.intervalo_tratamento_horas;
-            _tratamento.tempo_tratamento_dias = request.intervalo_tratamento_dias;
-            _tratamento.recomendacoes_alimentacao = request.recomendacoes_alimentacao;
-            _tratamento.observacao = request.observacao;
-            _tratamento.esta_ativo = 1;
-            _tratamento.nome_medicamento = request.nome;
-            return _tratamento;
+            _Treatment.quantidade_medications = request.quantidade_medication_por_dia;
+            _Treatment.horario_inicio = request.horario_inicial_Treatment;
+            _Treatment.intervalo_Treatment = request.intervalo_Treatment_horas;
+            _Treatment.tempo_Treatment_dias = request.intervalo_Treatment_dias;
+            _Treatment.recomendacoes_alimentacao = request.recomendacoes_alimentacao;
+            _Treatment.observacao = request.observacao;
+            _Treatment.esta_ativo = 1;
+            _Treatment.nome_medication = request.nome;
+            return _Treatment;
         }
     }
 }

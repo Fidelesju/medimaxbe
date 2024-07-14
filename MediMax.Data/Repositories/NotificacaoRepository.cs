@@ -6,22 +6,22 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Repositories
 {
-    public class NotificacaoRepository: Repository<Notificacao>, INotificacaoRepository
+    public class NotificationRepository: Repository<Notification>, INotificationRepository
     {
-        public NotificacaoRepository(MediMaxDbContext context) : base(context)
+        public NotificationRepository(MediMaxDbContext context) : base(context)
         {
         }
 
-        public int Create(Notificacao notificacao)
+        public int Create(Notification Notification)
         {
-            DbSet.Add(notificacao);
+            DbSet.Add(Notification);
             Context.SaveChanges();
-            return notificacao.id;
+            return Notification.id;
         }
 
-        public void Update(Notificacao notificacao)
+        public void Update(Notification Notification)
         {
-            DbSet.Update(notificacao);
+            DbSet.Update(Notification);
             Context.SaveChanges();
         }
 

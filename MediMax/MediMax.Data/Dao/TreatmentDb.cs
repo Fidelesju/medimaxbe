@@ -20,16 +20,16 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                   t.id AS Id,
-                  t.nome_medicamento AS Name,
-                  t.quantidade_medicamentos AS MedicineQuantity,
+                  t.nome_medication AS Name,
+                  t.quantidade_medications AS MedicineQuantity,
                   t.horario_inicio AS StartTime,
-                  t.intervalo_tratamento AS TreatmentInterval,
-                  t.tempo_tratamento_dias AS TreatmentDurationDays,
+                  t.intervalo_Treatment AS TreatmentInterval,
+                  t.tempo_Treatment_dias AS TreatmentDurationDays,
                   t.recomendacoes_alimentacao AS DietaryRecommendations,
                   t.observacao AS Observation,
                   t.esta_ativo AS IsActive
-               FROM tratamento t
-               WHERE t.nome_medicamento = '{name}'
+               FROM Treatment t
+               WHERE t.nome_medication = '{name}'
                AND esta_ativo = 1
                 ";
 

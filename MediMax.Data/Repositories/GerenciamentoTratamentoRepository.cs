@@ -3,32 +3,32 @@ using MediMax.Data.Repositories.Interfaces;
 
 namespace MediMax.Data.Repositories
 {
-    public class GerenciamentoTratamentoRepository : Repository<GerenciamentoTratamento>, IGerenciamentoTratamentoRepository
+    public class TreatmentManagementRepository : Repository<TreatmentManagement>, ITreatmentManagementRepository
     {
-        public GerenciamentoTratamentoRepository(MediMaxDbContext context) : base(context)
+        public TreatmentManagementRepository(MediMaxDbContext context) : base(context)
         {
         }
 
-        public int Create(GerenciamentoTratamento gerenciamentoTratamentos)
+        public int Create(TreatmentManagement TreatmentManagements)
         {
-            if (gerenciamentoTratamentos == null)
+            if (TreatmentManagements == null)
             {
-                throw new ArgumentNullException(nameof(gerenciamentoTratamentos));
+                throw new ArgumentNullException(nameof(TreatmentManagements));
             }
 
-            DbSet.Add(gerenciamentoTratamentos);
+            DbSet.Add(TreatmentManagements);
             Context.SaveChanges();
-            return gerenciamentoTratamentos.id;
+            return TreatmentManagements.id;
         }
 
-        public void Update(GerenciamentoTratamento gerenciamentoTratamentos)
+        public void Update(TreatmentManagement TreatmentManagements)
         {
-            if (gerenciamentoTratamentos == null)
+            if (TreatmentManagements == null)
             {
-                throw new ArgumentNullException(nameof(gerenciamentoTratamentos));
+                throw new ArgumentNullException(nameof(TreatmentManagements));
             }
 
-            DbSet.Update(gerenciamentoTratamentos);
+            DbSet.Update(TreatmentManagements);
             Context.SaveChanges();
         }
     }

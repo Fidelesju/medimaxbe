@@ -5,20 +5,20 @@ using MediMax.Data.Repositories.Interfaces;
 
 namespace MediMax.Data.Repositories
 {
-    public class UserRepository : Repository<Usuario>, IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         public UserRepository(MediMaxDbContext context) : base(context)
         {
         }
 
-        public int Create(Usuario users)
+        public int Create(User users)
         {
             DbSet.Add(users);
             Context.SaveChanges();
-            return users.id_usuario;
+            return users.id_User;
         }
 
-        public void Update(Usuario users)
+        public void Update(User users)
         {
             DbSet.Update(users);
             Context.SaveChanges();

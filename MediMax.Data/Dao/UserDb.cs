@@ -7,7 +7,7 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao
 {
-    public class UserDb : Db<UsuarioResponseModel>, IUsuarioDb
+    public class UserDb : Db<UserResponseModel>, IUserDb
     {
         public UserDb(IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment, 
@@ -15,20 +15,20 @@ namespace MediMax.Data.Dao
         {
         }
 
-        public async Task<UsuarioResponseModel> GetUserById(int userId)
+        public async Task<UserResponseModel> GetUserById(int userId)
         {
             string sql;
-            UsuarioResponseModel user;
+            UserResponseModel user;
             sql = $@"
                  SELECT 
-                     u.id_usuario AS UserId,
+                     u.id_User AS UserId,
                      u.nome AS Name,
                      u.email AS Email,
                      u.esta_ativo AS IsActive,
-                     u.id_tipo_usuario as TypeUser,
+                     u.id_tipo_User as TypeUser,
 		             u.id_proprietario as OwnerId
-                 FROM usuarios u 
-                 WHERE u.id_usuario = {userId}
+                 FROM Users u 
+                 WHERE u.id_User = {userId}
                 ;";
 
             await Connect();
@@ -38,16 +38,16 @@ namespace MediMax.Data.Dao
             return user;
         }
 
-       public async Task<int> UpdateUser( UsuarioUpdateRequestModel request )
+       public async Task<int> UpdateUser( UserUpdateRequestModel request )
         {
             string sql;
            
             sql = $@"
-                UPDATE usuarios u 
+                UPDATE Users u 
                 SET  u.nome = '{request.UserName}',
 	                 u.email = '{request.Email}',
-	                 u.id_tipo_usuario = {request.TypeUserId}
-                 WHERE u.id_usuario = {request.UserId}
+	                 u.id_tipo_User = {request.TypeUserId}
+                 WHERE u.id_User = {request.UserId}
                 ;";
 
             await Connect();
@@ -56,14 +56,14 @@ namespace MediMax.Data.Dao
             return request.UserId;
         }
         
-        public async Task<int> DesativarUsuario( int userId )
+        public async Task<int> DesativarUser( int userId )
         {
             string sql;
             int user;
             sql = $@"
-                 UPDATE usuarios u 
+                 UPDATE Users u 
                     SET u.esta_ativo = 0
-                 WHERE u.id_usuario = {userId}
+                 WHERE u.id_User = {userId}
                 ;";
 
             await Connect();
@@ -71,14 +71,14 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return userId;
         }
-        public async Task<int> ReativarUsuario ( int userId )
+        public async Task<int> ReativarUser ( int userId )
         {
             string sql;
             int user;
             sql = $@"
-                 UPDATE usuarios u 
+                 UPDATE Users u 
                     SET u.esta_ativo = 1
-                 WHERE u.id_usuario = {userId}
+                 WHERE u.id_User = {userId}
                 ;";
 
             await Connect();
@@ -90,9 +90,9 @@ namespace MediMax.Data.Dao
         {
             string sql;
             sql = $@"
-                 UPDATE usuarios u 
+                 UPDATE Users u 
                     SET u.senha = '{password}'
-                 WHERE u.id_usuario = {userId}
+                 WHERE u.id_User = {userId}
                 ;";
 
             await Connect();
@@ -101,19 +101,19 @@ namespace MediMax.Data.Dao
             return true;
         }
 
-        public async Task<UsuarioResponseModel> GetUserByEmail(string email)
+        public async Task<UserResponseModel> GetUserByEmail(string email)
         {
             string sql;
-            UsuarioResponseModel user;
+            UserResponseModel user;
             sql = $@"
                      SELECT 
-                         u.id_usuario AS UserId,
+                         u.id_User AS UserId,
                          u.nome AS Name,
                          u.email AS Email,
                          u.esta_ativo AS IsActive,
-                         u.id_tipo_usuario as TypeUser,
+                         u.id_tipo_User as TypeUser,
 		                 u.id_proprietario as OwnerId
-                     FROM usuarios u 
+                     FROM Users u 
                      WHERE u.email like '%{email}%'
                      AND  u.esta_ativo = 1
                 ;";
@@ -125,19 +125,19 @@ namespace MediMax.Data.Dao
             return user;
         }
 
-        public async Task<UsuarioResponseModel> GetUserByName ( string name )
+        public async Task<UserResponseModel> GetUserByName ( string name )
         {
             string sql;
-            UsuarioResponseModel user;
+            UserResponseModel user;
             sql = $@"
                  SELECT 
-                     u.id_usuario AS UserId,
+                     u.id_User AS UserId,
                      u.nome AS Name,
                      u.email AS Email,
                      u.esta_ativo AS IsActive,
-                     u.id_tipo_usuario as TypeUser,
+                     u.id_tipo_User as TypeUser,
 		             u.id_proprietario as OwnerId
-                 FROM usuarios u 
+                 FROM Users u 
                  WHERE u.nome like '%{name}%'
                  AND  u.esta_ativo = 1
                 ;";
@@ -149,20 +149,20 @@ namespace MediMax.Data.Dao
             return user;
         }
 
-        public async Task<List<UsuarioResponseModel>> GetUserByTypeUser ( int typeUser )
+        public async Task<List<UserResponseModel>> GetUserByTypeUser ( int typeUser )
         {
             string sql;
-            List<UsuarioResponseModel> user;
+            List<UserResponseModel> user;
             sql = $@"
                     SELECT 
-                        u.id_usuario AS UserId,
+                        u.id_User AS UserId,
                         u.nome AS Name,
                         u.email AS Email,
                         u.esta_ativo AS IsActive,
-                        u.id_tipo_usuario as TypeUser,
+                        u.id_tipo_User as TypeUser,
 		                u.id_proprietario as OwnerId
-                    FROM usuarios u 
-                    WHERE u.id_tipo_usuario = {typeUser}
+                    FROM Users u 
+                    WHERE u.id_tipo_User = {typeUser}
                     AND  u.esta_ativo = 1
                 ;";
 
@@ -173,20 +173,20 @@ namespace MediMax.Data.Dao
             return user;
         }
 
-        public async Task<List<UsuarioResponseModel>> GetUserByOwnerOfTypeUser( int typeUser, int ownerId )
+        public async Task<List<UserResponseModel>> GetUserByOwnerOfTypeUser( int typeUser, int ownerId )
         {
             string sql;
-            List<UsuarioResponseModel> user;
+            List<UserResponseModel> user;
             sql = $@"
                     SELECT 
-                        u.id_usuario AS UserId,
+                        u.id_User AS UserId,
                         u.nome AS Name,
                         u.email AS Email,
                         u.esta_ativo AS IsActive,
-                        u.id_tipo_usuario as TypeUser,
+                        u.id_tipo_User as TypeUser,
 		                u.id_proprietario as OwnerId
-                    FROM usuarios u 
-                    WHERE u.id_tipo_usuario = {typeUser}
+                    FROM Users u 
+                    WHERE u.id_tipo_User = {typeUser}
                     AND u.id_proprietario = {ownerId}
                     AND  u.esta_ativo = 1
                 ;";
@@ -198,19 +198,19 @@ namespace MediMax.Data.Dao
             return user;
         }
 
-        public async Task<List<UsuarioResponseModel>> GetUserByOwner( int ownerId )
+        public async Task<List<UserResponseModel>> GetUserByOwner( int ownerId )
         {
             string sql;
-            List<UsuarioResponseModel> user;
+            List<UserResponseModel> user;
             sql = $@"
                     SELECT 
-                        u.id_usuario AS UserId,
+                        u.id_User AS UserId,
                         u.nome AS Name,
                         u.email AS Email,
                         u.esta_ativo AS IsActive,
-                        u.id_tipo_usuario as TypeUser,
+                        u.id_tipo_User as TypeUser,
 		                u.id_proprietario as OwnerId
-                    FROM usuarios u 
+                    FROM Users u 
                     WHERE u.id_proprietario = {ownerId}
                     AND  u.esta_ativo = 1
                 ;";
@@ -222,10 +222,10 @@ namespace MediMax.Data.Dao
             return user;
         }
 
-        protected override UsuarioResponseModel Mapper(DbDataReader reader)
+        protected override UserResponseModel Mapper(DbDataReader reader)
         {
-            UsuarioResponseModel user;
-            user = new UsuarioResponseModel();
+            UserResponseModel user;
+            user = new UserResponseModel();
             user.Id = Convert.ToInt32(reader["UserId"]);
             user.Name = Convert.ToString(reader["Name"]);
             user.Email = Convert.ToString(reader["Email"]);

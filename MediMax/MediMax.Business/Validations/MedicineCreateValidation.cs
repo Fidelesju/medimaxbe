@@ -4,7 +4,7 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Validations
 {
-    public class MedicineCreateValidation : Validation<MedicamentoETratamentoCreateRequestModel>
+    public class MedicineCreateValidation : Validation<MedicamentoETreatmentCreateRequestModel>
     {
         public MedicineCreateValidation()
         {

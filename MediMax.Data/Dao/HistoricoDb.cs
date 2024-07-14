@@ -19,17 +19,17 @@ namespace MediMax.Data.Dao
             sql = $@"
                  SELECT 
                     gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
+                WHERE m.UserId = {userId}
                 ";
 
             await Connect();
@@ -45,17 +45,17 @@ namespace MediMax.Data.Dao
             sql = $@"
                  SELECT 
                     gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
+                WHERE m.UserId = {userId}
                 ORDER BY gt.id DESC
                 LIMIT 1
                 ";
@@ -73,17 +73,17 @@ namespace MediMax.Data.Dao
             sql = $@"
                  SELECT 
                     gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
+                WHERE m.UserId = {userId}
                 ORDER BY gt.id DESC
                 LIMIT 1
                 ";
@@ -101,17 +101,17 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                     gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
+                WHERE m.UserId = {userId}
                 AND gt.foi_tomado = 1
                 ";
 
@@ -128,17 +128,17 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                     gt.id as Id,
-	                gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+	                gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado,
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
+                WHERE m.UserId = {userId}
                 AND gt.foi_tomado = 0
                 ";
 
@@ -155,18 +155,18 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                     gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medicamento, '%d/%m/%Y') >= now() - INTERVAL 7 DAY
+                WHERE m.UserId = {userId}
+                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 7 DAY
                 ";
 
             await Connect();
@@ -182,18 +182,18 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                                    gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medicamento, '%d/%m/%Y') >= now() - INTERVAL 15 DAY
+                WHERE m.UserId = {userId}
+                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 15 DAY
                 ";
 
             await Connect();
@@ -209,18 +209,18 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                                   gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medicamento, '%d/%m/%Y') >= now() - INTERVAL 30 DAY
+                WHERE m.UserId = {userId}
+                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 30 DAY
                 ";
 
             await Connect();
@@ -236,18 +236,18 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                                     gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medicamento, '%d/%m/%Y') >= now() - INTERVAL 60 DAY
+                WHERE m.UserId = {userId}
+                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 60 DAY
                 ";
 
             await Connect();
@@ -263,18 +263,18 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                                    gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medicamento, '%d/%m/%Y') >= now() - INTERVAL 1 YEAR
+                WHERE m.UserId = {userId}
+                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 1 YEAR
                 ";
 
             await Connect();
@@ -291,18 +291,18 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                     gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
-                AND YEAR(STR_TO_DATE(gt.data_ingestao_medicamento, '%d/%m/%Y')) = '{year}'
+                WHERE m.UserId = {userId}
+                AND YEAR(STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y')) = '{year}'
                 ";
 
             await Connect();
@@ -318,18 +318,18 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                     gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON gt.tratamento_id = t.id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON gt.Treatment_id = t.id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
-                AND gt.data_ingestao_medicamento = '{data}'
+                WHERE m.UserId = {userId}
+                AND gt.data_ingestao_medication = '{data}'
                 ";
 
             await Connect();
@@ -345,17 +345,17 @@ namespace MediMax.Data.Dao
             sql = $@"
                 SELECT 
                                    gt.id as Id,
-                    gt.tratamento_id as TratamentoId,
-                    gt.data_ingestao_medicamento as DataIngestaoMedicamento,
-                    gt.horario_correto_tratamento as HorarioCorretoTratamento,
-                    gt.horario_ingestao_medicamento as HorarioIngestaoMedicamento,
+                    gt.Treatment_id as TreatmentId,
+                    gt.data_ingestao_medication as DataIngestaoMedicamento,
+                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
+                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
                     gt.foi_tomado as FoiTomado, 
-                    t.nome_medicamento as NomeMedicamento,
-                    m.usuarioId as UsuarioId
-                FROM gerenciamento_tratamento gt
-                INNER JOIN tratamento t ON t.id = gt.tratamento_id
+                    t.nome_medication as NomeMedicamento,
+                    m.UserId as UserId
+                FROM gerenciamento_Treatment gt
+                INNER JOIN Treatment t ON t.id = gt.Treatment_id
                 INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.usuarioId = {userId}
+                WHERE m.UserId = {userId}
                 AND m.nome  = '%{nome}%'
                 ";
 
@@ -371,13 +371,13 @@ namespace MediMax.Data.Dao
             HistoricoResponseModel historico;
             historico = new HistoricoResponseModel();
             historico.Id = Convert.ToInt32(reader["Id"]);
-            historico.TreatmentId = Convert.ToInt32(reader["TratamentoId"]);
-            historico.CorrectTreatmentSchedule = Convert.ToString(reader["HorarioCorretoTratamento"]);
+            historico.TreatmentId = Convert.ToInt32(reader["TreatmentId"]);
+            historico.CorrectTreatmentSchedule = Convert.ToString(reader["HorarioCorretoTreatment"]);
             historico.MedicationIntakeSchedule = Convert.ToString(reader["DataIngestaoMedicamento"]);
             historico.DateMedicationIntake = Convert.ToString(reader["HorarioIngestaoMedicamento"]);
             historico.WasTaken = Convert.ToInt32(reader["FoiTomado"]);
             historico.MedicineName = Convert.ToString(reader["NomeMedicamento"]);
-            historico.UserId = Convert.ToInt32(reader["UsuarioId"]);
+            historico.UserId = Convert.ToInt32(reader["UserId"]);
             return historico;
         }
     }

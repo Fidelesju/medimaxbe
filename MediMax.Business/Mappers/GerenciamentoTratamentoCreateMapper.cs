@@ -4,23 +4,23 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers
 {
-    public class GerenciamentoTratamentoCreateMapper : Mapper<GerencimentoTratamentoCreateRequestModel>, IGerenciamentoTratamentoCreateMapper
+    public class TreatmentManagementCreateMapper : Mapper<GerencimentoTreatmentCreateRequestModel>, ITreatmentManagementCreateMapper
     {
-        private readonly GerenciamentoTratamento? _gerenciamentoTratamento;
+        private readonly TreatmentManagement? _TreatmentManagement;
 
-        public GerenciamentoTratamentoCreateMapper()
+        public TreatmentManagementCreateMapper()
         {
-            _gerenciamentoTratamento = new GerenciamentoTratamento();
+            _TreatmentManagement = new TreatmentManagement();
         }
 
-        public GerenciamentoTratamento GetGerenciamentoTratamento()
+        public TreatmentManagement GetTreatmentManagement()
         {
-            _gerenciamentoTratamento.tratamento_id = BaseMapping.tratamento_id;
-            _gerenciamentoTratamento.horario_correto_tratamento = BaseMapping.horario_correto_tratamento;
-            _gerenciamentoTratamento.horario_ingestao_medicamento = BaseMapping.horario_ingestao_medicamento;
-            _gerenciamentoTratamento.data_ingestao_medicamento = BaseMapping.data_ingestao_medicamento;
-            _gerenciamentoTratamento.foi_tomado = BaseMapping.foi_tomado;
-            return _gerenciamentoTratamento;
+            _TreatmentManagement.Treatment_id = BaseMapping.Treatment_id;
+            _TreatmentManagement.horario_correto_Treatment = BaseMapping.horario_correto_Treatment;
+            _TreatmentManagement.horario_ingestao_medication = BaseMapping.horario_ingestao_medication;
+            _TreatmentManagement.data_ingestao_medication = BaseMapping.data_ingestao_medication;
+            _TreatmentManagement.foi_tomado = BaseMapping.foi_tomado;
+            return _TreatmentManagement;
         }
     }
 }

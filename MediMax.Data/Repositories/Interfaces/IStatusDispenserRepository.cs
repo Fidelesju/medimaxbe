@@ -2,9 +2,9 @@
 
 namespace MediMax.Data.Repositories.Interfaces
 {
-    public interface IStatusDispenserRepository
+    public interface IDispenserStatusRepository
     {
-        int Create(StatusDispenser horarioDosagem);
-        void Update(StatusDispenser horarioDosagem);
+        int Create(DispenserStatus horarioDosagem);
+        void Update(DispenserStatus horarioDosagem);
     }
 }

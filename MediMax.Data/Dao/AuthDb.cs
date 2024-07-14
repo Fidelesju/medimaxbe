@@ -19,11 +19,11 @@ namespace MediMax.Data.Dao
             LoginResponseModel loginResponseModel;
             sql = $@"
                     SELECT 
-                          u.id_usuario AS UserId,
+                          u.id_User AS UserId,
                              u.nome AS Name,
                              u.email AS Email,
-                             u.id_tipo_usuario as TypeUserId
-                             FROM usuarios u
+                             u.id_tipo_User as TypeUserId
+                             FROM Users u
                      WHERE u.email = '{email}'
                      OR u.nome = '{login}'
                      AND u.senha = '{password}'

@@ -4,8 +4,8 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers.Interfaces
 {
-    public interface IUsuarioCreateMapper : IMapper<UsuarioCreateRequestModel>
+    public interface IUserCreateMapper : IMapper<UserCreateRequestModel>
     {
-        Usuario GetUser();
+        User GetUser();
     }
 }

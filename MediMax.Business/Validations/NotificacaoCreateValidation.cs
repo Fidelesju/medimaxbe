@@ -4,9 +4,9 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Validations
 {
-    public class NotificacaoCreateValidation : Validation<NotificacaoCreateRequestModel>
+    public class NotificationCreateValidation : Validation<NotificationCreateRequestModel>
     {
-        public NotificacaoCreateValidation()
+        public NotificationCreateValidation()
         {
             ValidateDescricao();
             ValidateTitulo();

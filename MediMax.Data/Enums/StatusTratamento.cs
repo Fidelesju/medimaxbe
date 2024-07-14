@@ -1,6 +1,6 @@
 ﻿namespace MediMax.Data.Enums
 {
-    public enum StatusTratamento
+    public enum StatusTreatment
     {
         Inativo = 1,
         Iniciado = 2,

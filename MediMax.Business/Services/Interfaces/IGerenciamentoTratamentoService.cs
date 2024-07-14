@@ -3,11 +3,11 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Business.Services.Interfaces
 {
-    public interface IGerenciamentoTratamentoService
+    public interface ITreatmentManagementService
     {
-        Task<int> CriandoGerenciamentoTratamento(GerencimentoTratamentoCreateRequestModel request);
-        Task<List<TratamentoResponseModel>> GetTreatmentByName(string name, int userId );
-        Task<List<TratamentoResponseModel>> GetIntervalTreatment(string startTime, string finishTime, int userId );
+        Task<int> CriandoTreatmentManagement(GerencimentoTreatmentCreateRequestModel request);
+        Task<List<TreatmentResponseModel>> BuscarTreatmentPorMedicamentoId(int medicineId, int userId );
+        Task<List<TreatmentResponseModel>> GetIntervalTreatment(string startTime, string finishTime, int userId );
         Task<List<HistoricoResponseModel>> BuscarHistoricoGeral ( int userId );
         Task<List<HistoricoResponseModel>> BuscarHistoricoDataEspecifica(string data, int userId );
         Task<List<HistoricoResponseModel>> BuscarHistoricoUltimoAno ( int userId );

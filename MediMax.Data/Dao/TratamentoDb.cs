@@ -6,37 +6,69 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao
 {
-    public class TratamentoDb : Db<TratamentoResponseModel>, ITratamentoDb
+    public class TreatmentDb : Db<TreatmentResponseModel>, ITreatmentDb
     {
-        public TratamentoDb(IConfiguration configuration,
+        public TreatmentDb(IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment, MediMaxDbContext dbContext) : base(configuration, webHostEnvironment, dbContext)
         {
         }
 
        
-        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorNome(string name, int userId )
+        public async Task<List<TreatmentResponseModel>> GetTreatmentByMedicationId(int medicineId, int userId )
         {
             string sql;
-            List<TratamentoResponseModel> TreatmentList;
+            List<TreatmentResponseModel> TreatmentList;
             sql = $@"
-              SELECT 
-                   t.id AS Id,
-                   t.remedio_id AS MedicineId,
-                   t.nome_medicamento AS Name,
-                   t.quantidade_medicamentos AS MedicineQuantity,
-                   t.horario_inicio AS StartTime,
-                   t.intervalo_tratamento AS TreatmentInterval,
-                   t.tempo_tratamento_dias AS TreatmentDurationDays,
-                   t.recomendacoes_alimentacao AS DietaryRecommendations,
-                   t.observacao AS Observation,
-                   t.esta_ativo AS IsActive,
-                   hd.horario_dosagem as DosageTime
-               FROM tratamento t
-               INNER JOIN horarios_dosagem hd ON hd.tratamento_id = t.id
-               INNER JOIN medicamentos m ON t.remedio_id = m.id
-               WHERE t.nome_medicamento = '{name}'
-               AND t.esta_ativo = 1
-               AND m.esta_ativo = 1
+                     SELECT 
+                        t.id AS Id,
+                        t.remedio_id AS MedicineId,
+                        t.nome_medication AS Name,
+                        t.quantidade_medications AS MedicineQuantity,
+                        t.horario_inicio AS StartTime,
+                        t.intervalo_Treatment AS TreatmentInterval,
+                        t.tempo_Treatment_dias AS TreatmentDurationDays,
+                        t.recomendacoes_alimentacao AS DietaryRecommendations,
+                        t.observacao AS Observation,
+                        t.esta_ativo AS IsActive
+                    FROM Treatment t
+                    INNER JOIN medicamentos m ON m.id = t.remedio_id 
+                    WHERE m.id = {medicineId}
+                    AND m.esta_ativo = 1
+                    AND t.esta_ativo = 1
+                    AND m.UserId = {userId};
+                ";
+
+            await Connect();
+            await Query(sql);
+            TreatmentList = await GetQueryResultList();
+            await Disconnect();
+            return TreatmentList;
+        } 
+        
+        public async Task<List<TreatmentResponseModel>> BuscarHorarioTreatmentPorNome(int treatmentId, int userId )
+        {
+            string sql;
+            List<TreatmentResponseModel> TreatmentList;
+            sql = $@"
+             SELECT 
+                t.id AS Id,
+                t.remedio_id AS MedicineId,
+                t.nome_medication AS Name,
+                t.quantidade_medications AS MedicineQuantity,
+                t.horario_inicio AS StartTime,
+                t.intervalo_Treatment AS TreatmentInterval,
+                t.tempo_Treatment_dias AS TreatmentDurationDays,
+                t.recomendacoes_alimentacao AS DietaryRecommendations,
+                t.observacao AS Observation,
+                t.esta_ativo AS IsActive,
+                hd.horario_dosagem as DosageTime 
+                FROM horarios_dosagem hd
+                INNER JOIN Treatment t ON t.id = hd.Treatment_id 
+                INNER JOIN medicamentos m ON m.id = t.remedio_id 
+                WHERE hd.Treatment_id = {treatmentId}
+                AND m.esta_ativo = 1
+                AND t.esta_ativo = 1
+                AND m.UserId = {userId}
                 ";
 
             await Connect();
@@ -46,36 +78,36 @@ namespace MediMax.Data.Dao
             return TreatmentList;
         }
         
-        public async Task<TratamentoResponseModel> BuscarTratamentoPorId ( int treatmentId, int userId )
+        public async Task<TreatmentResponseModel> GetTreatmentById ( int treatmentId, int userId )
         {
             string sql;
-            TratamentoResponseModel treatment;
+            TreatmentResponseModel treatment;
             sql = $@"
               SELECT 
                 t.id AS Id,
                 t.remedio_id AS MedicineId,
-                t.nome_medicamento AS Name,
-                t.quantidade_medicamentos AS MedicineQuantity,
+                t.nome_medication AS Name,
+                t.quantidade_medications AS MedicineQuantity,
                 t.horario_inicio AS StartTime,
-                t.intervalo_tratamento AS TreatmentInterval,
-                t.tempo_tratamento_dias AS TreatmentDurationDays,
+                t.intervalo_Treatment AS TreatmentInterval,
+                t.tempo_Treatment_dias AS TreatmentDurationDays,
                 t.recomendacoes_alimentacao AS DietaryRecommendations,
                 t.observacao AS Observation,
                 t.esta_ativo AS IsActive,
                 hd.horario_dosagem AS DosageTime
-            FROM tratamento t
+            FROM Treatment t
             INNER JOIN (
                 SELECT 
-                    tratamento_id, 
+                    Treatment_id, 
                     MIN(horario_dosagem) AS horario_dosagem
                 FROM horarios_dosagem
-                GROUP BY tratamento_id
-            ) hd ON hd.tratamento_id = t.id
+                GROUP BY Treatment_id
+            ) hd ON hd.Treatment_id = t.id
             INNER JOIN medicamentos m ON t.remedio_id = m.id
             WHERE t.esta_ativo = 1
             AND m.esta_ativo = 1
             AND t.id = {treatmentId}
-            AND m.usuarioId = {userId}
+            AND m.UserId = {userId}
                 ";
 
             await Connect();
@@ -85,37 +117,37 @@ namespace MediMax.Data.Dao
             return treatment;
         }
         
-        public async Task<TratamentoResponseModel> BuscarTratamentoPorIdParaStatus ( int treatmentId, int userId )
+        public async Task<TreatmentResponseModel> BuscarTreatmentPorIdParaStatus ( int treatmentId, int userId )
         {
             string sql;
-            TratamentoResponseModel treatment;
+            TreatmentResponseModel treatment;
             sql = $@"
               SELECT 
                 t.id AS Id,
                 t.remedio_id AS MedicineId,
-                t.nome_medicamento AS Name,
-                t.quantidade_medicamentos AS MedicineQuantity,
+                t.nome_medication AS Name,
+                t.quantidade_medications AS MedicineQuantity,
                 t.horario_inicio AS StartTime,
-                t.intervalo_tratamento AS TreatmentInterval,
-                COALESCE(sd.quantidade_dias_faltante_para_fim_tratamento, t.tempo_tratamento_dias) AS TreatmentDurationDays,
+                t.intervalo_Treatment AS TreatmentInterval,
+                COALESCE(sd.quantidade_dias_faltante_para_fim_Treatment, t.tempo_Treatment_dias) AS TreatmentDurationDays,
                 t.recomendacoes_alimentacao AS DietaryRecommendations,
                 t.observacao AS Observation,
                 t.esta_ativo AS IsActive,
                 hd.horario_dosagem AS DosageTime
-            FROM tratamento t
+            FROM Treatment t
             INNER JOIN (
                 SELECT 
-                    tratamento_id, 
+                    Treatment_id, 
                     MIN(horario_dosagem) AS horario_dosagem
                 FROM horarios_dosagem
-                GROUP BY tratamento_id
-            ) hd ON hd.tratamento_id = t.id
+                GROUP BY Treatment_id
+            ) hd ON hd.Treatment_id = t.id
             INNER JOIN medicamentos m ON t.remedio_id = m.id
-            LEFT JOIN status_dispenser sd ON t.id = sd.tratamento_id
+            LEFT JOIN status_dispenser sd ON t.id = sd.Treatment_id
             WHERE t.esta_ativo = 1
             AND m.esta_ativo = 1
             AND t.id = {treatmentId}
-            AND m.usuarioId = {userId}
+            AND m.UserId = {userId}
             ORDER BY id DESC
             LIMIT 1
 
@@ -128,35 +160,35 @@ namespace MediMax.Data.Dao
             return treatment;
         }
 
-        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoAtivos ( int userId )
+        public async Task<List<TreatmentResponseModel>> GetTreatmentActives ( int userId )
         {
             string sql;
-            List<TratamentoResponseModel> TreatmentList;
+            List<TreatmentResponseModel> TreatmentList;
             sql = $@"
               SELECT 
                 t.id AS Id,
                 t.remedio_id AS MedicineId,
-                t.nome_medicamento AS Name,
-                t.quantidade_medicamentos AS MedicineQuantity,
+                t.nome_medication AS Name,
+                t.quantidade_medications AS MedicineQuantity,
                 t.horario_inicio AS StartTime,
-                t.intervalo_tratamento AS TreatmentInterval,
-                t.tempo_tratamento_dias AS TreatmentDurationDays,
+                t.intervalo_Treatment AS TreatmentInterval,
+                t.tempo_Treatment_dias AS TreatmentDurationDays,
                 t.recomendacoes_alimentacao AS DietaryRecommendations,
                 t.observacao AS Observation,
                 t.esta_ativo AS IsActive,
                 hd.horario_dosagem AS DosageTime
-            FROM tratamento t
+            FROM Treatment t
             INNER JOIN (
                 SELECT 
-                    tratamento_id, 
+                    Treatment_id, 
                     MIN(horario_dosagem) AS horario_dosagem
                 FROM horarios_dosagem
-                GROUP BY tratamento_id
-            ) hd ON hd.tratamento_id = t.id
+                GROUP BY Treatment_id
+            ) hd ON hd.Treatment_id = t.id
             INNER JOIN medicamentos m ON t.remedio_id = m.id
             WHERE t.esta_ativo = 1
             AND m.esta_ativo = 1
-            AND m.usuarioId = {userId}
+            AND m.UserId = {userId}
                 ";
 
             await Connect();
@@ -165,35 +197,35 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return TreatmentList;
         }
-        public async Task<List<TratamentoResponseModel>> BuscarTodosTratamentoInativos ( int userId )
+        public async Task<List<TreatmentResponseModel>> BuscarTodosTreatmentInativos ( int userId )
         {
             string sql;
-            List<TratamentoResponseModel> TreatmentList;
+            List<TreatmentResponseModel> TreatmentList;
             sql = $@"
                   SELECT 
                     t.id AS Id,
                     t.remedio_id AS MedicineId,
-                    t.nome_medicamento AS Name,
-                    t.quantidade_medicamentos AS MedicineQuantity,
+                    t.nome_medication AS Name,
+                    t.quantidade_medications AS MedicineQuantity,
                     t.horario_inicio AS StartTime,
-                    t.intervalo_tratamento AS TreatmentInterval,
-                    t.tempo_tratamento_dias AS TreatmentDurationDays,
+                    t.intervalo_Treatment AS TreatmentInterval,
+                    t.tempo_Treatment_dias AS TreatmentDurationDays,
                     t.recomendacoes_alimentacao AS DietaryRecommendations,
                     t.observacao AS Observation,
                     t.esta_ativo AS IsActive,
                     hd.horario_dosagem AS DosageTime
-                FROM tratamento t
+                FROM Treatment t
                 INNER JOIN (
                     SELECT 
-                        tratamento_id, 
+                        Treatment_id, 
                         MIN(horario_dosagem) AS horario_dosagem
                     FROM horarios_dosagem
-                    GROUP BY tratamento_id
-                ) hd ON hd.tratamento_id = t.id
+                    GROUP BY Treatment_id
+                ) hd ON hd.Treatment_id = t.id
                 INNER JOIN medicamentos m ON t.remedio_id = m.id
                 WHERE t.esta_ativo = 0
                 AND m.esta_ativo = 1
-                AND m.usuarioId = {userId}
+                AND m.UserId = {userId}
                 ";
 
             await Connect();
@@ -203,42 +235,42 @@ namespace MediMax.Data.Dao
             return TreatmentList;
         }
 
-        public async Task<List<TratamentoResponseModel>> BuscarTratamentoPorIntervalo(string startTime, string finishTime, int userId )
+        public async Task<List<TreatmentResponseModel>> GetTreatmentByInterval(string startTime, string finishTime, int userId )
         {
             string sql;
-            List<TratamentoResponseModel> TreatmentList;
+            List<TreatmentResponseModel> TreatmentList;
             sql = $@"
                   SELECT 
                     t.id AS Id,
                     t.remedio_id AS MedicineId,
-                    t.nome_medicamento AS Name,
-                    t.quantidade_medicamentos AS MedicineQuantity,
+                    t.nome_medication AS Name,
+                    t.quantidade_medications AS MedicineQuantity,
                     t.horario_inicio AS StartTime,
-                    t.intervalo_tratamento AS TreatmentInterval,
-                    t.tempo_tratamento_dias AS TreatmentDurationDays,
+                    t.intervalo_Treatment AS TreatmentInterval,
+                    t.tempo_Treatment_dias AS TreatmentDurationDays,
                     t.recomendacoes_alimentacao AS DietaryRecommendations,
                     t.observacao AS Observation,
                     t.esta_ativo AS IsActive,
                     hd.horario_dosagem AS DosageTime
-                 FROM tratamento t
+                 FROM Treatment t
                  INNER JOIN (
                     SELECT 
-	                    tratamento_id, 
+	                    Treatment_id, 
 	                    horario_dosagem AS horario_dosagem
                     FROM horarios_dosagem hd 
                     WHERE hd.horario_dosagem BETWEEN '{startTime}' AND '{finishTime}'
-                    GROUP BY tratamento_id, horario_dosagem
-                    ) hd ON hd.tratamento_id = t.id
+                    GROUP BY Treatment_id, horario_dosagem
+                    ) hd ON hd.Treatment_id = t.id
                 INNER JOIN medicamentos m ON t.remedio_id = m.id
                 WHERE t.esta_ativo = 1
                 AND m.esta_ativo = 1
-                AND m.usuarioId = {userId}
+                AND m.UserId = {userId}
                 AND NOT EXISTS (
                     SELECT 1
-                    FROM gerenciamento_tratamento gt
-                    WHERE gt.tratamento_id = t.id
-                    AND gt.horario_correto_tratamento BETWEEN '{startTime}' AND '{finishTime}'
-                    AND gt.data_ingestao_medicamento = now()
+                    FROM gerenciamento_Treatment gt
+                    WHERE gt.Treatment_id = t.id
+                    AND gt.horario_correto_Treatment BETWEEN '{startTime}' AND '{finishTime}'
+                    AND gt.data_ingestao_medication = now()
                     )
                 ";
 
@@ -249,12 +281,12 @@ namespace MediMax.Data.Dao
             return TreatmentList;
         } 
 
-        public async Task<bool> AlterandoTratamento(int remedio_id,
+        public async Task<bool> AlterandoTreatment(int remedio_id,
             string nome,
-            int quantidade_medicamentos,
+            int quantidade_medications,
             string horario_inicio,
-            int intervalo_tratamento,
-            int tempo_tratamento_dias,
+            int intervalo_Treatment,
+            int tempo_Treatment_dias,
             string recomendacoes_alimentacao,
             string observacao,
             int id)
@@ -262,12 +294,12 @@ namespace MediMax.Data.Dao
             string sql;
             bool success;
             sql = $@"
-                UPDATE tratamento t
-                SET t.nome_medicamento = '{nome}', 
-                t.quantidade_medicamentos = '{quantidade_medicamentos}', 
+                UPDATE Treatment t
+                SET t.nome_medication = '{nome}', 
+                t.quantidade_medications = '{quantidade_medications}', 
                 t.horario_inicio = '{horario_inicio}', 
-                t.intervalo_tratamento = {intervalo_tratamento}, 
-                t.tempo_tratamento_dias = {tempo_tratamento_dias}, 
+                t.intervalo_Treatment = {intervalo_Treatment}, 
+                t.tempo_Treatment_dias = {tempo_Treatment_dias}, 
                 t.recomendacoes_alimentacao = '{recomendacoes_alimentacao}', 
                 t.observacao = '{observacao}' 
                 WHERE t.id = {id}
@@ -279,14 +311,14 @@ namespace MediMax.Data.Dao
             return success;
         }
 
-        public async Task<bool> DeletandoTratamento(int id)
+        public async Task<bool> DeleteTreatment(int id)
         {
             string sql;
             bool success;
             sql = $@"
-               UPDATE tratamento t
+               UPDATE Treatment t
                 SET t.esta_ativo = 0
-                WHERE t.id = {id}
+               WHERE t.id = {id}
                 ";
             await Connect();
             success = await PersistQuery(sql);
@@ -294,9 +326,9 @@ namespace MediMax.Data.Dao
             return success;
         }
 
-        protected override TratamentoResponseModel Mapper(DbDataReader reader)
+        protected override TreatmentResponseModel Mapper(DbDataReader reader)
         {
-            TratamentoResponseModel treatment = new TratamentoResponseModel();
+            TreatmentResponseModel treatment = new TreatmentResponseModel();
 
             treatment.Id = reader.IsDBNull(reader.GetOrdinal("Id")) ? 0 : reader.GetInt32(reader.GetOrdinal("Id"));
             treatment.Name = reader.IsDBNull(reader.GetOrdinal("Name")) ? null : reader.GetString(reader.GetOrdinal("Name"));
@@ -305,19 +337,6 @@ namespace MediMax.Data.Dao
             treatment.StartTime = reader.IsDBNull(reader.GetOrdinal("StartTime")) ? null : reader.GetString(reader.GetOrdinal("StartTime"));
             treatment.DietaryRecommendations = reader.IsDBNull(reader.GetOrdinal("DietaryRecommendations")) ? null : reader.GetString(reader.GetOrdinal("DietaryRecommendations"));
             treatment.Observation = reader.IsDBNull(reader.GetOrdinal("Observation")) ? null : reader.GetString(reader.GetOrdinal("Observation"));
-
-            // Tratamento para DosageTime: Converter string para List<string>
-            if (!reader.IsDBNull(reader.GetOrdinal("DosageTime")))
-            {
-                string dosageTime = reader.GetString(reader.GetOrdinal("DosageTime"));
-                // Supondo que a string seja uma lista de strings separadas por vírgulas
-                treatment.DosageTime = dosageTime.Split(',').ToList();
-            }
-            else
-            {
-                treatment.DosageTime = new List<string>();
-            }
-
             treatment.TreatmentInterval = reader.IsDBNull(reader.GetOrdinal("TreatmentInterval")) ? null : reader.GetInt32(reader.GetOrdinal("TreatmentInterval"));
             treatment.TreatmentDurationDays = reader.IsDBNull(reader.GetOrdinal("TreatmentDurationDays")) ? null : reader.GetInt32(reader.GetOrdinal("TreatmentDurationDays"));
             treatment.IsActive = reader.IsDBNull(reader.GetOrdinal("IsActive")) ? null : reader.GetInt32(reader.GetOrdinal("IsActive"));

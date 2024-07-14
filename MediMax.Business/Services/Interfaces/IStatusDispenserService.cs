@@ -4,10 +4,10 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Business.Services.Interfaces
 {
-    public interface IStatusDispenserService
+    public interface IDispenserStatusService
     {
-        Task<int> CriandoOuAtualizandoStatusDispenser(StatusDispenserCreateRequestModel request);
-        Task<StatusDispenserListaResponseModel> BuscandoStatusDispenser ( int treatmentId, int userId );
-        Task<int> CalculadoraQuantidadeCaixasTratamento ( CalculadoraCaixasRequestModel request );
+        Task<int> CriandoOuAtualizandoDispenserStatus(DispenserStatusCreateRequestModel request);
+        Task<DispenserStatusListaResponseModel> BuscandoDispenserStatus ( int treatmentId, int userId );
+        Task<int> CalculadoraQuantidadeCaixasTreatment ( CalculadoraCaixasRequestModel request );
     }
 }

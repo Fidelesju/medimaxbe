@@ -11,14 +11,14 @@ namespace MediMax.Data.Models
         }
 
         public DbSet<Owner> Owner { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Tratamento> Tratamento { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Treatment> Treatment { get; set; }
         public DbSet<Medicamentos> Medicamentos { get; set; }
         public DbSet<Alimentacao> Alimentacao { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Usuario>().HasKey(u => u.id_usuario);
+            modelBuilder.Entity<User>().HasKey(u => u.id_User);
 
             // Outras configurações do modelo
 

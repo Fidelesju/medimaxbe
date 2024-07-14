@@ -2,9 +2,9 @@
 
 namespace MediMax.Data.Repositories.Interfaces
 {
-    public interface IGerenciamentoTratamentoRepository
+    public interface ITreatmentManagementRepository
     {
-        int Create(GerenciamentoTratamento gerenciamentoTratamentos);
-        void Update(GerenciamentoTratamento gerenciamentoTratamentos);
+        int Create(TreatmentManagement TreatmentManagements);
+        void Update(TreatmentManagement TreatmentManagements);
     }
 }

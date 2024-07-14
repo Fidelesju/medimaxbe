@@ -6,24 +6,24 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers
 {
-    public class MedicamentoCreateMapper : Mapper<MedicamentoETratamentoCreateRequestModel>, IMedicamentoCreateMapper
+    public class MedicamentoCreateMapper : Mapper<MedicationCreateRequestModel>, IMedicationCreateMapper
     {
-        private readonly Medicamentos? _medicamentos;
+        private readonly Medicamentos? _medications;
 
         public MedicamentoCreateMapper()
         {
-            _medicamentos = new Medicamentos();
+            _medications = new Medicamentos();
         }
 
-        public Medicamentos BuscarMedicamentos()
+        public Medicamentos GetMedication()
         {
-            _medicamentos.usuarioId = BaseMapping.usuarioId;
-            _medicamentos.nome = BaseMapping.nome;
-            _medicamentos.quantidade_embalagem = BaseMapping.quantidade_embalagem;
-            _medicamentos.dosagem = BaseMapping.dosagem;
-            _medicamentos.data_vencimento = BaseMapping.data_vencimento_medicamento;
-            _medicamentos.esta_ativo = 1;
-            return _medicamentos;
+            _medications.usuarioId = BaseMapping.user_id;
+            _medications.nome = BaseMapping.medicine_name;
+            _medications.quantidade_embalagem = BaseMapping.package_quantity;
+            _medications.dosagem = BaseMapping.dosage;
+            _medications.data_vencimento = BaseMapping.expiration_date;
+            _medications.esta_ativo = 1;
+            return _medications;
         }
     }
 }

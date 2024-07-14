@@ -14,34 +14,34 @@ namespace MediMax.Business.Services
 {
     public class MedicineService : IMedicineService
     {
-        private readonly IMedicamentoCreateMapper _medicamentoCreateMapper;
-        private readonly ITratamentoCreateMapper _tratamentoCreateMapper;
+        private readonly IMedicamentoCreateMapper _medicationCreateMapper;
+        private readonly ITreatmentCreateMapper _TreatmentCreateMapper;
         private readonly IMedicamentosRepository _medicineRepository;
-        private readonly ITratamentoRepository _tratamentoRepository;
+        private readonly ITreatmentRepository _TreatmentRepository;
         private readonly IMedicineDb _medicineDb;
 
         public MedicineService(
             IMedicamentoCreateMapper medicineCreateMapper,
-            ITratamentoCreateMapper tratamentoCreateMapper,
+            ITreatmentCreateMapper TreatmentCreateMapper,
             IMedicamentosRepository medicineRepository,
-            ITratamentoRepository tratamentoRepository,
+            ITreatmentRepository TreatmentRepository,
             IMedicineDb medicineDb) 
         {
-            _medicamentoCreateMapper = medicineCreateMapper;
+            _medicationCreateMapper = medicineCreateMapper;
             _medicineRepository = medicineRepository;
             _medicineDb = medicineDb;
-            _tratamentoCreateMapper = tratamentoCreateMapper;
-            _tratamentoRepository = tratamentoRepository;
+            _TreatmentCreateMapper = TreatmentCreateMapper;
+            _TreatmentRepository = TreatmentRepository;
         }
 
-        public async Task<int> CreateMedicineAndTreatment(MedicamentoETratamentoCreateRequestModel request)
+        public async Task<int> CreateMedicineAndTreatment(MedicamentoETreatmentCreateRequestModel request)
         {
-            Tratamento tratamentos;
+            Treatment Treatments;
             Medicamentos medicamentos;
             MedicineCreateValidation validation;
             Dictionary<string, string> errors;
 
-            _medicamentoCreateMapper.SetBaseMapping(request);
+            _medicationCreateMapper.SetBaseMapping(request);
             validation = new MedicineCreateValidation();
             if (!validation.IsValid(request))
             {
@@ -50,10 +50,10 @@ namespace MediMax.Business.Services
             }
             try
             {
-                medicamentos = _medicamentoCreateMapper.GetMedicamentos();
-                tratamentos = _tratamentoCreateMapper.GetTratemento(request);
+                medicamentos = _medicationCreateMapper.GetMedicamentos();
+                Treatments = _TreatmentCreateMapper.GetTratemento(request);
                 _medicineRepository.Create(medicamentos);
-                _tratamentoRepository.Create(tratamentos);
+                _TreatmentRepository.Create(Treatments);
                 return medicamentos.id;
             }
             catch (DbUpdateException exception)

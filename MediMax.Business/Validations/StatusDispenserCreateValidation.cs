@@ -4,9 +4,9 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Validations
 {
-    public class StatusDispenserCreateValidation : Validation<StatusDispenserCreateRequestModel>
+    public class DispenserStatusCreateValidation : Validation<DispenserStatusCreateRequestModel>
     {
-        public StatusDispenserCreateValidation()
+        public DispenserStatusCreateValidation()
         {
             validarRequestStatusDispense();
         }
@@ -17,7 +17,7 @@ namespace MediMax.Business.Validations
                 .NotEmpty()
                 .WithMessage(DefaultErrorMessages.RequiredField);
 
-            RuleFor(u => u.tratamento_id)
+            RuleFor(u => u.Treatment_id)
                 .NotEmpty()
                 .WithMessage(DefaultErrorMessages.RequiredField);
 

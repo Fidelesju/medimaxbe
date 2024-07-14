@@ -4,8 +4,8 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers.Interfaces
 {
-    public interface IGerenciamentoTratamentoCreateMapper : IMapper<GerencimentoTratamentoCreateRequestModel>
+    public interface ITreatmentManagementCreateMapper : IMapper<GerencimentoTreatmentCreateRequestModel>
     {
-        GerenciamentoTratamento GetGerenciamentoTratamento();
+        TreatmentManagement GetTreatmentManagement();
     }
 }

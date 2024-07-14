@@ -1,6 +1,6 @@
 ﻿namespace MediMax.Data.ResponseModels
 {
-    public class TratamentoResponseModel
+    public class TreatmentResponseModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -12,6 +12,5 @@
         public string? DietaryRecommendations { get; set; }
         public string? Observation { get; set; }
         public int? IsActive { get; set; }
-        public List<string> DosageTime { get; set; }
     }
 }

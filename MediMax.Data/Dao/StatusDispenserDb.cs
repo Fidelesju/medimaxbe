@@ -6,42 +6,42 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao
 {
-    public class StatusDispenserDb : Db<StatusDispenserResponseModel>, IStatusDispenserDb
+    public class DispenserStatusDb : Db<DispenserStatusResponseModel>, IDispenserStatusDb
     {
-        public StatusDispenserDb(IConfiguration configuration,
+        public DispenserStatusDb(IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment, MediMaxDbContext dbContext) : base(configuration, webHostEnvironment, dbContext)
         {
         }
 
-        public async Task<StatusDispenserResponseModel> BuscandoSeExisteAbastacimentoCadastrado(int tratamentoId)
+        public async Task<DispenserStatusResponseModel> BuscandoSeExisteAbastacimentoCadastrado(int TreatmentId)
         {
             string sql;
-            StatusDispenserResponseModel medicamentoLista;
+            DispenserStatusResponseModel medicamentoLista;
             sql = $@"
                SELECT  
                     id AS Id,
-                    tratamento_id AS TratamentoId,
+                    Treatment_id AS TreatmentId,
                     medicamento_id AS MedicamentoId,
-                    quantidade_total_medicamento_caixa AS QuantidadeTotalMedicamentoCaixa,
-                    quantidade_total_caixa_tratamento AS QuantidadeTotalCaixaTratamento,
-                    quantidade_total_medicamento_dosagem_dia AS QuantidadeTotalMedicamentoDosagemDia,
-                    quantidade_total_medicamentos_tratamento AS QuantidadeTotalMedicamentosTratamento,
-                    intervalo_tratamento_horas AS IntervaloTratamentoHoras,
-                    intervalo_tratamento_dias AS IntervaloTratamentoDias,
-                    quantidade_medicamento_por_dosagem AS QuantidadeMedicamentoPorDosagem,
+                    quantidade_total_medication_caixa AS QuantidadeTotalMedicamentoCaixa,
+                    quantidade_total_caixa_Treatment AS QuantidadeTotalCaixaTreatment,
+                    quantidade_total_medication_dosagem_dia AS QuantidadeTotalMedicamentoDosagemDia,
+                    quantidade_total_medications_Treatment AS QuantidadeTotalMedicamentosTreatment,
+                    intervalo_Treatment_horas AS IntervaloTreatmentHoras,
+                    intervalo_Treatment_dias AS IntervaloTreatmentDias,
+                    quantidade_medication_por_dosagem AS QuantidadeMedicamentoPorDosagem,
                     frenquecia_dosagem_diaria AS FrenqueciaDosagemDiaria,
-                    quantidade_medicamento_semanal AS QuantidadeMedicamentoSemanal,
-                    quantidade_atual_medicamento_caixa_tratamento AS QuantidadeAtualMedicamentoCaixaTratamento,
-                    quantidade_medicamento_faltante_para_fim_tratamento AS QuantidadeMedicamentoFaltanteParaFimTratamento,
-                    quantidade_dias_faltante_para_fim_tratamento AS QuantidadeDiasFaltanteParaFimTratamento,
+                    quantidade_medication_semanal AS QuantidadeMedicamentoSemanal,
+                    quantidade_atual_medication_caixa_Treatment AS QuantidadeAtualMedicamentoCaixaTreatment,
+                    quantidade_medication_faltante_para_fim_Treatment AS QuantidadeMedicamentoFaltanteParaFimTreatment,
+                    quantidade_dias_faltante_para_fim_Treatment AS QuantidadeDiasFaltanteParaFimTreatment,
                     data_criacao AS DataCriacao,
                     data_atualizacao_semanal AS DataAtualizacaoSemanal,
-                    data_inicio_tratamento AS DataInicioTratamento,
-                    data_final_previsto_tratamento AS DataFinalPrevistoTratamento,
-                    data_final_marcado_tratamento AS DataFinalMarcadoTratamento,
-                    status_tratamento AS StatusTratamento
+                    data_inicio_Treatment AS DataInicioTreatment,
+                    data_final_previsto_Treatment AS DataFinalPrevistoTreatment,
+                    data_final_marcado_Treatment AS DataFinalMarcadoTreatment,
+                    status_Treatment AS StatusTreatment
                 FROM status_dispenser
-               WHERE tratamento_id = {tratamentoId}
+               WHERE Treatment_id = {TreatmentId}
                ORDER BY id DESC
                LIMIT 1
                 ";
@@ -53,24 +53,24 @@ namespace MediMax.Data.Dao
         }
 
 
-        protected override StatusDispenserResponseModel Mapper(DbDataReader reader)
+        protected override DispenserStatusResponseModel Mapper(DbDataReader reader)
         {
-            StatusDispenserResponseModel statusDispenser = new StatusDispenserResponseModel();
+            DispenserStatusResponseModel DispenserStatus = new DispenserStatusResponseModel();
 
             // Convertendo Id para int
             if (int.TryParse(reader["Id"].ToString(), out int id))
             {
-                statusDispenser.Id = id;
+                DispenserStatus.Id = id;
             }
             else
             {
                 // Tratar erro de conversão
             }
 
-            // Convertendo TratamentoId para int
-            if (int.TryParse(reader["TratamentoId"].ToString(), out int tratamentoId))
+            // Convertendo TreatmentId para int
+            if (int.TryParse(reader["TreatmentId"].ToString(), out int TreatmentId))
             {
-                statusDispenser.TratamentoId = tratamentoId;
+                DispenserStatus.TreatmentId = TreatmentId;
             }
             else
             {
@@ -80,7 +80,7 @@ namespace MediMax.Data.Dao
             // Convertendo MedicamentoId para int
             if (int.TryParse(reader["MedicamentoId"].ToString(), out int medicamentoId))
             {
-                statusDispenser.MedicamentoId = medicamentoId;
+                DispenserStatus.MedicamentoId = medicamentoId;
             }
             else
             {
@@ -90,37 +90,37 @@ namespace MediMax.Data.Dao
             // Convertendo QuantidadeTotalMedicamentoCaixa para int
             if (int.TryParse(reader["QuantidadeTotalMedicamentoCaixa"].ToString(), out int quantidadeTotalMedicamentoCaixa))
             {
-                statusDispenser.QuantidadeTotalMedicamentoCaixa = quantidadeTotalMedicamentoCaixa;
+                DispenserStatus.QuantidadeTotalMedicamentoCaixa = quantidadeTotalMedicamentoCaixa;
             }
             else
             {
                 // Tratar erro de conversão
             }
 
-            // Convertendo QuantidadeTotalCaixaTratamento para int
-            if (int.TryParse(reader["QuantidadeTotalCaixaTratamento"].ToString(), out int quantidadeTotalCaixaTratamento))
+            // Convertendo QuantidadeTotalCaixaTreatment para int
+            if (int.TryParse(reader["QuantidadeTotalCaixaTreatment"].ToString(), out int quantidadeTotalCaixaTreatment))
             {
-                statusDispenser.QuantidadeTotalCaixaTratamento = quantidadeTotalCaixaTratamento;
+                DispenserStatus.QuantidadeTotalCaixaTreatment = quantidadeTotalCaixaTreatment;
             }
             else
             {
                 // Tratar erro de conversão
             }
 
-            // Convertendo IntervaloTratamentoHoras para int
-            if (int.TryParse(reader["IntervaloTratamentoHoras"].ToString(), out int intervaloTratamentoHoras))
+            // Convertendo IntervaloTreatmentHoras para int
+            if (int.TryParse(reader["IntervaloTreatmentHoras"].ToString(), out int intervaloTreatmentHoras))
             {
-                statusDispenser.IntervaloTratamentoHoras = intervaloTratamentoHoras;
+                DispenserStatus.IntervaloTreatmentHoras = intervaloTreatmentHoras;
             }
             else
             {
                 // Tratar erro de conversão
             }
 
-            // Convertendo IntervaloTratamentoDias para int
-            if (int.TryParse(reader["IntervaloTratamentoDias"].ToString(), out int intervaloTratamentoDias))
+            // Convertendo IntervaloTreatmentDias para int
+            if (int.TryParse(reader["IntervaloTreatmentDias"].ToString(), out int intervaloTreatmentDias))
             {
-                statusDispenser.IntervaloTratamentoDias = intervaloTratamentoDias;
+                DispenserStatus.IntervaloTreatmentDias = intervaloTreatmentDias;
             }
             else
             {
@@ -129,7 +129,7 @@ namespace MediMax.Data.Dao
             
             if (int.TryParse(reader["QuantidadeMedicamentoPorDosagem"].ToString(), out int quantidadeMedicamentoPorDosagem))
             {
-                statusDispenser.QuantidadeMedicamentoPorDosagem = quantidadeMedicamentoPorDosagem;
+                DispenserStatus.QuantidadeMedicamentoPorDosagem = quantidadeMedicamentoPorDosagem;
             }
             else
             {
@@ -138,7 +138,7 @@ namespace MediMax.Data.Dao
 
             if (int.TryParse(reader["FrenqueciaDosagemDiaria"].ToString(), out int frenqueciaDosagemDiaria))
             {
-                statusDispenser.FrenqueciaDosagemDiaria = frenqueciaDosagemDiaria;
+                DispenserStatus.FrenqueciaDosagemDiaria = frenqueciaDosagemDiaria;
             }
             else
             {
@@ -147,16 +147,16 @@ namespace MediMax.Data.Dao
 
             if (int.TryParse(reader["QuantidadeTotalMedicamentoDosagemDia"].ToString(), out int quantidadeTotalMedicamentoDosagemDia))
             {
-                statusDispenser.QuantidadeTotalMedicamentoDosagemDia = quantidadeTotalMedicamentoDosagemDia;
+                DispenserStatus.QuantidadeTotalMedicamentoDosagemDia = quantidadeTotalMedicamentoDosagemDia;
             }
             else
             {
                 // Tratar erro de conversão
             }
 
-            if (int.TryParse(reader["QuantidadeTotalMedicamentosTratamento"].ToString(), out int quantidadeTotalMedicamentosTratamento))
+            if (int.TryParse(reader["QuantidadeTotalMedicamentosTreatment"].ToString(), out int quantidadeTotalMedicamentosTreatment))
             {
-                statusDispenser.QuantidadeTotalMedicamentosTratamento = quantidadeTotalMedicamentosTratamento;
+                DispenserStatus.QuantidadeTotalMedicamentosTreatment = quantidadeTotalMedicamentosTreatment;
             }
             else
             {
@@ -166,16 +166,16 @@ namespace MediMax.Data.Dao
            
              if (int.TryParse(reader["QuantidadeMedicamentoSemanal"].ToString(), out int quantidadeMedicamentoSemanal))
             {
-                statusDispenser.QuantidadeMedicamentoSemanal = quantidadeMedicamentoSemanal;
+                DispenserStatus.QuantidadeMedicamentoSemanal = quantidadeMedicamentoSemanal;
             }
             else
             {
                 // Tratar erro de conversão
             }
 
-            if (int.TryParse(reader["QuantidadeAtualMedicamentoCaixaTratamento"].ToString(), out int quantidadeAtualMedicamentoCaixaTratamento))
+            if (int.TryParse(reader["QuantidadeAtualMedicamentoCaixaTreatment"].ToString(), out int quantidadeAtualMedicamentoCaixaTreatment))
             {
-                statusDispenser.QuantidadeAtualMedicamentoCaixaTratamento = quantidadeAtualMedicamentoCaixaTratamento;
+                DispenserStatus.QuantidadeAtualMedicamentoCaixaTreatment = quantidadeAtualMedicamentoCaixaTreatment;
             }
             else
             {
@@ -183,39 +183,39 @@ namespace MediMax.Data.Dao
             }
 
            
-            if (int.TryParse(reader["QuantidadeMedicamentoFaltanteParaFimTratamento"].ToString(), out int quantidadeMedicamentoFaltanteParaFimTratamento))
+            if (int.TryParse(reader["QuantidadeMedicamentoFaltanteParaFimTreatment"].ToString(), out int quantidadeMedicamentoFaltanteParaFimTreatment))
             {
-                statusDispenser.QuantidadeMedicamentoFaltanteParaFimTratamento = quantidadeMedicamentoFaltanteParaFimTratamento;
+                DispenserStatus.QuantidadeMedicamentoFaltanteParaFimTreatment = quantidadeMedicamentoFaltanteParaFimTreatment;
             }
             else
             {
                 // Tratar erro de conversão
             }
              
-            if (int.TryParse(reader["QuantidadeDiasFaltanteParaFimTratamento"].ToString(), out int quantidadeDiasFaltanteParaFimTratamento))
+            if (int.TryParse(reader["QuantidadeDiasFaltanteParaFimTreatment"].ToString(), out int quantidadeDiasFaltanteParaFimTreatment))
             {
-                statusDispenser.QuantidadeDiasFaltanteParaFimTratamento = quantidadeDiasFaltanteParaFimTratamento;
+                DispenserStatus.QuantidadeDiasFaltanteParaFimTreatment = quantidadeDiasFaltanteParaFimTreatment;
             }
             else
             {
                 // Tratar erro de conversão
             }
 
-            statusDispenser.DataCriacao = reader["DataCriacao"].ToString();
-            statusDispenser.DataAtualizacaoSemanal = reader["DataAtualizacaoSemanal"].ToString();
-            statusDispenser.DataInicioTratamento = reader["DataInicioTratamento"].ToString();
-            statusDispenser.DataFinalPrevistoTratamento = reader["DataFinalPrevistoTratamento"].ToString();
-            statusDispenser.DataFinalMarcadoTratamento = reader["DataFinalMarcadoTratamento"].ToString();
+            DispenserStatus.DataCriacao = reader["DataCriacao"].ToString();
+            DispenserStatus.DataAtualizacaoSemanal = reader["DataAtualizacaoSemanal"].ToString();
+            DispenserStatus.DataInicioTreatment = reader["DataInicioTreatment"].ToString();
+            DispenserStatus.DataFinalPrevistoTreatment = reader["DataFinalPrevistoTreatment"].ToString();
+            DispenserStatus.DataFinalMarcadoTreatment = reader["DataFinalMarcadoTreatment"].ToString();
 
-            if (int.TryParse(reader["StatusTratamento"].ToString(), out int statusTratamento))
+            if (int.TryParse(reader["StatusTreatment"].ToString(), out int statusTreatment))
             {
-                statusDispenser.StatusTratamento = statusTratamento;
+                DispenserStatus.StatusTreatment = statusTreatment;
             }
             else
             {
                 // Tratar erro de conversão
             }
-            return statusDispenser;
+            return DispenserStatus;
         }
     }
 }

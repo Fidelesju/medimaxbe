@@ -5,7 +5,8 @@ namespace MediMax.Data.ApplicationModels
     {
         public string Message { get; set; }
         public T Data { get; set; }
-        public List<char> Errors { get; set; }
+        public bool IsSuccess { get; set; }
+        public List<string> Errors { get; set; }
 
         public static BaseResponse<T> Builder()
         {
@@ -22,6 +23,10 @@ namespace MediMax.Data.ApplicationModels
         {
             Data = data;
             return this;
+        }
+        public BaseResponse ( )
+        {
+            Errors = new List<string>();
         }
     }
 }

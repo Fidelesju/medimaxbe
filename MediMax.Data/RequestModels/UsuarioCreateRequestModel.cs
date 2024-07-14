@@ -2,7 +2,7 @@
 
 namespace MediMax.Data.RequestModels
 {
-    public class UsuarioCreateRequestModel
+    public class UserCreateRequestModel
     {
         public string UserName { get; set; }
         public string Email { get; set; }

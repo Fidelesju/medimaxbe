@@ -28,7 +28,7 @@ namespace MediMax.Business.Services
 
         public async Task<int> CreateUsers(UserCreateRequestModel request)
         {
-            Usuario user;
+            User user;
             UserCreateValidation validation;
             Dictionary<string, string> errors;
 
@@ -43,7 +43,7 @@ namespace MediMax.Business.Services
             {
                 user = _userCreateMapper.GetUser();
                 _userRepository.Create(user);
-                return user.id_usuario;
+                return user.id_User;
             }
             catch (DbUpdateException exception)
             {

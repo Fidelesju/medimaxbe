@@ -5,7 +5,7 @@ namespace MediMax.Data.RequestModels
     public class AlimentacaoUpdateRequestModel
     {
         public int id { get; set; }
-        public int usuarioId { get; set; }
+        public int UserId { get; set; }
         public string tipo_refeicao { get; set; }
         public string horario { get; set; }
         public List<DetalheAlimentaoUpdateRequestModel> detalhe_alimento { get; set; }

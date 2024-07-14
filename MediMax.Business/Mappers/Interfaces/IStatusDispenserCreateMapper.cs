@@ -4,8 +4,8 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers.Interfaces
 {
-    public interface IStatusDispenserCreateMapper : IMapper<StatusDispenserCreateRequestModel>
+    public interface IDispenserStatusCreateMapper : IMapper<DispenserStatusCreateRequestModel>
     {
-        StatusDispenser BuscarStatusDispenser();
+        DispenserStatus BuscarDispenserStatus();
     }
 }

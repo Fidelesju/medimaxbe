@@ -23,7 +23,7 @@ namespace MediMax.Application.Controller
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<BaseResponse<int>>> CreateMedicineAndTreatment(MedicamentoETratamentoCreateRequestModel request)
+        public async Task<ActionResult<BaseResponse<int>>> CreateMedicineAndTreatment(MedicamentoETreatmentCreateRequestModel request)
         {
             BaseResponse<int> response;
             int id;

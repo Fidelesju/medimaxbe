@@ -13,45 +13,45 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MediMax.Business.Services
 {
-    public class StatusDispenserService : IStatusDispenserService
+    public class DispenserStatusService : IDispenserStatusService
     {
-        private readonly IStatusDispenserCreateMapper _statusDispenserCreateMapper;
-        private readonly IStatusDispenserRepository _statusDispenserRepository;
-        private readonly IStatusDispenserDb _statusDispenserDb;
-        private readonly ITratamentoDb _tratamentoDb;
-        private readonly IMedicamentoDb _medicamentoDb;
+        private readonly IDispenserStatusCreateMapper _DispenserStatusCreateMapper;
+        private readonly IDispenserStatusRepository _DispenserStatusRepository;
+        private readonly IDispenserStatusDb _DispenserStatusDb;
+        private readonly ITreatmentDb _TreatmentDb;
+        private readonly IMedicationDb _medicationDb;
        
-        public StatusDispenserService(
-            IStatusDispenserCreateMapper statusDispenserCreateMapper,
-            IStatusDispenserDb statusDispenserDb,
-            ITratamentoDb tratamentoDb,
-            IMedicamentoDb medicamentoDb,
-            IStatusDispenserRepository statusDispenserRepository
+        public DispenserStatusService(
+            IDispenserStatusCreateMapper DispenserStatusCreateMapper,
+            IDispenserStatusDb DispenserStatusDb,
+            ITreatmentDb TreatmentDb,
+            IMedicationDb medicamentoDb,
+            IDispenserStatusRepository DispenserStatusRepository
           )
         {
-            _statusDispenserCreateMapper = statusDispenserCreateMapper;
-            _statusDispenserDb = statusDispenserDb;
-            _tratamentoDb = tratamentoDb;
-            _medicamentoDb = medicamentoDb;
-            _statusDispenserRepository = statusDispenserRepository;
+            _DispenserStatusCreateMapper = DispenserStatusCreateMapper;
+            _DispenserStatusDb = DispenserStatusDb;
+            _TreatmentDb = TreatmentDb;
+            _medicationDb = medicamentoDb;
+            _DispenserStatusRepository = DispenserStatusRepository;
            
            
         }
 
         /// <summary>
-        /// Criando ou atualizando status do tratamento.
+        /// Criando ou atualizando status do Treatment.
         /// </summary>
-        public async Task<int> CriandoOuAtualizandoStatusDispenser(StatusDispenserCreateRequestModel request)
+        public async Task<int> CriandoOuAtualizandoDispenserStatus(DispenserStatusCreateRequestModel request)
         {
-            StatusDispenser statusDispenser;
-            StatusDispenserCreateValidation validation;
-            StatusDispenserResponseModel existeAbastencimentoCadastrado;
+            DispenserStatus DispenserStatus;
+            DispenserStatusCreateValidation validation;
+            DispenserStatusResponseModel existeAbastencimentoCadastrado;
             DateTime dataAtual = DateTime.Today;
-            DateTime dataFinalPrevistaTratamento;
+            DateTime dataFinalPrevistaTreatment;
 
             Dictionary<string, string> errors;
 
-            validation = new StatusDispenserCreateValidation();
+            validation = new DispenserStatusCreateValidation();
             if (!validation.IsValid(request))
             {
                 errors = validation.GetErrors();
@@ -60,69 +60,69 @@ namespace MediMax.Business.Services
 
             try
             {
-                existeAbastencimentoCadastrado = await _statusDispenserDb.BuscandoSeExisteAbastacimentoCadastrado(request.tratamento_id);
-                request.frenquecia_dosagem_diaria = CalcularFrequenciaDosagemDiaria(request.intervalo_tratamento_horas);
-                request.quantidade_total_medicamento_dosagem_dia = CalcularQuantidadeTotalMedicamentoDosagemDia(request.quantidade_medicamento_por_dosagem, request.frenquecia_dosagem_diaria);
-                request.quantidade_medicamento_semanal = CalcularQuantidadeTotalMedicamentoDosagemSemanal(request.frenquecia_dosagem_diaria);
-                request.quantidade_total_medicamentos_tratamento = CalcularQuantidadeTotalMedicamentosTratamento(request.frenquecia_dosagem_diaria, request.intervalo_tratamento_dias);
-                request.quantidade_total_caixa_tratamento =  CalcularQuantidadeTotalDeCaixasTratamento(request.quantidade_total_medicamento_caixa, request.frenquecia_dosagem_diaria);
+                existeAbastencimentoCadastrado = await _DispenserStatusDb.BuscandoSeExisteAbastacimentoCadastrado(request.Treatment_id);
+                request.frenquecia_dosagem_diaria = CalcularFrequenciaDosagemDiaria(request.intervalo_Treatment_horas);
+                request.quantidade_total_medication_dosagem_dia = CalcularQuantidadeTotalMedicamentoDosagemDia(request.quantidade_medication_por_dosagem, request.frenquecia_dosagem_diaria);
+                request.quantidade_medication_semanal = CalcularQuantidadeTotalMedicamentoDosagemSemanal(request.frenquecia_dosagem_diaria);
+                request.quantidade_total_medications_Treatment = CalcularQuantidadeTotalMedicamentosTreatment(request.frenquecia_dosagem_diaria, request.intervalo_Treatment_dias);
+                request.quantidade_total_caixa_Treatment =  CalcularQuantidadeTotalDeCaixasTreatment(request.quantidade_total_medication_caixa, request.frenquecia_dosagem_diaria);
 
                 if (existeAbastencimentoCadastrado == null )
                 {
-                    request.quantidade_atual_medicamento_caixa_tratamento = request.quantidade_total_medicamento_caixa - request.quantidade_medicamento_semanal;
-                    request.quantidade_medicamento_faltante_para_fim_tratamento = request.quantidade_atual_medicamento_caixa_tratamento;
-                    request.quantidade_dias_faltante_para_fim_tratamento = request.intervalo_tratamento_dias;
+                    request.quantidade_atual_medication_caixa_Treatment = request.quantidade_total_medication_caixa - request.quantidade_medication_semanal;
+                    request.quantidade_medication_faltante_para_fim_Treatment = request.quantidade_atual_medication_caixa_Treatment;
+                    request.quantidade_dias_faltante_para_fim_Treatment = request.intervalo_Treatment_dias;
                     request.data_criacao = dataAtual.ToString("dd/MM/yyyy");
                     request.data_atualizacao_semanal = dataAtual.ToString("dd/MM/yyyy");
-                    request.data_inicio_tratamento = dataAtual.ToString("dd/MM/yyyy");
-                    dataFinalPrevistaTratamento = dataAtual.AddDays(request.intervalo_tratamento_dias);
-                    request.data_final_previsto_tratamento = dataFinalPrevistaTratamento.ToString("dd/MM/yyyy");
-                    request.data_final_marcado_tratamento = "Ainda não finalizado";
-                    request.status_tratamento = 1;
-                    _statusDispenserCreateMapper.SetBaseMapping(request);
-                    statusDispenser = _statusDispenserCreateMapper.BuscarStatusDispenser();
-                    _statusDispenserRepository.Create(statusDispenser);
+                    request.data_inicio_Treatment = dataAtual.ToString("dd/MM/yyyy");
+                    dataFinalPrevistaTreatment = dataAtual.AddDays(request.intervalo_Treatment_dias);
+                    request.data_final_previsto_Treatment = dataFinalPrevistaTreatment.ToString("dd/MM/yyyy");
+                    request.data_final_marcado_Treatment = "Ainda não finalizado";
+                    request.status_Treatment = 1;
+                    _DispenserStatusCreateMapper.SetBaseMapping(request);
+                    DispenserStatus = _DispenserStatusCreateMapper.BuscarDispenserStatus();
+                    _DispenserStatusRepository.Create(DispenserStatus);
                 }
                 else
                 {
-                    request.quantidade_atual_medicamento_caixa_tratamento = CalcularQuantidadeAtualMedicamentoCaixaTratamento(existeAbastencimentoCadastrado.QuantidadeAtualMedicamentoCaixaTratamento, request.quantidade_medicamento_semanal);
-                    request.quantidade_dias_faltante_para_fim_tratamento = CalcularQuantidadeDiasFaltanteParaFimTratamento(dataAtual.ToString("dd/MM/yyyy"), existeAbastencimentoCadastrado.DataFinalPrevistoTratamento);
+                    request.quantidade_atual_medication_caixa_Treatment = CalcularQuantidadeAtualMedicamentoCaixaTreatment(existeAbastencimentoCadastrado.QuantidadeAtualMedicamentoCaixaTreatment, request.quantidade_medication_semanal);
+                    request.quantidade_dias_faltante_para_fim_Treatment = CalcularQuantidadeDiasFaltanteParaFimTreatment(dataAtual.ToString("dd/MM/yyyy"), existeAbastencimentoCadastrado.DataFinalPrevistoTreatment);
 
                     //TODO Adicionar notificação que a caixa está vazia e que precisa adicionar novo
-                    if (request.quantidade_atual_medicamento_caixa_tratamento < 0 && request.quantidade_dias_faltante_para_fim_tratamento > 7)
-                        request.quantidade_atual_medicamento_caixa_tratamento = request.quantidade_total_medicamento_caixa;
-                    else if (request.quantidade_atual_medicamento_caixa_tratamento < 0 && request.quantidade_dias_faltante_para_fim_tratamento < 7)
-                        request.quantidade_atual_medicamento_caixa_tratamento = 0;
+                    if (request.quantidade_atual_medication_caixa_Treatment < 0 && request.quantidade_dias_faltante_para_fim_Treatment > 7)
+                        request.quantidade_atual_medication_caixa_Treatment = request.quantidade_total_medication_caixa;
+                    else if (request.quantidade_atual_medication_caixa_Treatment < 0 && request.quantidade_dias_faltante_para_fim_Treatment < 7)
+                        request.quantidade_atual_medication_caixa_Treatment = 0;
 
-                    request.quantidade_medicamento_faltante_para_fim_tratamento = CalcularQuantidadeMedicamentoFaltanteParaFimTratamento(existeAbastencimentoCadastrado.QuantidadeMedicamentoFaltanteParaFimTratamento, request.quantidade_medicamento_semanal);
+                    request.quantidade_medication_faltante_para_fim_Treatment = CalcularQuantidadeMedicamentoFaltanteParaFimTreatment(existeAbastencimentoCadastrado.QuantidadeMedicamentoFaltanteParaFimTreatment, request.quantidade_medication_semanal);
 
-                    if (request.quantidade_medicamento_faltante_para_fim_tratamento <= existeAbastencimentoCadastrado.QuantidadeMedicamentoSemanal)
-                        request.quantidade_medicamento_faltante_para_fim_tratamento = 0;
+                    if (request.quantidade_medication_faltante_para_fim_Treatment <= existeAbastencimentoCadastrado.QuantidadeMedicamentoSemanal)
+                        request.quantidade_medication_faltante_para_fim_Treatment = 0;
 
                     request.data_criacao = existeAbastencimentoCadastrado.DataCriacao;
                     request.data_atualizacao_semanal = dataAtual.ToString("dd/MM/yyyy");
-                    request.data_inicio_tratamento = existeAbastencimentoCadastrado.DataInicioTratamento;
-                    request.data_final_previsto_tratamento = existeAbastencimentoCadastrado.DataFinalPrevistoTratamento;
+                    request.data_inicio_Treatment = existeAbastencimentoCadastrado.DataInicioTreatment;
+                    request.data_final_previsto_Treatment = existeAbastencimentoCadastrado.DataFinalPrevistoTreatment;
 
-                    if(request.quantidade_dias_faltante_para_fim_tratamento <= 7)
+                    if(request.quantidade_dias_faltante_para_fim_Treatment <= 7)
                     {
-                        request.data_final_marcado_tratamento = dataAtual.ToString("dd/MM/yyyy");
-                        request.status_tratamento = 5;
-                        _statusDispenserCreateMapper.SetBaseMapping(request);
-                        statusDispenser = _statusDispenserCreateMapper.BuscarStatusDispenser();
-                        _statusDispenserRepository.Create(statusDispenser);
-                        _tratamentoDb.DeletandoTratamento(request.tratamento_id);
+                        request.data_final_marcado_Treatment = dataAtual.ToString("dd/MM/yyyy");
+                        request.status_Treatment = 5;
+                        _DispenserStatusCreateMapper.SetBaseMapping(request);
+                        DispenserStatus = _DispenserStatusCreateMapper.BuscarDispenserStatus();
+                        _DispenserStatusRepository.Create(DispenserStatus);
+                        _TreatmentDb.DeleteTreatment(request.Treatment_id);
                     }
                     else
                     {
-                        request.data_final_marcado_tratamento = "Ainda não finalizado";
-                        _statusDispenserCreateMapper.SetBaseMapping(request);
-                        statusDispenser = _statusDispenserCreateMapper.BuscarStatusDispenser();
-                        _statusDispenserRepository.Create(statusDispenser);
+                        request.data_final_marcado_Treatment = "Ainda não finalizado";
+                        _DispenserStatusCreateMapper.SetBaseMapping(request);
+                        DispenserStatus = _DispenserStatusCreateMapper.BuscarDispenserStatus();
+                        _DispenserStatusRepository.Create(DispenserStatus);
                     }
                 }
 
-                return statusDispenser.id;
+                return DispenserStatus.id;
             }
             catch (DbUpdateException exception)
             {
@@ -135,44 +135,44 @@ namespace MediMax.Business.Services
             }
         }
 
-        public async Task<int> CalculadoraQuantidadeCaixasTratamento( CalculadoraCaixasRequestModel request)
+        public async Task<int> CalculadoraQuantidadeCaixasTreatment( CalculadoraCaixasRequestModel request)
         {
-            int quantidadeTotalCaixasTratamento = 0;
+            int quantidadeTotalCaixasTreatment = 0;
             int frenquenciaDias = 0;
             int quantidadePorDia = 0;
             int quantidadeTotal = 0;
             int restoDivisao = 0;
-            frenquenciaDias = CalcularFrequenciaDosagemDiaria(request.intervalo_tratamento_horas);
-            quantidadePorDia = frenquenciaDias* request.quantidade_medicamento_por_dosagem;
-            quantidadeTotal = quantidadePorDia* request.intervalo_tratamento_dias;
-            quantidadeTotalCaixasTratamento = quantidadeTotal / request.quantidade_total_medicamento_caixa;
-            restoDivisao = quantidadeTotal % request.quantidade_total_medicamento_caixa;
+            frenquenciaDias = CalcularFrequenciaDosagemDiaria(request.intervalo_Treatment_horas);
+            quantidadePorDia = frenquenciaDias* request.quantidade_medication_por_dosagem;
+            quantidadeTotal = quantidadePorDia* request.intervalo_Treatment_dias;
+            quantidadeTotalCaixasTreatment = quantidadeTotal / request.quantidade_total_medication_caixa;
+            restoDivisao = quantidadeTotal % request.quantidade_total_medication_caixa;
 
             if (restoDivisao != 0)
-                quantidadeTotalCaixasTratamento++;
-            return quantidadeTotalCaixasTratamento;
+                quantidadeTotalCaixasTreatment++;
+            return quantidadeTotalCaixasTreatment;
         }
 
-        public int CalcularQuantidadeDiasFaltanteParaFimTratamento ( string dataInicioTratamento, string dataFinalPrevistaTratamento )
+        public int CalcularQuantidadeDiasFaltanteParaFimTreatment ( string dataInicioTreatment, string dataFinalPrevistaTreatment )
         {
             // Converter as strings de data para objetos DateTime
-            DateTime inicioTratamento;
+            DateTime inicioTreatment;
             DateTime finalPrevista;
 
-            if (!DateTime.TryParseExact(dataInicioTratamento, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out inicioTratamento))
+            if (!DateTime.TryParseExact(dataInicioTreatment, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out inicioTreatment))
             {
                 // Tratar erro de conversão
                 return 0;
             }
 
-            if (!DateTime.TryParseExact(dataFinalPrevistaTratamento, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out finalPrevista))
+            if (!DateTime.TryParseExact(dataFinalPrevistaTreatment, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out finalPrevista))
             {
                 // Tratar erro de conversão
                 return 0;
             }
 
             // Calcular a diferença em dias
-            TimeSpan diferenca = finalPrevista - inicioTratamento;
+            TimeSpan diferenca = finalPrevista - inicioTreatment;
 
             // Retornar o número de dias como um valor inteiro
             return (int)diferenca.TotalDays;
@@ -188,68 +188,68 @@ namespace MediMax.Business.Services
             return quantidadeTotalMedicamentoDosagemDia * 7;
         }
 
-        public int CalcularFrequenciaDosagemDiaria(int intervaloTratamentoEmHoras)
+        public int CalcularFrequenciaDosagemDiaria(int intervaloTreatmentEmHoras)
         {
-            int intervalo = 24 / intervaloTratamentoEmHoras;
+            int intervalo = 24 / intervaloTreatmentEmHoras;
             return intervalo;
         }
 
-        public int CalcularQuantidadeTotalMedicamentosTratamento(int quantidadeTotalMedicamentoDosagemDia, int intervaloTratamentoDias)
+        public int CalcularQuantidadeTotalMedicamentosTreatment(int quantidadeTotalMedicamentoDosagemDia, int intervaloTreatmentDias)
         {
-            return quantidadeTotalMedicamentoDosagemDia * intervaloTratamentoDias;
+            return quantidadeTotalMedicamentoDosagemDia * intervaloTreatmentDias;
         }
 
-        public int CalcularQuantidadeTotalDeCaixasTratamento(int quantidadeTotalMedicamentoCaixa, int quantidadeTotalMedicamentosTratamento)
+        public int CalcularQuantidadeTotalDeCaixasTreatment(int quantidadeTotalMedicamentoCaixa, int quantidadeTotalMedicamentosTreatment)
         {
-            int quantidadeMedicamentoCaixaTratamento = quantidadeTotalMedicamentosTratamento/ quantidadeTotalMedicamentoCaixa;
-            if (quantidadeTotalMedicamentoCaixa % quantidadeTotalMedicamentosTratamento != 0)
+            int quantidadeMedicamentoCaixaTreatment = quantidadeTotalMedicamentosTreatment/ quantidadeTotalMedicamentoCaixa;
+            if (quantidadeTotalMedicamentoCaixa % quantidadeTotalMedicamentosTreatment != 0)
             {
-                quantidadeMedicamentoCaixaTratamento++;
+                quantidadeMedicamentoCaixaTreatment++;
             }
-            return quantidadeMedicamentoCaixaTratamento;
+            return quantidadeMedicamentoCaixaTreatment;
         }
 
-        public int CalcularQuantidadeAtualMedicamentoCaixaTratamento(int quantidadeAtuallMedicamentoCaixaTratamento, int quantidadeMedicamentoSemanal)
+        public int CalcularQuantidadeAtualMedicamentoCaixaTreatment(int quantidadeAtuallMedicamentoCaixaTreatment, int quantidadeMedicamentoSemanal)
         {
-            return quantidadeAtuallMedicamentoCaixaTratamento - quantidadeMedicamentoSemanal;
+            return quantidadeAtuallMedicamentoCaixaTreatment - quantidadeMedicamentoSemanal;
         }
 
-        public int CalcularQuantidadeMedicamentoFaltanteParaFimTratamento(int quantidadeMedicamentoFaltanteParaFimTratamento, int quantidadeMedicamentoSemanal)
+        public int CalcularQuantidadeMedicamentoFaltanteParaFimTreatment(int quantidadeMedicamentoFaltanteParaFimTreatment, int quantidadeMedicamentoSemanal)
         {
-            return quantidadeMedicamentoFaltanteParaFimTratamento - quantidadeMedicamentoSemanal;
+            return quantidadeMedicamentoFaltanteParaFimTreatment - quantidadeMedicamentoSemanal;
         }
 
-        public async Task<StatusDispenserListaResponseModel> BuscandoStatusDispenser ( int treatmentId, int userId )
+        public async Task<DispenserStatusListaResponseModel> BuscandoDispenserStatus ( int treatmentId, int userId )
         {
 
-            StatusDispenserListaResponseModel statusDispenserResponse;
-            TratamentoResponseModel tratamentoResponse;
-            MedicamentoResponseModel medicamentoResponse;
+            DispenserStatusListaResponseModel DispenserStatusResponse;
+            TreatmentResponseModel TreatmentResponse;
+            MedicationResponseModel medicamentoResponse;
             List<string> horarioDosagens = new List<string>();
             try
             {
-                tratamentoResponse = await _tratamentoDb.BuscarTratamentoPorIdParaStatus(treatmentId, userId);
-                medicamentoResponse = await _medicamentoDb.BuscarMedicamentosPorTratamento(treatmentId, userId);
+                TreatmentResponse = await _TreatmentDb.BuscarTreatmentPorIdParaStatus(treatmentId, userId);
+                medicamentoResponse = await _medicationDb.GetMedicationByTreatmentId(treatmentId, userId);
 
-                if (tratamentoResponse != null)
-                    horarioDosagens = CalcularHorariosDoses(tratamentoResponse.StartTime, tratamentoResponse.TreatmentInterval.Value);
-                    statusDispenserResponse = new StatusDispenserListaResponseModel
+                if (TreatmentResponse != null)
+                    horarioDosagens = CalcularHorariosDoses(TreatmentResponse.StartTime, TreatmentResponse.TreatmentInterval.Value);
+                    DispenserStatusResponse = new DispenserStatusListaResponseModel
                     {
-                        TratamentoId = tratamentoResponse.Id,
+                        TreatmentId = TreatmentResponse.Id,
                         MedicamentoId = medicamentoResponse.Id,
                         QuantidadeTotalMedicamentoCaixa = (int)medicamentoResponse.PackageQuantity,
-                        QuantidadeDiasFaltantesFimTratamento = (int)tratamentoResponse.TreatmentDurationDays,
-                        IntervaloTratamentoHoras = (int)tratamentoResponse.TreatmentInterval,
-                        QuantidadeMedicamentoPorDosagem = (int)tratamentoResponse.MedicineQuantity,
+                        QuantidadeDiasFaltantesFimTreatment = (int)TreatmentResponse.TreatmentDurationDays,
+                        IntervaloTreatmentHoras = (int)TreatmentResponse.TreatmentInterval,
+                        QuantidadeMedicamentoPorDosagem = (int)TreatmentResponse.MedicineQuantity,
                         DosageTime = horarioDosagens
                     };
             }
             catch (RecordNotFoundException)
             {
-                throw new RecordNotFoundException($"Nenhum tratamento encontrado com o id '{treatmentId}'.");
+                throw new RecordNotFoundException($"Nenhum Treatment encontrado com o id '{treatmentId}'.");
             }
 
-            return statusDispenserResponse;
+            return DispenserStatusResponse;
         }
         
         private List<string> CalcularHorariosDoses ( string startTime, int intervaloEmHoras )

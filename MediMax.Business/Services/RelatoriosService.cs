@@ -12,26 +12,26 @@ namespace MediMax.Business.Services
 {
     public class RelatoriosService : IRelatoriosService
     {
-        private readonly IGerenciamentoTratamentoCreateMapper _gerenciamentoTratamentoCreateMapper;
-        private readonly IGerenciamentoTratamentoRepository _gerenciamentoTratamentoRepository;
-        private readonly ITratamentoDb _treatmentDb;
+        private readonly ITreatmentManagementCreateMapper _TreatmentManagementCreateMapper;
+        private readonly ITreatmentManagementRepository _TreatmentManagementRepository;
+        private readonly ITreatmentDb _treatmentDb;
         private readonly IHistoricoDb _historicoDb;
-        private readonly IMedicamentoDb _medicamentoDb;
-        private readonly IAlimentacaoDb _alimentacaoDb;
+        private readonly IMedicationDb _medicationDb;
+        private readonly INutritionDb _alimentacaoDb;
 
         public RelatoriosService(
-            IGerenciamentoTratamentoCreateMapper gerenciamentoTratamentoCreateMapper,
-            IGerenciamentoTratamentoRepository gerenciamentoTratamentoRepository,
-            ITratamentoDb treatmentDb,
+            ITreatmentManagementCreateMapper TreatmentManagementCreateMapper,
+            ITreatmentManagementRepository TreatmentManagementRepository,
+            ITreatmentDb treatmentDb,
             IHistoricoDb historicoDb,
-            IAlimentacaoDb alimentacaoDb,
-            IMedicamentoDb medicamentoDb )
+            INutritionDb alimentacaoDb,
+            IMedicationDb medicamentoDb )
         {
-            _gerenciamentoTratamentoCreateMapper = gerenciamentoTratamentoCreateMapper;
-            _gerenciamentoTratamentoRepository = gerenciamentoTratamentoRepository;
+            _TreatmentManagementCreateMapper = TreatmentManagementCreateMapper;
+            _TreatmentManagementRepository = TreatmentManagementRepository;
             _treatmentDb = treatmentDb;
             _historicoDb = historicoDb;
-            _medicamentoDb = medicamentoDb;
+            _medicationDb = medicamentoDb;
             _alimentacaoDb = alimentacaoDb;
         }
         private List<string> CalcularHorariosDoses ( string startTime, int intervaloEmHoras )
@@ -58,18 +58,18 @@ namespace MediMax.Business.Services
             /*
             1 - Medicamentos Cadastrados 
             2 - Medicamentos Excluidos
-            3 - Tratamentos Cadastrados
-            4 - Tratamentos Excluidos
-            5 - Gerenciamento Tratamento Todos
-            6 - Gerenciamento Tratamento Tomado
-            7 - Gerenciamento Tratamento Não Tomado
-            8 - Gerenciamento Tratamento Ultimos 7 dias
-            9 - Gerenciamento Tratamento Ultimos 15 dias
-            10 - Gerenciamento Tratamento Ultimos 30 dias
-            11 - Gerenciamento Tratamento Ultimos 60 dias
-            12 - Gerenciamento Tratamento Ultimos Ultimo Ano
-            13 - Gerenciamento Tratamento Ultimos Ano Especifico
-            14 - Gerenciamento Tratamento Ultimos Data Especifica
+            3 - Treatments Cadastrados
+            4 - Treatments Excluidos
+            5 - Gerenciamento Treatment Todos
+            6 - Gerenciamento Treatment Tomado
+            7 - Gerenciamento Treatment Não Tomado
+            8 - Gerenciamento Treatment Ultimos 7 dias
+            9 - Gerenciamento Treatment Ultimos 15 dias
+            10 - Gerenciamento Treatment Ultimos 30 dias
+            11 - Gerenciamento Treatment Ultimos 60 dias
+            12 - Gerenciamento Treatment Ultimos Ultimo Ano
+            13 - Gerenciamento Treatment Ultimos Ano Especifico
+            14 - Gerenciamento Treatment Ultimos Data Especifica
             15 - Refeições 
              */
 
@@ -84,13 +84,14 @@ namespace MediMax.Business.Services
             List<HistoricoResponseModel> historico30Dias;
             List<HistoricoResponseModel> historico60Dias;
             List<HistoricoResponseModel> historicoUltimoAno;
-            List<AlimentacaoResponseModel> alimentacao;
-            List<MedicamentoResponseModel> medicamentoAtivos;
-            List<MedicamentoResponseModel> medicamentoInativos;
-            List<TratamentoResponseModel> tratamentoAtivos;
-            List<TratamentoResponseModel> tratamentoInativos;
+            List<NutritionResponseModel> alimentacao;
+            List<MedicationResponseModel> medicamentoAtivos;
+            List<MedicationResponseModel> medicamentoInativos;
+            List<TreatmentResponseModel> TreatmentAtivos;
+            List<TreatmentResponseModel> TreatmentInativos;
             List<HistoricoResponseModel> historicoAnoEspecifico;
             List<HistoricoResponseModel> historicoDataEspecifica;
+            List<HorariosDosagemResponseModel> horariosDosagem = null;
 
             MemoryStream memoryStream = null;
 
@@ -98,8 +99,8 @@ namespace MediMax.Business.Services
             switch (request.type)
             {
                 case 0:
-                    medicamentoAtivos = await _medicamentoDb.BuscarTodosMedicamentos(request.userId);
-                    var pdfGenerator1 = new PdfGenerator<MedicamentoResponseModel>();
+                    medicamentoAtivos = await _medicationDb.GetAllMedicine(request.userId);
+                    var pdfGenerator1 = new PdfGenerator<MedicationResponseModel>();
                     string fileName1 = filePath + "Medicamentos_Ativos.pdf";
                     Dictionary<string, string> columnNames1 = new Dictionary<string, string>
                     {
@@ -112,8 +113,8 @@ namespace MediMax.Business.Services
 
                 break;
                 case 1:
-                    medicamentoInativos = await _medicamentoDb.BuscarMedicamentosInativos(request.userId);
-                    var pdfGenerator2 = new PdfGenerator<MedicamentoResponseModel>();
+                    medicamentoInativos = await _medicationDb.BuscarMedicamentosInativos(request.userId);
+                    var pdfGenerator2 = new PdfGenerator<MedicationResponseModel>();
                     string fileName2 = filePath + "Medicamentos_Inativos.pdf";
                     Dictionary<string, string> columnNames2 = new Dictionary<string, string>
                         {
@@ -125,52 +126,52 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator2.GeneratePdf(medicamentoInativos, fileName2, columnNames2, "Relatório de Medicamentos Inativos");
                     break;
                 case 2:
-                    tratamentoAtivos = await _treatmentDb.BuscarTodosTratamentoAtivos(request.userId);
-                    foreach (var treatment in tratamentoAtivos)
+                    TreatmentAtivos = await _treatmentDb.GetTreatmentActives(request.userId);
+                    foreach (var treatment in TreatmentAtivos)
                     {
                         if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
                         {
-                            treatment.DosageTime = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
+                            List<string> horariosDosagemString = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
                         }
                     }
-                    var pdfGenerator3 = new PdfGenerator<TratamentoResponseModel>();
-                    string fileName3 = filePath + "Tratamentos_Ativos.pdf";
+                    var pdfGenerator3 = new PdfGenerator<TreatmentResponseModel>();
+                    string fileName3 = filePath + "Treatments_Ativos.pdf";
                     Dictionary<string, string> columnNames3 = new Dictionary<string, string>
                     {
                         { "Name", "Medicamento" },
                         { "MedicineQuantity", "Quantidade de Medicamentos" },
-                        { "StartTime", "Horário de Inicio do Tratamento" },
-                        { "TreatmentInterval", "Intervalo de Horas do Tratamento" },
-                        { "TreatmentDurationDays", "Intervalo de Dias do Tratamento" },
+                        { "StartTime", "Horário de Inicio do Treatment" },
+                        { "TreatmentInterval", "Intervalo de Horas do Treatment" },
+                        { "TreatmentDurationDays", "Intervalo de Dias do Treatment" },
                         { "DietaryRecommendations", "Recomendações de Alimentação" },
                         { "Observation", "Observação" },
                         { "DosageTime", "Horário Dosagem" }
                     };
-                memoryStream = pdfGenerator3.GeneratePdf(tratamentoAtivos, fileName3, columnNames3, "Relatório de Tratamentos Ativos");
+                memoryStream = pdfGenerator3.GeneratePdf(TreatmentAtivos, fileName3, columnNames3, "Relatório de Treatments Ativos");
                     break;
                 case 3:
-                    tratamentoInativos = await _treatmentDb.BuscarTodosTratamentoInativos(request.userId);
-                    foreach (var treatment in tratamentoInativos)
+                    TreatmentInativos = await _treatmentDb.BuscarTodosTreatmentInativos(request.userId);
+                    foreach (var treatment in TreatmentInativos)
                     {
                         if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
                         {
-                            treatment.DosageTime = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
+                            List<string> horariosDosagemString = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
                         }
                     }
-                    var pdfGenerator4 = new PdfGenerator<TratamentoResponseModel>();
-                    string fileName4 = filePath + "Tratamentos_Inativos.pdf";
+                    var pdfGenerator4 = new PdfGenerator<TreatmentResponseModel>();
+                    string fileName4 = filePath + "Treatments_Inativos.pdf";
                     Dictionary<string, string> columnNames4 = new Dictionary<string, string>
                     {
                         { "Name", "Medicamento" },
                         { "MedicineQuantity", "Quantidade de Medicamentos" },
-                        { "StartTime", "Horário de Inicio do Tratamento" },
-                        { "TreatmentInterval", "Intervalo de Horas do Tratamento" },
-                        { "TreatmentDurationDays", "Intervalo de Dias do Tratamento" },
+                        { "StartTime", "Horário de Inicio do Treatment" },
+                        { "TreatmentInterval", "Intervalo de Horas do Treatment" },
+                        { "TreatmentDurationDays", "Intervalo de Dias do Treatment" },
                         { "DietaryRecommendations", "Recomendações de Alimentação" },
                         { "Observation", "Observação" },
                         { "DosageTime", "Horário Dosagem" }
                     };
-                memoryStream = pdfGenerator4.GeneratePdf(tratamentoInativos, fileName4, columnNames4, "Relatório de Tratamento Inativos");
+                memoryStream = pdfGenerator4.GeneratePdf(TreatmentInativos, fileName4, columnNames4, "Relatório de Treatment Inativos");
                     break;
                 case 4:
                     historicoGeral = await _historicoDb.BuscarHistoricoGeral(request.userId);
@@ -189,7 +190,7 @@ namespace MediMax.Business.Services
                 case 5:
                     historicoTomado = await _historicoDb.BuscarHistoricoTomado(request.userId);
                     var pdfGenerator6 = new PdfGenerator<HistoricoResponseModel>();
-                    string fileName6 = filePath + "Historico_Medicamentos_Tomados.pdf";
+                    string fileName6 = filePath + "Historico_medications_Tomados.pdf";
                     Dictionary<string, string> columnNames6 = new Dictionary<string, string>
                         {
                             { "DateMedicationIntake", "Data de Ingestão" },
@@ -197,12 +198,12 @@ namespace MediMax.Business.Services
                             { "MedicationIntakeSchedule", "Horário de Ingestão" },
                             { "MedicineName", "Nome do Medicamento" }
                         };
-                memoryStream = pdfGenerator6.GeneratePdf(historicoTomado, fileName6, columnNames6, "Relatório de Tratamentos Inativos");
+                memoryStream = pdfGenerator6.GeneratePdf(historicoTomado, fileName6, columnNames6, "Relatório de Treatments Inativos");
                     break;
                 case 6:
                     historicoNaoTomado = await _historicoDb.BuscarHistoricoNaoTomado(request.userId);
                     var pdfGenerator7 = new PdfGenerator<HistoricoResponseModel>();
-                    string fileName7 = filePath + "Historico_Medicamentos_Nao_Tomados.pdf";
+                    string fileName7 = filePath + "Historico_medications_Nao_Tomados.pdf";
                     Dictionary<string, string> columnNames7 = new Dictionary<string, string>
                             {
                                 { "DateMedicationIntake", "Data de Ingestão" },
@@ -313,7 +314,7 @@ namespace MediMax.Business.Services
                     break;
                 case 14:
                     alimentacao = await _alimentacaoDb.BuscarTodasAlimentacao(request.userId);
-                    var pdfGenerator15 = new PdfGenerator<AlimentacaoResponseModel>();
+                    var pdfGenerator15 = new PdfGenerator<NutritionResponseModel>();
                     string fileName15 = filePath + "Historico_Refeições.pdf";
                     Dictionary<string, string> columnNames15 = new Dictionary<string, string>
                     {

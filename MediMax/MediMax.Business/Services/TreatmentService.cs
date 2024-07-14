@@ -14,24 +14,24 @@ namespace MediMax.Business.Services
 {
     public class TreatmentService : ITreatmentService
     {
-        private readonly IMedicamentoCreateMapper _medicamentoCreateMapper;
-        private readonly ITratamentoCreateMapper _tratamentoCreateMapper;
+        private readonly IMedicamentoCreateMapper _medicationCreateMapper;
+        private readonly ITreatmentCreateMapper _TreatmentCreateMapper;
         private readonly IMedicamentosRepository _medicineRepository;
-        private readonly ITratamentoRepository _tratamentoRepository;
+        private readonly ITreatmentRepository _TreatmentRepository;
         private readonly ITreatmentDb _treatementDb;
 
         public TreatmentService(
             IMedicamentoCreateMapper medicineCreateMapper,
-            ITratamentoCreateMapper tratamentoCreateMapper,
+            ITreatmentCreateMapper TreatmentCreateMapper,
             IMedicamentosRepository medicineRepository,
-            ITratamentoRepository tratamentoRepository,
+            ITreatmentRepository TreatmentRepository,
             ITreatmentDb treatementDb) 
         {
-            _medicamentoCreateMapper = medicineCreateMapper;
+            _medicationCreateMapper = medicineCreateMapper;
             _medicineRepository = medicineRepository;
             _treatementDb = treatementDb;
-            _tratamentoCreateMapper = tratamentoCreateMapper;
-            _tratamentoRepository = tratamentoRepository;
+            _TreatmentCreateMapper = TreatmentCreateMapper;
+            _TreatmentRepository = TreatmentRepository;
         }
 
         public async Task<List<TreatmentResponseModel>> GetTreatmentByName(string name)

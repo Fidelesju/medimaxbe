@@ -2,7 +2,7 @@
 
 namespace MediMax.Data.RequestModels
 {
-    public class UsuarioUpdateRequestModel
+    public class UserUpdateRequestModel
     {
         public int UserId { get; set; }
         public string UserName { get; set; }

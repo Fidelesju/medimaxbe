@@ -6,38 +6,38 @@ using MediMax.Data.RequestModels;
 
 namespace MediMax.Business.Mappers
 {
-    public class StatusDispenserCreateMapper : Mapper<StatusDispenserCreateRequestModel>, IStatusDispenserCreateMapper
+    public class DispenserStatusCreateMapper : Mapper<DispenserStatusCreateRequestModel>, IDispenserStatusCreateMapper
     {
-        private readonly StatusDispenser _statusDispenser;
+        private readonly DispenserStatus _DispenserStatus;
 
-        public StatusDispenserCreateMapper()
+        public DispenserStatusCreateMapper()
         {
-            _statusDispenser = new StatusDispenser();
+            _DispenserStatus = new DispenserStatus();
         }
 
-        public StatusDispenser BuscarStatusDispenser()
+        public DispenserStatus BuscarDispenserStatus()
         {
-            _statusDispenser.medicamento_id = BaseMapping.medicamento_id;
-            _statusDispenser.tratamento_id = BaseMapping.tratamento_id;
-            _statusDispenser.quantidade_total_medicamento_caixa = BaseMapping.quantidade_total_medicamento_caixa; 
-            _statusDispenser.quantidade_total_caixa_tratamento = BaseMapping.quantidade_total_caixa_tratamento; 
-            _statusDispenser.intervalo_tratamento_horas = BaseMapping.intervalo_tratamento_horas; 
-            _statusDispenser.intervalo_tratamento_dias = BaseMapping.intervalo_tratamento_dias; 
-            _statusDispenser.quantidade_medicamento_por_dosagem = BaseMapping.quantidade_medicamento_por_dosagem; 
-            _statusDispenser.frenquecia_dosagem_diaria = BaseMapping.frenquecia_dosagem_diaria; 
-            _statusDispenser.quantidade_total_medicamento_dosagem_dia = BaseMapping.quantidade_total_medicamento_dosagem_dia; 
-            _statusDispenser.quantidade_total_medicamentos_tratamento = BaseMapping.quantidade_total_medicamentos_tratamento; 
-            _statusDispenser.quantidade_medicamento_semanal = BaseMapping.quantidade_medicamento_semanal; 
-            _statusDispenser.quantidade_atual_medicamento_caixa_tratamento = BaseMapping.quantidade_atual_medicamento_caixa_tratamento; 
-            _statusDispenser.quantidade_medicamento_faltante_para_fim_tratamento = BaseMapping.quantidade_medicamento_faltante_para_fim_tratamento; 
-            _statusDispenser.quantidade_dias_faltante_para_fim_tratamento = BaseMapping.quantidade_dias_faltante_para_fim_tratamento; 
-            _statusDispenser.data_criacao = BaseMapping.data_criacao; 
-            _statusDispenser.data_atualizacao_semanal = BaseMapping.data_atualizacao_semanal; 
-            _statusDispenser.data_inicio_tratamento = BaseMapping.data_inicio_tratamento; 
-            _statusDispenser.data_final_previsto_tratamento = BaseMapping.data_final_previsto_tratamento; 
-            _statusDispenser.data_final_marcado_tratamento = BaseMapping.data_final_marcado_tratamento; 
-            _statusDispenser.status_tratamento = BaseMapping.status_tratamento; 
-            return _statusDispenser;
+            _DispenserStatus.medicamento_id = BaseMapping.medicamento_id;
+            _DispenserStatus.Treatment_id = BaseMapping.Treatment_id;
+            _DispenserStatus.quantidade_total_medication_caixa = BaseMapping.quantidade_total_medication_caixa; 
+            _DispenserStatus.quantidade_total_caixa_Treatment = BaseMapping.quantidade_total_caixa_Treatment; 
+            _DispenserStatus.intervalo_Treatment_horas = BaseMapping.intervalo_Treatment_horas; 
+            _DispenserStatus.intervalo_Treatment_dias = BaseMapping.intervalo_Treatment_dias; 
+            _DispenserStatus.quantidade_medication_por_dosagem = BaseMapping.quantidade_medication_por_dosagem; 
+            _DispenserStatus.frenquecia_dosagem_diaria = BaseMapping.frenquecia_dosagem_diaria; 
+            _DispenserStatus.quantidade_total_medication_dosagem_dia = BaseMapping.quantidade_total_medication_dosagem_dia; 
+            _DispenserStatus.quantidade_total_medications_Treatment = BaseMapping.quantidade_total_medications_Treatment; 
+            _DispenserStatus.quantidade_medication_semanal = BaseMapping.quantidade_medication_semanal; 
+            _DispenserStatus.quantidade_atual_medication_caixa_Treatment = BaseMapping.quantidade_atual_medication_caixa_Treatment; 
+            _DispenserStatus.quantidade_medication_faltante_para_fim_Treatment = BaseMapping.quantidade_medication_faltante_para_fim_Treatment; 
+            _DispenserStatus.quantidade_dias_faltante_para_fim_Treatment = BaseMapping.quantidade_dias_faltante_para_fim_Treatment; 
+            _DispenserStatus.data_criacao = BaseMapping.data_criacao; 
+            _DispenserStatus.data_atualizacao_semanal = BaseMapping.data_atualizacao_semanal; 
+            _DispenserStatus.data_inicio_Treatment = BaseMapping.data_inicio_Treatment; 
+            _DispenserStatus.data_final_previsto_Treatment = BaseMapping.data_final_previsto_Treatment; 
+            _DispenserStatus.data_final_marcado_Treatment = BaseMapping.data_final_marcado_Treatment; 
+            _DispenserStatus.status_Treatment = BaseMapping.status_Treatment; 
+            return _DispenserStatus;
         }
     }
 }

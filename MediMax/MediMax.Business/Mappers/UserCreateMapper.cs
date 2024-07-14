@@ -7,14 +7,14 @@ namespace MediMax.Business.Mappers
 {
     public class UserCreateMapper : Mapper<UserCreateRequestModel>, IUserCreateMapper
     {
-        private readonly Usuario? _user;
+        private readonly User? _user;
 
         public UserCreateMapper()
         {
-            _user = new Usuario();
+            _user = new User();
         }
 
-        public Usuario GetUser()
+        public User GetUser()
         {
             HashMd5 hashMd5 = new HashMd5();
 
@@ -22,7 +22,7 @@ namespace MediMax.Business.Mappers
             _user.senha = hashMd5.EncryptMD5(BaseMapping.Password);
             _user.nome = BaseMapping.UserName;
             _user.esta_ativo = 1;
-            _user.id_tipo_usuario = BaseMapping.typeUserId;
+            _user.id_tipo_User = BaseMapping.typeUserId;
             return _user;
         }
     }
