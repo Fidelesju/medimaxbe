@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "MuvNgViH65lwZJmJp+ZB7lY6Mz2iPdC29AtNoTvf52U6URLkKdZ++MkSV9qIOIJpeBu1cKSNxk/DQ/E8c2VhJA==",
+  "dgSpecHash": "9eDw+DSQSz/kcbPUci5dLMF330d78lhCB00ooCKJTwCm0k8O3qeECX3wSGeoeCtKbvfY0m2oXGqkoYCHGhWMCg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Business\\MediMax.Business.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Julia Fideles\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\bouncycastle\\1.8.9\\bouncycastle.1.8.9.nupkg.sha512",
@@ -16,6 +17,8 @@
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\k4os.compression.lz4.streams\\1.3.5\\k4os.compression.lz4.streams.1.3.5.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\k4os.hash.xxhash\\1.0.8\\k4os.hash.xxhash.1.0.8.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\mailkit\\4.6.0\\mailkit.4.6.0.nupkg.sha512",
+    "C:\\Users\\Julia Fideles\\.nuget\\packages\\mediatr\\12.3.0\\mediatr.12.3.0.nupkg.sha512",
+    "C:\\Users\\Julia Fideles\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.aspnetcore\\2.1.7\\microsoft.aspnetcore.2.1.7.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.1.1\\microsoft.aspnetcore.authentication.abstractions.2.1.1.nupkg.sha512",
     "C:\\Users\\Julia Fideles\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.1.1\\microsoft.aspnetcore.authentication.core.2.1.1.nupkg.sha512",

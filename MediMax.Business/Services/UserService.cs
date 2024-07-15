@@ -1,9 +1,10 @@
-﻿using MailKit.Net.Smtp;
+﻿using AutoMapper;
+using MailKit.Net.Smtp;
 using MediMax.Business.Exceptions;
-using MediMax.Business.Mappers.Interfaces;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Business.Utils;
 using MediMax.Business.Validations;
+using MediMax.Data.ApplicationModels;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
 using MediMax.Data.Repositories.Interfaces;
@@ -16,39 +17,53 @@ namespace MediMax.Business.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserCreateMapper _UserCreateMapper;
-        private readonly IUserUpdateMapper _UserUpdateMapper;
-        private readonly IUserRepository _UserRepository;
-        private readonly IUserDb _UserDb;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserDb _userDb;
+        private readonly IMapper _mapper;
 
         public UserService(
-            IUserCreateMapper UserCreateMapper,
             IUserRepository UserRepository,
             IUserDb UserDb,
-            IUserUpdateMapper UserUpdateMapper
+            IMapper mapper
             )
         {
-            _UserCreateMapper = UserCreateMapper;
-            _UserRepository = UserRepository;
-            _UserDb = UserDb;
-            _UserUpdateMapper = UserUpdateMapper;
+            _userRepository = UserRepository;
+            _userDb = UserDb;
+            _mapper = mapper;
         }
 
-        public async Task<int> CriarUser(UserCreateRequestModel request)
-        {
-            UserCreateValidation validation = new UserCreateValidation();
-            if (!validation.IsValid(request))
-            {
-                Dictionary<string, string> errors = validation.GetErrors();
-                throw new CustomValidationException(errors);
-            }
 
+        public async Task<int> CreateUser ( UserCreateRequestModel request )
+        {
+            var result = new BaseResponse<int>();
+            UserCreateValidation validation = new UserCreateValidation();
+            var validationResult = validation.Validate(request);
+            HashMd5 hashMd5 = new HashMd5();
+
+            if (!validationResult.IsValid)
+            {
+                result.Message = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+                result.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+            }
             try
             {
-                _UserCreateMapper.SetBaseMapping(request);
-                User user = _UserCreateMapper.GetUser();
-                _UserRepository.Create(user);
-                return user.Id;
+                var passwordEncrypt = hashMd5.EncryptMD5(request.Password);
+                request.Password = passwordEncrypt;
+                var user = _mapper.Map<User>(request);
+                _userRepository.Create(user);
+
+                if(user.Id != 0)
+                {
+                    result.IsSuccess = true;
+                    result.Data = user.Id;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Data = 0;
+                    return result.Data;
+                }
+                return result.Data;
             }
             catch (DbUpdateException ex)
             {
@@ -59,38 +74,53 @@ namespace MediMax.Business.Services
                 }
                 throw;
             }
-        }  
-      
-        public async Task<bool> AlterarSenha(string password, int userId)
+        }
+   
+        public async Task<bool> UpdatePassword (string password, int id, int owner_id)
         {
             HashMd5 hashMd5 = new HashMd5();
-            bool success = await _UserDb.AlterarSenha(userId, hashMd5.EncryptMD5(password));
+            var result = new BaseResponse<bool>();
+
+            bool success = await _userRepository.UpdatePassword(hashMd5.EncryptMD5(password), id, owner_id);
 
             if (!success)
             {
-                throw new RecordNotFoundException("Senha não alterada!");
-                return false;
+                result.Data = success;
+                result.Message = "Senha não alterada!";
+                return result.Data;
             }
             return true;
             
-    }
+        }
 
-        public async Task<int> AtualizarUser( UserUpdateRequestModel request )
+        public async Task<int> UpdateUser ( UserUpdateRequestModel request )
         {
+            var result = new BaseResponse<int>();
             UserUpdateValidation validation = new UserUpdateValidation();
-            User user;
-            if (!validation.IsValid(request))
-            {
-                Dictionary<string, string> errors = validation.GetErrors();
-                throw new CustomValidationException(errors);
-            }
+            var validationResult = validation.Validate(request);
 
+            if (!validationResult.IsValid)
+            {
+                result.Message = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+                result.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+            }
+            
             try
             {
-                _UserUpdateMapper.SetBaseMapping(request);
-                await _UserDb.UpdateUser(request);
-                user = _UserUpdateMapper.GetUser();
-                return user.Id;
+                var user = _mapper.Map<UserResponseModel>(request);
+                await _userRepository.Update(user);
+                if (user.Id != 0)
+                {
+                    result.IsSuccess = true;
+                    result.Data = user.Id;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Data = 0;
+                    return result.Data;
+                }
+                return result.Data;
             }
             catch (DbUpdateException ex)
             {
@@ -102,61 +132,11 @@ namespace MediMax.Business.Services
                 throw;
             }
         }
-        
-        public async Task<UserResponseModel> BuscarUserPorId(int userId)
-        {
-            UserResponseModel user = await _UserDb.GetUserById(userId);
-            if (user == null)
-            {
-                throw new RecordNotFoundException("Usuário não encontrado.");
-            }
-            return user;
-        }
 
-        public async Task<int> DesativarUser ( int userId)
-        {
-            int user = await _UserDb.DesativarUser(userId);
-            if (user == 0)
-            {
-                throw new RecordNotFoundException("Usuário não encontrado.");
-            }
-            return user;
-        } 
-        public async Task<int> ReativarUser( int userId)
-        {
-            int user = await _UserDb.ReativarUser(userId);
-            if (user == 0)
-            {
-                throw new RecordNotFoundException("Usuário não encontrado.");
-            }
-            return user;
-        }
-
-        public async Task<UserResponseModel> BuscarUserPorEmail(string email)
-        {
-            UserResponseModel user = await _UserDb.GetUserByEmail(email);
-            if (user == null)
-            {
-                throw new RecordNotFoundException("Usuário não encontrado para o email fornecido.");
-            }
-            return user;
-        }
-        
-        public async Task<UserResponseModel> BuscarUserPorNome(string name)
-        {
-            UserResponseModel user = await _UserDb.GetUserByName(name);
-            if (user == null)
-            {
-                throw new RecordNotFoundException("Usuário não encontrado para o email fornecido.");
-            }
-            return user;
-        }
-
-        public async Task<EmailCodigoResponseModel> EnviarEmailCodigo ( string email )
+        public async Task<EmailCodigoResponseModel> SendCodeToEmail ( string email , string name, int id)
         {
             EmailCodigoResponseModel response;
-            UserResponseModel user = await _UserDb.GetUserByEmail(email);
-
+          
             string code = GenerateRandomCode();
             string subject = "Código de recuperação de senha";
             string body = $@"
@@ -179,7 +159,7 @@ namespace MediMax.Business.Services
                 <div class='container'>
                     <div class='header'>Bem-vindo à Medimax</div>
                     <div class='body'>
-                        <p>Olá, {user.Name},</p>
+                        <p>Olá, {name},</p>
                         <p>Aqui está o seu código de verificação:</p>
                         <p class='code'>{code}</p>
                     </div>
@@ -208,7 +188,7 @@ namespace MediMax.Business.Services
                 response = new EmailCodigoResponseModel()
                 {
                     Code = code,
-                    UserId = user.Id,
+                    UserId = id,
                     Email = email,
                     Message = "Codigo enviado com sucesso!",
                     Success = true
@@ -228,37 +208,147 @@ namespace MediMax.Business.Services
             return response;
         }
 
-        public async Task<List<UserResponseModel>> BuscarUserPorTipoDeUser( int typeUser )
+        public async Task<int> DesactiveUser ( int id, int owner_id)
         {
-            List<UserResponseModel> user = await _UserDb.GetUserByTypeUser(typeUser);
-
-            if (user == null || user.Count == 0)
+            var result = new BaseResponse<int>();
+            var user = await _userRepository.Desactive(id, owner_id);
+            if (!user)
             {
-                throw new RecordNotFoundException("Usuário não encontrado para o email fornecido.");
+                result.Message = "Usuário não desativado.";
+                result.Data = 0;
+                result.IsSuccess = false;
             }
-            return user;
+            else
+            {
+                result.IsSuccess = true;
+                result.Data = id;
+            }
+
+            return result.Data;
+        } 
+
+        public async Task<int> ReactiveUser( int id , int owner_id)
+        {
+            var result = new BaseResponse<int>();
+            var user = await _userRepository.Reactive(id, owner_id);
+            if (!user)
+            {
+                result.Message = "Usuário não reativado.";
+                result.Data = 0;
+                result.IsSuccess = false;
+            }
+            else
+            {
+                result.IsSuccess = true;
+                result.Data = id;
+            }
+
+            return result.Data;
+        }
+
+        public async Task<UserResponseModel> GetUserById ( int userId )
+        {
+            UserResponseModel user = await _userDb.GetUserById(userId);
+
+            var result = new BaseResponse<UserResponseModel>();
+            if (user == null)
+            {
+                result.Message  = "Usuário não encontrado.";
+                result.Data = user;
+            }
+            else
+            {
+                result.Message = "Usuário encontrado com sucesso.";
+                result.Data = user;
+            }
+            return result.Data;
         }
         
-        public async Task<List<UserResponseModel>> BuscarUserPorProprietarioeTipoDeUser( int typeUser, int ownerId)
+        public async Task<UserResponseModel> GetUserByEmail ( string email )
         {
-            List<UserResponseModel> user = await _UserDb.GetUserByOwnerOfTypeUser(typeUser,ownerId);
+            UserResponseModel user = await _userDb.GetUserByEmail(email);
 
-            if (user == null || user.Count == 0)
+            var result = new BaseResponse<UserResponseModel>();
+            if (user == null)
             {
-                throw new RecordNotFoundException("Usuário não encontrado para o email fornecido.");
+                result.Message = "Usuário não encontrado.";
+                result.Data = user;
             }
-            return user;
+            else
+            {
+                result.Message = "Usuário encontrado com sucesso.";
+                result.Data = user;
+            }
+            return result.Data;
         }
         
-        public async Task<List<UserResponseModel>> BuscarUserPorProprietario( int ownerId)
+        public async Task<UserResponseModel> GetUserByName( string name )
         {
-            List<UserResponseModel> user = await _UserDb.GetUserByOwner(ownerId);
+            UserResponseModel user = await _userDb.GetUserByName(name);
 
-            if (user == null || user.Count == 0)
+            var result = new BaseResponse<UserResponseModel>();
+            if (user == null)
             {
-                throw new RecordNotFoundException("Usuário não encontrado para o email fornecido.");
+                result.Message = "Usuário não encontrado.";
+                result.Data = user;
             }
-            return user;
+            else
+            {
+                result.Message = "Usuário encontrado com sucesso.";
+                result.Data = user;
+            }
+            return result.Data;
+        }
+
+        public async Task<List<UserResponseModel>> GetUserByType( int typeUser )
+        {
+            List<UserResponseModel> user = await _userDb.GetUserByType(typeUser);
+            var result = new BaseResponse<List<UserResponseModel>>();
+            if (user == null)
+            {
+                result.Message = "Usuário não encontrado.";
+                result.Data = user;
+            }
+            else
+            {
+                result.Message = "Usuário encontrado com sucesso.";
+                result.Data = user;
+            }
+            return result.Data;
+        }
+        
+        public async Task<List<UserResponseModel>> GetUserByTypeAndOwnerId( int typeUser, int ownerId)
+        {
+            List<UserResponseModel> user = await _userDb.GetUserByTypeAndOwnerId(typeUser,ownerId);
+            var result = new BaseResponse<List<UserResponseModel>>();
+            if (user == null)
+            {
+                result.Message = "Usuário não encontrado.";
+                result.Data = user;
+            }
+            else
+            {
+                result.Message = "Usuário encontrado com sucesso.";
+                result.Data = user;
+            }
+            return result.Data;
+        }
+        
+        public async Task<List<UserResponseModel>> GetUserByOwner( int ownerId)
+        {
+            List<UserResponseModel> user = await _userDb.GetUserByOwner(ownerId);
+            var result = new BaseResponse<List<UserResponseModel>>();
+            if (user == null)
+            {
+                result.Message = "Usuário não encontrado.";
+                result.Data = user;
+            }
+            else
+            {
+                result.Message = "Usuário encontrado com sucesso.";
+                result.Data = user;
+            }
+            return result.Data;
         }
 
         private static string GenerateRandomCode ( )

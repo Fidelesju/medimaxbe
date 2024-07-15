@@ -18,7 +18,7 @@ namespace MediMax.Business.Validations
         }
         private void ValidateName ( )
         {
-            RuleFor(t => t.medicine_name)
+            RuleFor(t => t.Name_Medication)
                 .NotEmpty()
                 .WithMessage(DefaultErrorMessages.RequiredField)
                 .Length(3, 150)
@@ -28,33 +28,33 @@ namespace MediMax.Business.Validations
 
          private void ValidateDietaryRecommedations( )
         {
-            RuleFor(u => u.dietary_recommendations)
+            RuleFor(u => u.Dietary_Recommendations)
                 .MaximumLength(255)
                 .WithMessage("As recomendações de alimentação devem ter no máximo 255 caracteres.");
         }
         
         private void ValidateObservation( )
         {
-            RuleFor(u => u.observation)
+            RuleFor(u => u.Observation)
                 .MaximumLength(255)
                 .WithMessage("As observações devem ter no máximo 255 caracteres.");
         }
         
         private void ValidateTreatmentStartTime( )
         {
-            RuleFor(u => u.treatment_start_time)
+            RuleFor(u => u.Start_Time)
               .NotEmpty()
               .WithMessage(DefaultErrorMessages.RequiredField);
         }
         private void ValidateTreatmentIntervalHours( )
         {
-            RuleFor(u => u.treatment_interval_hours)
+            RuleFor(u => u.Treatment_Interval_Hours)
               .NotEmpty()
               .WithMessage(DefaultErrorMessages.RequiredField);
         }
         private void ValidateTreatmentIntervalDays( )
         {
-            RuleFor(u => u.treatment_interval_hours)
+            RuleFor(u => u.Treatment_Interval_Days)
               .NotEmpty()
               .WithMessage(DefaultErrorMessages.RequiredField);
         }

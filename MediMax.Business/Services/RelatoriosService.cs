@@ -1,33 +1,27 @@
-﻿using MediMax.Business.Mappers.Interfaces;
-using MediMax.Business.Services.Interfaces;
+﻿using MediMax.Business.Services.Interfaces;
 using MediMax.Data.ApplicationModels;
-using MediMax.Data.Dao;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Repositories.Interfaces;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
-using ServiceStack.NativeTypes.Php;
 
 namespace MediMax.Business.Services
 {
     public class RelatoriosService : IRelatoriosService
     {
-        private readonly ITreatmentManagementCreateMapper _TreatmentManagementCreateMapper;
         private readonly ITreatmentManagementRepository _TreatmentManagementRepository;
         private readonly ITreatmentDb _treatmentDb;
-        private readonly IHistoricoDb _historicoDb;
+        private readonly ITreatmentManagementDbDb _historicoDb;
         private readonly IMedicationDb _medicationDb;
         private readonly INutritionDb _alimentacaoDb;
 
         public RelatoriosService(
-            ITreatmentManagementCreateMapper TreatmentManagementCreateMapper,
             ITreatmentManagementRepository TreatmentManagementRepository,
             ITreatmentDb treatmentDb,
-            IHistoricoDb historicoDb,
+            ITreatmentManagementDbDb historicoDb,
             INutritionDb alimentacaoDb,
             IMedicationDb medicamentoDb )
         {
-            _TreatmentManagementCreateMapper = TreatmentManagementCreateMapper;
             _TreatmentManagementRepository = TreatmentManagementRepository;
             _treatmentDb = treatmentDb;
             _historicoDb = historicoDb;
@@ -52,7 +46,7 @@ namespace MediMax.Business.Services
             return dosageTimes;
         }
 
-        public async Task<byte[]> GeradorPdf ( RelatorioRequestModel request )
+        public async Task<byte[]> PdfGenerator ( ReportRequestModel request )
         {
 
             /*
@@ -76,22 +70,22 @@ namespace MediMax.Business.Services
             // Caminho onde o PDF será salvo
             string filePath = "C:/Users/Julia Fideles/Downloads/";
 
-            List<HistoricoResponseModel> historicoGeral;
-            List<HistoricoResponseModel> historicoTomado;
-            List<HistoricoResponseModel> historicoNaoTomado;
-            List<HistoricoResponseModel> historico7Dias;
-            List<HistoricoResponseModel> historico15Dias;
-            List<HistoricoResponseModel> historico30Dias;
-            List<HistoricoResponseModel> historico60Dias;
-            List<HistoricoResponseModel> historicoUltimoAno;
+            List<TreatmentManagementResponseModel> historicoGeral;
+            List<TreatmentManagementResponseModel> historicoTomado;
+            List<TreatmentManagementResponseModel> historicoNaoTomado;
+            List<TreatmentManagementResponseModel> historico7Dias;
+            List<TreatmentManagementResponseModel> historico15Dias;
+            List<TreatmentManagementResponseModel> historico30Dias;
+            List<TreatmentManagementResponseModel> historico60Dias;
+            List<TreatmentManagementResponseModel> historicoUltimoAno;
             List<NutritionResponseModel> alimentacao;
             List<MedicationResponseModel> medicamentoAtivos;
             List<MedicationResponseModel> medicamentoInativos;
             List<TreatmentResponseModel> TreatmentAtivos;
             List<TreatmentResponseModel> TreatmentInativos;
-            List<HistoricoResponseModel> historicoAnoEspecifico;
-            List<HistoricoResponseModel> historicoDataEspecifica;
-            List<HorariosDosagemResponseModel> horariosDosagem = null;
+            List<TreatmentManagementResponseModel> historicoAnoEspecifico;
+            List<TreatmentManagementResponseModel> historicoDataEspecifica;
+            List<TimeDosageResponseModel> horariosDosagem = null;
 
             MemoryStream memoryStream = null;
 
@@ -174,8 +168,8 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator4.GeneratePdf(TreatmentInativos, fileName4, columnNames4, "Relatório de Treatment Inativos");
                     break;
                 case 4:
-                    historicoGeral = await _historicoDb.BuscarHistoricoGeral(request.userId);
-                    var pdfGenerator5 = new PdfGenerator<HistoricoResponseModel>();
+                    historicoGeral = await _historicoDb.GetAllHistoric(request.userId);
+                    var pdfGenerator5 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName5 = filePath + "Historico_Geral.pdf";
                     Dictionary<string, string> columnNames5 = new Dictionary<string, string>
                     {
@@ -189,7 +183,7 @@ namespace MediMax.Business.Services
                     break;
                 case 5:
                     historicoTomado = await _historicoDb.BuscarHistoricoTomado(request.userId);
-                    var pdfGenerator6 = new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator6 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName6 = filePath + "Historico_medications_Tomados.pdf";
                     Dictionary<string, string> columnNames6 = new Dictionary<string, string>
                         {
@@ -202,7 +196,7 @@ namespace MediMax.Business.Services
                     break;
                 case 6:
                     historicoNaoTomado = await _historicoDb.BuscarHistoricoNaoTomado(request.userId);
-                    var pdfGenerator7 = new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator7 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName7 = filePath + "Historico_medications_Nao_Tomados.pdf";
                     Dictionary<string, string> columnNames7 = new Dictionary<string, string>
                             {
@@ -215,7 +209,7 @@ namespace MediMax.Business.Services
                     break;
                 case 7:
                     historico7Dias = await _historicoDb.BuscarHistorico7Dias(request.userId);
-                    var pdfGenerator8 = new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator8 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName8 = filePath + "Historico_Ultimos_7_Dias.pdf";
                     Dictionary<string, string> columnNames8 = new Dictionary<string, string>
                     {
@@ -229,7 +223,7 @@ namespace MediMax.Business.Services
                     break;
                 case 8:
                     historico15Dias = await _historicoDb.BuscarHistorico15Dias(request.userId);
-                    var pdfGenerator9 = new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator9 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName9 = filePath + "Historico_Ultimos_15_Dias.pdf";
                     Dictionary<string, string> columnNames9 = new Dictionary<string, string>
                         {
@@ -243,7 +237,7 @@ namespace MediMax.Business.Services
                     break;
                 case 9:
                     historico30Dias = await _historicoDb.BuscarHistorico30Dias(request.userId);
-                    var pdfGenerator10 = new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator10 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName10 = filePath + "Historico_Ultimos_30_Dias.pdf";
                     Dictionary<string, string> columnNames10 = new Dictionary<string, string>
                             {
@@ -257,7 +251,7 @@ namespace MediMax.Business.Services
                     break;
                 case 10:
                     historico60Dias = await _historicoDb.BuscarHistorico60Dias(request.userId);
-                    var pdfGenerator11 = new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator11 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName11 = filePath + "Historico_Ultimos_60_Dias.pdf";
                     Dictionary<string, string> columnNames11 = new Dictionary<string, string>
                                 {
@@ -271,7 +265,7 @@ namespace MediMax.Business.Services
                     break;
                 case 11:
                     historicoUltimoAno = await _historicoDb.BuscarHistoricoUltimoAno(request.userId);
-                    var pdfGenerator12 = new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator12 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName12 = filePath + "Historico_Ultimo_Ano.pdf";
                     Dictionary<string, string> columnNames12 = new Dictionary<string, string>
                     {
@@ -286,7 +280,7 @@ namespace MediMax.Business.Services
                     break;
                 case 12:
                     historicoAnoEspecifico = await _historicoDb.BuscarHistoricoAnoEspecifico(request.year, request.userId);
-                    var pdfGenerator13= new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator13= new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName13= filePath + "Historico_Ano_" +request.year + ".pdf";
                     Dictionary<string, string> columnNames13= new Dictionary<string, string>
                     {
@@ -300,7 +294,7 @@ namespace MediMax.Business.Services
                     break;
                 case 13:
                     historicoDataEspecifica = await _historicoDb.BuscarHistoricoDataEspecifica(request.date, request.userId);
-                    var pdfGenerator14 = new PdfGenerator<HistoricoResponseModel>();
+                    var pdfGenerator14 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName14 = filePath + "Historico.pdf";
                     Dictionary<string, string> columnNames14 = new Dictionary<string, string>
                     {

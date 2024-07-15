@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using AutoMapper;
 using MediMax.Data.ApplicationModels;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
@@ -9,9 +10,13 @@ namespace MediMax.Data.Dao
 {
     public class MedicationDb : Db<MedicationResponseModel>, IMedicationDb
     {
-        public MedicationDb(IConfiguration configuration,
+        private IMapper _mapper;
+        public MedicationDb(
+            IMapper mapper,
+            IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment, MediMaxDbContext dbContext) : base(configuration, webHostEnvironment, dbContext)
         {
+            _mapper = mapper;
         }
 
         public async Task<List<MedicationResponseModel>> GetAllMedicine(int userId)
@@ -19,18 +24,19 @@ namespace MediMax.Data.Dao
             string sql;
             List<MedicationResponseModel> medicamentoLista;
             sql = $@"
-                 	SELECT 
-	                   m.id AS Id,
-	                   m.nome AS Name,
-	                   m.data_vencimento AS ExpirationDate,
-	                   m.quantidade_embalagem AS PackageQuantity,
-	                   m.dosagem AS Dosage,
-	                   m.esta_ativo AS IsActive,
-	                   m.usuarioId AS UserId
-	                FROM medicamentos m
-	                WHERE m.esta_ativo = 1
-	                AND m.usuarioId = {userId}
-	                ORDER BY m.id DESC;
+                SELECT 
+                   m.id AS Id,
+                   m.name_medication AS NameMedication,
+                   m.expiration_date AS ExpirationDate,
+                   m.package_quantity AS PackageQuantity,
+                   m.dosage AS Dosage,
+                   m.is_active AS IsActive,
+                   m.user_id AS UserId
+                FROM medication m
+                WHERE m.is_active = 1
+                AND m.user_id = {userId}
+                ORDER BY m.id DESC;
+
                 ";
 
             await Connect();
@@ -46,17 +52,17 @@ namespace MediMax.Data.Dao
             List<MedicationResponseModel> medicamentoLista;
             sql = @"
                  SELECT 
-	                m.id AS Id,
-                    m.nome AS Name,
-                    m.data_vencimento AS ExpirationDate,
-                    m.quantidade_embalagem AS PackageQuantity,
-                    m.dosagem AS Dosage,
-                  m.esta_ativo AS IsActive,
-                  m.usuarioId AS UserId
-                 FROM medicamentos m
-                 WHERE m.esta_ativo = 0
-                 AND m.usuarioId = {userId}
-                 ORDER BY m.id DESC;
+                   m.id AS Id,
+                   m.name_medication AS NameMedication,
+                   m.expiration_date AS ExpirationDate,
+                   m.package_quantity AS PackageQuantity,
+                   m.dosage AS Dosage,
+                   m.is_active AS IsActive,
+                   m.user_id AS UserId
+                FROM medication m
+                WHERE m.is_active = 0
+                AND m.user_id = {userId}
+                ORDER BY m.id DESC;
                 ";
 
             await Connect();
@@ -71,19 +77,18 @@ namespace MediMax.Data.Dao
             string sql;
             List<MedicationResponseModel> medicamento;
             sql = $@"
-               SELECT 
-                  m.id AS Id,
-                  m.nome AS Name,
-                  m.data_vencimento AS ExpirationDate,
-                  m.quantidade_embalagem AS PackageQuantity,
-                  m.dosagem AS Dosage,
-                  m.esta_ativo AS IsActive,
-                  m.usuarioId AS UserId
-               FROM medicamentos m
-               WHERE 
-	              m.nome LIKE '%{name}%'
-                AND m.esta_ativo = 1
-                AND m.usuarioId = {userId}
+                SELECT 
+                   m.id AS Id,
+                   m.name_medication AS NameMedication,
+                   m.expiration_date AS ExpirationDate,
+                   m.package_quantity AS PackageQuantity,
+                   m.dosage AS Dosage,
+                   m.is_active AS IsActive,
+                   m.user_id AS UserId
+                FROM medication m
+                WHERE m.is_active = 1
+                AND m.user_id = {userId}
+	            AND m.name_medication LIKE '%{name}%'
                 ORDER BY m.id DESC;
                 ";
 
@@ -99,18 +104,18 @@ namespace MediMax.Data.Dao
             MedicationResponseModel medicamento;
             sql = $@"
                 SELECT 
-                    m.id AS Id,
-                    m.nome AS Name,
-                    m.data_vencimento AS ExpirationDate,
-                    m.quantidade_embalagem AS PackageQuantity,
-                    m.dosagem AS Dosage,
-                    m.esta_ativo AS IsActive,
-                    m.usuarioId AS UserId
-                 FROM medicamentos m
-                 INNER JOIN tratamento t ON t.remedio_id = m.id
+                   m.id AS Id,
+                   m.name_medication AS NameMedication,
+                   m.expiration_date AS ExpirationDate,
+                   m.package_quantity AS PackageQuantity,
+                   m.dosage AS Dosage,
+                   m.is_active AS IsActive,
+                   m.user_id AS UserId
+                FROM medication m
+                INNER JOIN treatment t ON t.medication_id = m.id
                 WHERE t.id = {TreatmentId}
-                AND m.esta_ativo = 1
-                AND m.usuarioId = {userId}
+                AND m.is_active = 1
+                AND m.user_id = {userId}
                 ORDER BY m.id DESC;
                 ";
 
@@ -127,18 +132,18 @@ namespace MediMax.Data.Dao
             List<MedicationResponseModel> medicamento;
             sql = $@"
                SELECT 
-                  m.id AS Id,
-                  m.nome AS Name,
-                  m.data_vencimento AS ExpirationDate,
-                  m.quantidade_embalagem AS PackageQuantity,
-                  m.dosagem AS Dosage,
-                  m.esta_ativo AS IsActive,
-                  m.usuarioId AS UserId
-               FROM medicamentos m
-               WHERE m.esta_ativo = 1
-               AND m.usuarioId = {userId}
+                   m.id AS Id,
+                   m.name_medication AS NameMedication,
+                   m.expiration_date AS ExpirationDate,
+                   m.package_quantity AS PackageQuantity,
+                   m.dosage AS Dosage,
+                   m.is_active AS IsActive,
+                   m.user_id AS UserId
+                FROM medication m
+               WHERE m.is_active = 1
+               AND m.user_id = {userId}
                ORDER BY 
-	              m.data_vencimento ASC
+	              m.expiration_date ASC
                 ";
 
             await Connect();
@@ -148,96 +153,9 @@ namespace MediMax.Data.Dao
             return medicamento;
         }
 
-        public async Task<bool> DeletandoMedicamento(int id, int userId)
-        {
-            string sql;
-            bool success;
-            sql = $@"
-               UPDATE medicamentos m
-                SET m.esta_ativo = 0
-                WHERE m.id = {id}
-                AND m.UserId = {userId}
-                ";
-            await Connect();
-            success = await PersistQuery(sql);
-            await Disconnect();
-            return success;
-        }
-        
-        public async Task<bool> AlterandoMedicamento(string nome, string data_vencimento, int quantidade_embalagem, float dosagem, int id, int userId)
-        {
-            string sql;
-            bool success;
-            sql = $@"
-               UPDATE medicamentos m
-               SET m.nome = '{nome}', m.data_vencimento = '{data_vencimento}', m.quantidade_embalagem = {quantidade_embalagem}, m.dosagem = {dosagem}
-               WHERE m.id = {id}
-               AND m.UserId = {userId}
-                ";
-            await Connect();
-            success = await PersistQuery(sql);
-            await Disconnect();
-            return success;
-        }
-
         protected override MedicationResponseModel Mapper(DbDataReader reader)
         {
-            MedicationResponseModel medicine = new MedicationResponseModel();
-
-            // Convertendo Id para int
-            if (int.TryParse(reader["Id"].ToString(), out int id))
-            {
-                medicine.Id = id;
-            }
-            else
-            {
-                // Tratar erro de conversão
-            } 
-            
-            if (int.TryParse(reader["UserId"].ToString(), out int userId))
-            {
-                medicine.UserId = id;
-            }
-            else
-            {
-                // Tratar erro de conversão
-            }
-
-            medicine.Name = reader["Name"].ToString();
-
-
-            // Convertendo ExpirationDate para string
-            medicine.ExpirationDate = reader["ExpirationDate"].ToString();
-
-            // Convertendo Dosage para double
-            if (double.TryParse(reader["Dosage"].ToString(), out double dosage))
-            {
-                medicine.Dosage = dosage;
-            }
-            else
-            {
-                // Tratar erro de conversão
-            }
-          
-            // Convertendo PackageQuantity para int
-            if (int.TryParse(reader["PackageQuantity"].ToString(), out int packageQuantity))
-            {
-                medicine.PackageQuantity = packageQuantity;
-            }
-            else
-            {
-                // Tratar erro de conversão
-            } 
-            // Convertendo PackageQuantity para int
-            if (int.TryParse(reader["IsActive"].ToString(), out int isActive))
-            {
-                medicine.IsActive = isActive;
-            }
-            else
-            {
-                // Tratar erro de conversão
-            }
-            return medicine;
+           return _mapper.Map<MedicationResponseModel>(reader);
         }
 
     }

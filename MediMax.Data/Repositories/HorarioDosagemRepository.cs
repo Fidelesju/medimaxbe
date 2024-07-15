@@ -5,7 +5,7 @@ using MediMax.Data.Repositories.Interfaces;
 
 namespace MediMax.Data.Repositories
 {
-    public class HorarioDosagemRepository : Repository<TimeDosage>, IHorarioDosagemRepository
+    public class HorarioDosagemRepository : Repository<TimeDosage>, ITimeDosageRepository
     {
         public HorarioDosagemRepository(MediMaxDbContext context) : base(context)
         {
@@ -34,7 +34,7 @@ namespace MediMax.Data.Repositories
 
             // Atualizando os campos do medicamento
             horarioDosagem.Time = horario_dosagem;
-            horarioDosagem.TreatmentId = Treatment_id;
+            horarioDosagem.Treatment_Id = Treatment_id;
 
             // Salvando alterações
             Context.Update(horarioDosagem);

@@ -13,7 +13,7 @@ namespace MediMax.Business.Validations
 
         private void validarRequestMedicamento()
         {
-            RuleFor(u => u.medicine_name)
+            RuleFor(u => u.name_medication)
                 .NotEmpty()
                 .WithMessage("O nome do medicamento é obrigatório")
                 .Length(3, 150)

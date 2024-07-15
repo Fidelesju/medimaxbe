@@ -152,17 +152,17 @@ namespace MediMax.Data.Dao
         protected override NutritionResponseModel Mapper(DbDataReader reader)
         {
             NutritionResponseModel alimentacao;
-            DetalheAlimentacao detalheAlimentacao;
+            NutritionDetail detalheAlimentacao;
             alimentacao = new NutritionResponseModel();
-            detalheAlimentacao = new DetalheAlimentacao();
+            detalheAlimentacao = new NutritionDetail();
             alimentacao.id = Convert.ToInt32(reader["Id"]);
-            detalheAlimentacao.alimento = Convert.ToString(reader["Meals"]);
+            detalheAlimentacao.Nutrition = Convert.ToString(reader["Meals"]);
             alimentacao.horario = Convert.ToString(reader["Time"]);
             alimentacao.tipo_refeicao = Convert.ToString(reader["TypeMeals"]);
-            detalheAlimentacao.unidade_medida = Convert.ToString(reader["Unit"]);
-            detalheAlimentacao.quantidade = Convert.ToString(reader["QuantityMeals"]);
+            detalheAlimentacao.UnitMeasurement = Convert.ToString(reader["Unit"]);
+            detalheAlimentacao.Quantity = Convert.ToInt32(reader["QuantityMeals"]);
             alimentacao.UserId = Convert.ToInt32(reader["UserId"]);
-            detalheAlimentacao.id = Convert.ToInt32(reader["DetaiMealsId"]);
+            detalheAlimentacao.Id = Convert.ToInt32(reader["DetaiMealsId"]);
 
             alimentacao.detalhe_alimentacao_id = detalheAlimentacao;
             return alimentacao;

@@ -7,18 +7,18 @@ namespace MediMax.Business.Mappers
 {
     public class DetalheAlimentacaoCreateMapper : Mapper<DetalheAlimentacaoCreateRequestModel>, IDetalheAlimentacaoCreateMapper
     {
-        private readonly DetalheAlimentacao? _detalheAlimentacao;
+        private readonly NutritionDetail? _detalheAlimentacao;
 
         public DetalheAlimentacaoCreateMapper ( )
         {
-            _detalheAlimentacao = new DetalheAlimentacao();
+            _detalheAlimentacao = new NutritionDetail();
         }
 
-        public DetalheAlimentacao GetFoodDetail ( DetalheAlimentacaoCreateRequestModel request)
+        public NutritionDetail GetFoodDetail ( DetalheAlimentacaoCreateRequestModel request)
         {
-            _detalheAlimentacao.alimento = request.alimento;
-            _detalheAlimentacao.quantidade = request.quantidade;
-            _detalheAlimentacao.unidade_medida = request.unidade_medida;
+            _detalheAlimentacao.Nutrition = request.alimento;
+            _detalheAlimentacao.Quantity = request.quantidade;
+            _detalheAlimentacao.UnitMeasurement = request.unidade_medida;
             return _detalheAlimentacao;
         }
     }

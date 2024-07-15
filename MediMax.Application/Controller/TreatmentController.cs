@@ -28,7 +28,7 @@ namespace MediMax.Application.Controller
         /// <summary>
         /// Cria um novo Medication e Treatment.
         /// </summary>
-        [HttpPost("Create")]
+        [HttpPost("create")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -69,7 +69,7 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("Update")]
+        [HttpPost("update")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -110,7 +110,7 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("Delete/medication/{medication_id}/treatment/{treatment_id}")]
+        [HttpPost("desactive/medication/{medication_id}/treatment/{treatment_id}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -139,7 +139,45 @@ namespace MediMax.Application.Controller
                 _logger.LogError(ex, "DeletandoMedicamento: Controller");
                 return await UntreatedException(ex);
             }
+
         }
+
+        /// <summary>
+        /// Deletando um tratemento
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("reactive/medication/{medication_id}/treatment/{treatment_id}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<bool>>> ReactiveTreatment ( int medication_id, int treatment_id )
+        {
+            try
+            {
+                bool result = await _treatmentService.DeleteTreatment(medication_id, treatment_id);
+
+                var response = new BaseResponse<bool>
+                {
+                    Message = "Tratamento deletado com sucesso.",
+                    Data = result
+                };
+
+                return Ok(response);
+            }
+            catch (CustomValidationException ex)
+            {
+                _logger.LogError(ex, "DeletandoMedicamento: Controller");
+                return ValidationErrorsBadRequest(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DeletandoMedicamento: Controller");
+                return await UntreatedException(ex);
+            }
+        }
+       
         [HttpGet("medication/{medicineId}/user/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
@@ -178,12 +216,12 @@ namespace MediMax.Application.Controller
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<HorariosDosagemResponseModel>>>> GetDosageTimeByTreatmentId ( int treatmentId )
+        public async Task<ActionResult<BaseResponse<List<TimeDosageResponseModel>>>> GetDosageTimeByTreatmentId ( int treatmentId )
         {
             try
             {
                 var Treatment = await _treatmentService.GetDosageTimeByTreatmentId(treatmentId);
-                var response = BaseResponse<List<HorariosDosagemResponseModel>>
+                var response = BaseResponse<List<TimeDosageResponseModel>>
                         .Builder()
                         .SetMessage("Tratamentos encontrados com sucesso.")
                         .SetData(Treatment);

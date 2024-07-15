@@ -9,13 +9,8 @@ namespace MediMax.Data.Models
     {
         [Key]
         public int Id { get; set; }
-
-        [StringLength(15)]
         public string Time { get; set; }
 
-        public int TreatmentId { get; set; }
-
-        [ForeignKey("TreatmentId")]
-        public Treatment Treatment { get; set; }
+        public int Treatment_Id { get; set; }
     }
 }

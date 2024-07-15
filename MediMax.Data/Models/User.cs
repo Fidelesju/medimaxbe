@@ -6,22 +6,28 @@ namespace MediMax.Data.Models
 {
     public class User
     {
+
+        protected User()
+        {
+            
+        }
+
+        public User(int id, string nameUser, string password, int typeUserId, int ownerId , int isActive) { 
+            Id = id;
+            Name_User = nameUser;
+            Password = password;
+            Type_User_Id = typeUserId;
+            Owner_Id = ownerId;
+            Is_Active = isActive;
+        }
+
         [Key]
         public int Id { get; set; }
-
-        [StringLength(100)]
-        public string NameUser { get; set; }
-
-        [StringLength(50)]
+        public string Name_User { get; set; }
         public string Email { get; set; }
-
-        [StringLength(25)]
         public string Password { get; set; }
-        public int TypeUserId { get; set; }
-        public int IsActive { get; set;  }
-        public int OwnerId { get; set;  }
-
-        [ForeignKey("OwnerId")]
-        public Owner Owner { get; set; }
+        public int Type_User_Id { get; set; }
+        public int Is_Active { get; set;  }
+        public int Owner_Id { get; set; }
     }
 }

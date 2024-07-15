@@ -2,13 +2,12 @@
 {
     public class MedicationResponseModel
     {
-        public int Id { get; set; }
-        public int UserId{ get; set; }
-        public string Name { get; set; }
-        public int PackageQuantity { get; set; }
-        public double Dosage{ get; set; }
-        public string ExpirationDate { get; set; }
-        public int IsActive{ get; set; }
-
+        public int id { get; set; }
+        public string medicine_name { get; set; }
+        public string expiration_date { get; set; }
+        public int package_quantity { get; set; }
+        public int user_id { get; set; }
+        public int is_active { get; set; }
+        public string dosage { get; set; }
     }
 }

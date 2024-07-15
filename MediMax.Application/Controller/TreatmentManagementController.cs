@@ -16,8 +16,8 @@ namespace MediMax.Application.Controllers
     [ApiController]
     public class TreatmentManagementController : BaseController<TreatmentManagementController>
     {
-        private readonly ITreatmentManagementService _TreatmentManagementService;
-        private readonly IRelatoriosService _relatoriosService;
+        private readonly ITreatmentManagementService _treatmentManagementService;
+        private readonly IRelatoriosService _reportService;
         private readonly ILogger<TreatmentManagementController> _logger;
 
         public TreatmentManagementController (
@@ -26,8 +26,8 @@ namespace MediMax.Application.Controllers
             ILogger<TreatmentManagementController> logger,
             ILoggerService loggerService ) : base(logger, loggerService)
         {
-            _TreatmentManagementService = TreatmentManagementService;
-            _relatoriosService = relatoriosService;
+            _treatmentManagementService = TreatmentManagementService;
+            _reportService = relatoriosService;
         }
 
         /// <summary>
@@ -35,16 +35,16 @@ namespace MediMax.Application.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("Create")]
+        [HttpPost("create")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult> CriandoTreatmentManagement ( GerencimentoTreatmentCreateRequestModel request )
+        public async Task<ActionResult> CreateTreatmentManagement ( TreatmentManagementCreateRequestModel request )
         {
             try
             {
-                int result = await _TreatmentManagementService.CriandoTreatmentManagement(request);
+                int result = await _treatmentManagementService.CreateTreatmentManagement(request);
 
                 if (result != null)
                     return Ok(BaseResponse<int>
@@ -72,16 +72,16 @@ namespace MediMax.Application.Controllers
             }
         }
 
-        [HttpPost("PDF")]
+        [HttpPost("pdf")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<byte[]>> GeradorPdf ( RelatorioRequestModel request )
+        public async Task<ActionResult<byte[]>> PdfGenerator ( ReportRequestModel request )
         {
             try
             {
-                var pdfBytes = await _relatoriosService.GeradorPdf(request);
+                var pdfBytes = await _reportService.PdfGenerator(request);
                 return pdfBytes;
             }
             catch (CustomValidationException ex)
@@ -104,21 +104,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetHistoric/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoGeral ( int userId )
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> GetAllHistoric ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistoricoGeral(userId);
+                var result = await _treatmentManagementService.GetAllHistoric(id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -143,12 +143,12 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetLastStatusTreatment/{userId}")]
-        public async Task<ActionResult<BaseResponse<bool>>> BuscarStatusDoUltimoGerenciamento ( int userId )
+        [HttpGet("last-status/user/{id}")]
+        public async Task<ActionResult<BaseResponse<bool>>> BuscarStatusDoUltimoGerenciamento ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarStatusDoUltimoGerenciamento(userId);
+                var result = await _treatmentManagementService.BuscarStatusDoUltimoGerenciamento(id);
 
                 if (result == true)
                     return Ok(BaseResponse<bool>
@@ -182,12 +182,12 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetLastTreatment/{userId}")]
-        public async Task<ActionResult<BaseResponse<string>>> BuscarUltimoGerenciamento ( int userId )
+        [HttpGet("last/user/{id}")]
+        public async Task<ActionResult<BaseResponse<string>>> BuscarUltimoGerenciamento ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarUltimoGerenciamento(userId);
+                var result = await _treatmentManagementService.BuscarUltimoGerenciamento(id);
 
                 if (result != "")
                     return Ok(BaseResponse<string>
@@ -222,21 +222,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetWasTaken/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoTomado ( int userId )
+        [HttpGet("was-taken/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistoricoTomado ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistoricoTomado(userId);
+                var result = await _treatmentManagementService.BuscarHistoricoTomado(id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -261,21 +261,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetNotTaken/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoNaoTomado ( int userId )
+        [HttpGet("not-taken/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistoricoNaoTomado ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistoricoNaoTomado(userId);
+                var result = await _treatmentManagementService.BuscarHistoricoNaoTomado(id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -301,21 +301,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("Get7Days/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico7Dias ( int userId )
+        [HttpGet("last-seven-days/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistorico7Dias ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistorico7Dias(userId);
+                var result = await _treatmentManagementService.BuscarHistorico7Dias(id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -341,21 +341,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("Get15Days/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico15Dias ( int userId )
+        [HttpGet("last-fifty-days/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistorico15Dias ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistorico15Dias(userId);
+                var result = await _treatmentManagementService.BuscarHistorico15Dias(id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -381,21 +381,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("Get30Days/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico30Dias (int userId )
+        [HttpGet("last-thirty-days/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistorico30Dias (int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistorico30Dias(userId);
+                var result = await _treatmentManagementService.BuscarHistorico30Dias(id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -421,21 +421,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("Get60Days/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistorico60Dias ( int userId )
+        [HttpGet("last-sixty-days/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistorico60Dias ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistorico60Dias(userId);
+                var result = await _treatmentManagementService.BuscarHistorico60Dias(id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -460,21 +460,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetLastYear/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoUltimoAno ( int userId )
+        [HttpGet("last-year/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistoricoUltimoAno ( int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistoricoUltimoAno(userId);
+                var result = await _treatmentManagementService.BuscarHistoricoUltimoAno(id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -499,21 +499,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetHistoricByDate/{data}/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoDataEspecifica ( string data, int userId )
+        [HttpGet("date/{date}/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistoricoDataEspecifica ( string date, int id )
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistoricoDataEspecifica(data, userId);
+                var result = await _treatmentManagementService.BuscarHistoricoDataEspecifica(date, id );
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)
@@ -538,21 +538,21 @@ namespace MediMax.Application.Controllers
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        [HttpGet("GetHistoricByMedicine/{nome}/{userId}")]
-        public async Task<ActionResult<BaseResponse<List<HistoricoResponseModel>>>> BuscarHistoricoPorMedicamento ( string nome, int userId )
+        [HttpGet("medication/{name}/user/{id}")]
+        public async Task<ActionResult<BaseResponse<List<TreatmentManagementResponseModel>>>> BuscarHistoricoPorMedicamento ( string name, int id)
         {
             try
             {
-                var result = await _TreatmentManagementService.BuscarHistoricoPorMedicamento(nome, userId);
+                var result = await _treatmentManagementService.BuscarHistoricoPorMedicamento(name, id);
 
                 if (result != null)
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                           .Builder()
                           .SetMessage("Medicamentos encontrado com sucesso.")
                           .SetData(result)
                       );
                 else
-                    return Ok(BaseResponse<List<HistoricoResponseModel>>
+                    return Ok(BaseResponse<List<TreatmentManagementResponseModel>>
                          .Builder()
                          .SetMessage("Medicamentos não encontrado")
                          .SetData(result)

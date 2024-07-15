@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using MediMax.Business.Exceptions;
-using MediMax.Business.Mappers;
-using MediMax.Business.Mappers.Interfaces;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Business.Validations;
 using MediMax.Data.ApplicationModels;
-using MediMax.Data.Dao;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
 using MediMax.Data.Repositories.Interfaces;
@@ -23,36 +18,29 @@ namespace MediMax.Business.Services
     /// </summary>
     public class TreatmentService : ITreatmentService
     {
-        private readonly ITreatmentCreateMapper _treatmentCreateMapper;
-        private readonly ITreatmentUpdateMapper _treatmentUpdateMapper;
         private readonly ITreatmentRepository _treatmentRepository;
-        private readonly ITreatmentDb _TreatmentDb;
-        private readonly IHorariosDosagemDb _horariosDosagemDb;
-        private readonly IHorarioDosagemCreateMapper _horarioDosagemCreateMapper;
-        private readonly IHorarioDosagemRepository _horarioDosagemRepository;
+        private readonly ITreatmentDb _treatmentDb;
+        private readonly ITimeDosageDb _timeDosageDb;
+        private readonly ITimeDosageRepository _timeDosageRepository;
+        private IMapper _mapper;
 
 
         /// <summary>
         /// Inicializa uma nova instância do serviço de Treatment.
         /// </summary>
         public TreatmentService(
-            IMedicationCreateMapper medicamentoCreateMapper,
-            ITreatmentCreateMapper treatmentCreateMapper,
-            ITreatmentUpdateMapper treatmentUpdateMapper,
             IMedicationRepository medicamentoRepository,
             ITreatmentRepository TreatmentRepository,
-            ITreatmentDb TreatmentDb,
-            IHorariosDosagemDb horariosDosagemDb,
-            IHorarioDosagemCreateMapper horarioDosagemCreateMapper,
-            IHorarioDosagemRepository horarioDosagemRepository )
+            ITreatmentDb treatmentDb,
+            ITimeDosageDb timeDosageDb,
+            ITimeDosageRepository timeDosageRepository ,
+            IMapper mapper)
         {
-            _treatmentCreateMapper = treatmentCreateMapper ?? throw new ArgumentNullException(nameof(treatmentCreateMapper));
             _treatmentRepository = TreatmentRepository ?? throw new ArgumentNullException(nameof(TreatmentRepository));
-            _TreatmentDb = TreatmentDb ?? throw new ArgumentNullException(nameof(TreatmentDb));
-            _horariosDosagemDb = horariosDosagemDb;
-            _horarioDosagemCreateMapper = horarioDosagemCreateMapper;
-            _treatmentUpdateMapper = treatmentUpdateMapper;
-            _horarioDosagemRepository = horarioDosagemRepository;
+            _treatmentDb = treatmentDb ?? throw new ArgumentNullException(nameof(treatmentDb));
+            _timeDosageDb = timeDosageDb;
+            _timeDosageRepository = timeDosageRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -60,12 +48,9 @@ namespace MediMax.Business.Services
         /// </summary>
         public async Task<int> CreateTreatment ( TreatmentCreateRequestModel request )
         {
-            Treatment treatments;
-            TimeDosage horarioDosagem;
-            HorariosDosagemCreateRequestModel requestHorario;
-            HorariosDosagemResponseModel horarioExistente;
+            TimeDosageResponseModel existTime;
             TreatmentCreateValidation validation;
-            List<string> horariosDosagem;
+            List<string> timeDosageList;
             Dictionary<string, string> errors;
 
             validation = new TreatmentCreateValidation();
@@ -76,34 +61,35 @@ namespace MediMax.Business.Services
 
             try
             {
-                if (request.observation.IsNullOrEmpty())
-                    request.observation = "Não há observações";
-                horariosDosagem = CalcularHorariosDoses(request.treatment_start_time, request.treatment_interval_hours);
-                treatments = _treatmentCreateMapper.GetTreatment();
-                _treatmentRepository.Create(treatments);
+                if (request.Observation.IsNullOrEmpty())
+                    request.Observation = "Não há observações";
+                timeDosageList = CalcularHorariosDoses(request.Start_Time, request.Treatment_Interval_Hours);
 
-                // Criar horários de dosagem e salvar no banco de dados
-                foreach (string horario in horariosDosagem)
+
+                var treatment = _mapper.Map<Treatment>(request);
+                _treatmentRepository.Create(treatment);
+
+                foreach (string time in timeDosageList)
                 {
-                    HorariosDosagemCreateRequestModel horarioDosagemRequest = new HorariosDosagemCreateRequestModel
+                    TimeDosageCreateRequestModel horarioDosagemRequest = new TimeDosageCreateRequestModel
                     {
-                        tratamento_id = treatments.Id,
-                        horario_dosagem = horario
+                        treatment_id = treatment.Id,
+                        time = time
                     };
 
                     // Verifica se já existe um horário de dosagem com os mesmos valores na tabela
-                    horarioExistente = await _horariosDosagemDb.BuscarHorarioDosagemExistente(treatments.Id, horario);
-                    if (horarioExistente != null)
+                    existTime = await _timeDosageDb.BuscarHorarioDosagemExistente(treatment.Id, time);
+                    if (existTime != null)
                     {
                         // O horário de dosagem já existe, pode optar por atualizar ou pular a inserção
                         continue; // Neste caso, optamos por pular a inserção se o horário já existir
                     }
 
-                    horarioDosagem = _horarioDosagemCreateMapper.BuscarHorariosDosagem(horarioDosagemRequest);
-                    _horarioDosagemRepository.Create(horarioDosagem);
+                    var timeDosage = _mapper.Map<TimeDosage>(request);
+                    _timeDosageRepository.Create(timeDosage);
                 }
 
-                return treatments.Id;
+                return treatment.Id;
             }
             catch (DbUpdateException exception)
             {
@@ -127,8 +113,7 @@ namespace MediMax.Business.Services
             var result = new BaseResponse<bool>();
             TreatmentUpdateValidation validation = new TreatmentUpdateValidation();
             Medication medication = new Medication();
-            HorariosDosagemResponseModel horarioExistente = new HorariosDosagemResponseModel();
-            TimeDosage horarioDosagem = new TimeDosage();
+            TimeDosageResponseModel horarioExistente = new TimeDosageResponseModel();
             Treatment treatment = new Treatment();
             List<string> horariosDosagem;
             Dictionary<string, string> errors;
@@ -142,12 +127,10 @@ namespace MediMax.Business.Services
 
             try
             {
-                _treatmentUpdateMapper.SetBaseMapping(request);
-                await _horariosDosagemDb.DeletandoHorarioDosagem(request.treatment_id);
+                await _timeDosageDb.DeletandoHorarioDosagem(request.treatment_id);
                 horariosDosagem = CalcularHorariosDoses(request.treatment_start_time, request.treatment_interval_hours);
 
                 if (horariosDosagem != null) {
-                    treatment = _treatmentUpdateMapper.GetTreatment();
                     _treatmentRepository.Update(treatment);
                     result.Data = true;
                     result.IsSuccess = true;
@@ -157,20 +140,21 @@ namespace MediMax.Business.Services
                 {
                     foreach (string horario in horariosDosagem)
                     {
-                        HorariosDosagemCreateRequestModel horarioDosagemRequest = new HorariosDosagemCreateRequestModel
+                        TimeDosageCreateRequestModel horarioDosagemRequest = new TimeDosageCreateRequestModel
                         {
-                            tratamento_id = request.treatment_id,
-                            horario_dosagem = horario
+                            treatment_id = request.treatment_id,
+                            time = horario
                         };
 
-                        horarioExistente = await _horariosDosagemDb.BuscarHorarioDosagemExistente(request.treatment_id, horario);
+                        horarioExistente = await _timeDosageDb.BuscarHorarioDosagemExistente(request.treatment_id, horario);
                         if (horarioExistente != null)
                         {
                             continue;
                         }
 
-                        horarioDosagem = _horarioDosagemCreateMapper.BuscarHorariosDosagem(horarioDosagemRequest);
-                        _horarioDosagemRepository.Create(horarioDosagem);
+
+                        var horarioDosagem = _mapper.Map<TimeDosage>(request);
+                        _timeDosageRepository.Create(horarioDosagem);
                     }
 
                 }
@@ -189,19 +173,19 @@ namespace MediMax.Business.Services
         public async Task<List<TreatmentResponseModel>> GetTreatmentByMedicationId( int medicineId, int userId )
         {
            List<TreatmentResponseModel> treatmentList;
-            treatmentList = await _TreatmentDb.GetTreatmentByMedicationId(medicineId, userId);
+            treatmentList = await _treatmentDb.GetTreatmentByMedicationId(medicineId, userId);
             return treatmentList;
         } /// <inheritdoc/>
-        public async Task<List<HorariosDosagemResponseModel>> GetDosageTimeByTreatmentId ( int treatmentId )
+        public async Task<List<TimeDosageResponseModel>> GetDosageTimeByTreatmentId ( int treatmentId )
         {
-            List<HorariosDosagemResponseModel> treatmentList;
-            treatmentList = await _horariosDosagemDb.GetDosageTimeByTreatmentId(treatmentId);
+            List<TimeDosageResponseModel> treatmentList;
+            treatmentList = await _timeDosageDb.GetDosageTimeByTreatmentId(treatmentId);
             return treatmentList;
         }
         public async Task<TreatmentResponseModel> GetTreatmentById ( int treatmentId, int userId )
         {
             TreatmentResponseModel treatmentList;
-            treatmentList = await _TreatmentDb.GetTreatmentById(treatmentId, userId);
+            treatmentList = await _treatmentDb.GetTreatmentById(treatmentId, userId);
             return treatmentList;
         }
 
@@ -210,7 +194,7 @@ namespace MediMax.Business.Services
         {
 
             List<TreatmentResponseModel> treatmentList;
-            treatmentList = await _TreatmentDb.GetTreatmentActives(userId);
+            treatmentList = await _treatmentDb.GetTreatmentActives(userId);
             return treatmentList;
         } 
         
@@ -218,7 +202,7 @@ namespace MediMax.Business.Services
         public async Task<List<TreatmentResponseModel>> GetTreatmentByInterval(string startTime, string finishTime, int userId )
         {
             List<TreatmentResponseModel> treatmentList;
-            treatmentList = await _TreatmentDb.GetTreatmentByInterval(startTime, finishTime, userId);
+            treatmentList = await _treatmentDb.GetTreatmentByInterval(startTime, finishTime, userId);
             return treatmentList;
         }
 

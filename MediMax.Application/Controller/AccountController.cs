@@ -16,7 +16,7 @@ namespace MediMax.Application.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly ILogger<AccountController> _logger;
-
+        private readonly IUserService _userService;
         public AccountController(
             IAccountService accountService,
             ILogger<AccountController> logger,

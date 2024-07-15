@@ -10,37 +10,27 @@ namespace MediMax.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [StringLength(50)]
-        public string NameMedication { get; set; }
+        public string Name_Medication { get; set; }
 
-        public int MedicationQuantity { get; set; }
+        public int Medication_Quantity { get; set; }
 
-        [StringLength(15)]
-        public string StartTime { get; set; }
+        public string Start_Time { get; set; }
 
-        public int TreatmentIntervalDays { get; set; }
+        public int Treatment_Interval_Days { get; set; }
 
-        public int TreatmentIntervalHours { get; set; }
+        public int Treatment_Interval_Hours { get; set; }
 
-        [StringLength(50)]
-        public string DietaryRecommendations { get; set; }
+        public string Dietary_Recommendations { get; set; }
 
-        [StringLength(100)]
         public string Observation { get; set; }
 
-        public int ContinuousUse { get; set; }
+        public int Continuous_Use { get; set; }
 
-        public int IsActive { get; set; }
+        public int Is_Active { get; set; }
 
-        public int MedicationId { get; set; }
+        public int Medication_Id { get; set; }
 
-        [ForeignKey("MedicationId")]
-        public Medication Medication { get; set; }
+        public int User_Id { get; set; }
 
-        public int UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public User User { get; set; }
     }
-
 }

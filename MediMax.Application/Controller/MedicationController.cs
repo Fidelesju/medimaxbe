@@ -27,7 +27,7 @@ namespace MediMax.Application.Controller
         /// <summary>
         /// Cria um novo Medication e Treatment.
         /// </summary>
-        [HttpPost("Create")]
+        [HttpPost("create")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -69,7 +69,7 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("Update")]
+        [HttpPost("update")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -110,46 +110,87 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("Delete/medication/{medicineId}/user/{userId}")]
+        [HttpPost("desactive/medication/{medicineId}/user/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> DeleteMedication ( int medicineId, int userId )
-      {
-            try
-            {
-                bool result = await _medicationService.DeleteMedication(medicineId, userId);
+        public async Task<ActionResult<BaseResponse<bool>>> DesactiveMedication ( int medicineId, int userId )
+          {
+                try
+                {
+                    bool result = await _medicationService.DesactiveMedication(medicineId, userId);
 
-                if (result == true)
-                    return Ok(BaseResponse<bool>
-                          .Builder()
-                          .SetMessage("Medications deletado com sucesso.")
-                          .SetData(result)
-                      );
-                else
-                    return Ok(BaseResponse<bool>
-                         .Builder()
-                         .SetMessage("Medications não encontrado")
-                         .SetData(result)
-                     );
+                    if (result == true)
+                        return Ok(BaseResponse<bool>
+                              .Builder()
+                              .SetMessage("Medications deletado com sucesso.")
+                              .SetData(result)
+                          );
+                    else
+                        return Ok(BaseResponse<bool>
+                             .Builder()
+                             .SetMessage("Medications não encontrado")
+                             .SetData(result)
+                         );
+                }
+                catch (CustomValidationException ex)
+                {
+                    _logger.LogError(ex, "DeletandoMedication: Controller");
+                    return ValidationErrorsBadRequest(ex);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "DeletandoMedication: Controller");
+                    return await UntreatedException(ex);
+                }
             }
-            catch (CustomValidationException ex)
-            {
-                _logger.LogError(ex, "DeletandoMedication: Controller");
-                return ValidationErrorsBadRequest(ex);
+
+        /// <summary>
+        /// Deletando um Medication
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("reactive/medication/{medicineId}/user/{userId}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<bool>>> ReactiveMedication ( int medicineId, int userId )
+          {
+                try
+                {
+                    bool result = await _medicationService.ReactiveMedication(medicineId, userId);
+
+                    if (result == true)
+                        return Ok(BaseResponse<bool>
+                              .Builder()
+                              .SetMessage("Medications deletado com sucesso.")
+                              .SetData(result)
+                          );
+                    else
+                        return Ok(BaseResponse<bool>
+                             .Builder()
+                             .SetMessage("Medications não encontrado")
+                             .SetData(result)
+                         );
+                }
+                catch (CustomValidationException ex)
+                {
+                    _logger.LogError(ex, "DeletandoMedication: Controller");
+                    return ValidationErrorsBadRequest(ex);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "DeletandoMedication: Controller");
+                    return await UntreatedException(ex);
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "DeletandoMedication: Controller");
-                return await UntreatedException(ex);
-            }
-        }
 
         /// <summary>
         /// Obtém todos os Medications.
         /// </summary>
-        [HttpGet("{userId}")]
+        [HttpGet("user/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -163,7 +204,7 @@ namespace MediMax.Application.Controller
                 if (result != null)
                     return Ok(BaseResponse<List<MedicationResponseModel>>
                           .Builder()
-                          .SetMessage("Medications deletado com sucesso.")
+                          .SetMessage("Medicamentos encontrados com sucesso.")
                           .SetData(result)
                       );
                 else

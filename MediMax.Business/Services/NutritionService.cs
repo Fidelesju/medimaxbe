@@ -35,7 +35,7 @@ namespace MediMax.Business.Services
         public async Task<int> CreateNutrition(NutritionCreateRequestModel request)
         {
             Nutrition nutrition = null;
-            DetalheAlimentacao detailFood;
+            NutritionDetail detailFood;
             DetalheAlimentacaoCreateRequestModel detailRequest;
             NutritionCreateValidation validation;
             Dictionary<string, string> errors;
@@ -56,9 +56,9 @@ namespace MediMax.Business.Services
                     detailRequest.quantidade = detalheAlimentacao.quantidade;
 
                     detailFood = _nutritionDetailCreateMapper.GetFoodDetail(detailRequest);
-                    detailFood.id = 0;
+                    detailFood.Id = 0;
                     _detalheAlimentacaoRepository.Create(detailFood);
-                    request.detalhe_alimentacao_id = detailFood.id;
+                    request.detalhe_alimentacao_id = detailFood.Id;
                     nutrition = _nutritionCreateMapper.GetFood();
                     nutrition.Id = 0;
                     _nutritionRepository.Create(nutrition);

@@ -1,10 +1,12 @@
 using MediMax.Application.Configurations;
+using MediMax.Business.Mappers;
 using MediMax.Data.ApplicationModels;
 using MediMax.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.MSSqlServer;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configuração de Serilog para gravar logs no banco de dados
@@ -28,6 +30,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddJwtConfiguration(builder.Configuration);
 builder.Services.AddSignalR();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+
 var app = builder.Build();
 app.MapControllers();
 

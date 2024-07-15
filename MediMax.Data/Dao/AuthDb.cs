@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using AutoMapper;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
 using MediMax.Data.ResponseModels;
@@ -7,26 +8,29 @@ namespace MediMax.Data.Dao
 {
     public class AuthDb : Db<LoginResponseModel>, IAuthDb
     {
+        private readonly IMapper _mapper;
+
         public AuthDb(
+            IMapper mapper,
             IConfiguration configuration,
             IWebHostEnvironment hostingEnviroment, 
             MediMaxDbContext dbContext) : base(configuration,hostingEnviroment, dbContext)
         {
+            _mapper = mapper;
         }
-        public async Task<LoginResponseModel> AuthenticateUser(string email, string login, string password)
+        public async Task<LoginResponseModel> AuthenticateUser(string email, string password)
         {
             string sql;
             LoginResponseModel loginResponseModel;
             sql = $@"
                     SELECT 
-                          u.id_User AS UserId,
-                             u.nome AS Name,
+                          u.id AS UserId,
+                             u.name_user AS Name,
                              u.email AS Email,
-                             u.id_tipo_User as TypeUserId
-                             FROM Users u
+                             u.type_user_id as TypeUserId
+                             FROM user u
                      WHERE u.email = '{email}'
-                     OR u.nome = '{login}'
-                     AND u.senha = '{password}'
+                     AND u.password = '{password}'
                      LIMIT 1;
                 ";
             await Connect();
@@ -38,13 +42,7 @@ namespace MediMax.Data.Dao
 
         protected override LoginResponseModel Mapper(DbDataReader reader)
         {
-            LoginResponseModel loginResponseModel;
-            loginResponseModel = new LoginResponseModel();
-            loginResponseModel.Id = Convert.ToInt32(reader["UserId"]);
-            loginResponseModel.Name = Convert.ToString(reader["Name"]);
-            loginResponseModel.Email = Convert.ToString(reader["Email"]);
-            loginResponseModel.TypeUserId = Convert.ToInt32(reader["TypeUserId"]);
-            return loginResponseModel;
+            return _mapper.Map<LoginResponseModel>(reader);
         }
     }
 }

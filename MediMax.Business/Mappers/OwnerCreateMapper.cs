@@ -17,17 +17,17 @@ namespace MediMax.Business.Mappers
 
         public Owner GetOwner()
         {
-            _owner.FirstName = BaseMapping.FirstName;
-            _owner.LastName = BaseMapping.LastName;
+            _owner.First_Name = BaseMapping.FirstName;
+            _owner.Last_Name = BaseMapping.LastName;
             _owner.Email = BaseMapping.Email;
-            _owner.PhoneNumber = BaseMapping.PhoneNumber;
+            _owner.Phone_Number = BaseMapping.PhoneNumber;
             _owner.Address = BaseMapping.Address;
             _owner.State = BaseMapping.State;
             _owner.City = BaseMapping.City;
             _owner.Country = BaseMapping.Country;
-            _owner.PostalCode = BaseMapping.PostalCode;
-            _owner.CpfCnpj = BaseMapping.CpfCnpj;
-            _owner.IsActive = 1;
+            _owner.Postal_Code = BaseMapping.PostalCode;
+            _owner.Cpf_Cnpj = BaseMapping.Cpf_Cnpj;
+            _owner.Is_Active = 1;
             return _owner;
         }
     }

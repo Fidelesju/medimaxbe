@@ -1,61 +1,50 @@
-﻿using MediMax.Business.Exceptions;
-using MediMax.Business.Mappers;
-using MediMax.Business.Mappers.Interfaces;
+﻿using AutoMapper;
+using MediMax.Business.Exceptions;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Business.Validations;
 using MediMax.Data.ApplicationModels;
-using MediMax.Data.Dao;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
-using MediMax.Data.Repositories;
 using MediMax.Data.Repositories.Interfaces;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
 using Microsoft.EntityFrameworkCore;
-using MySqlX.XDevAPI.Common;
 using ServiceStack;
 
 namespace MediMax.Business.Services
 {
     public class MedicationService : IMedicationService
     {
-        private readonly IMedicationCreateMapper _medicationCreateMapper;
-        private readonly IMedicationUpdateMapper _medicationUpdateMapper;
         private readonly IMedicationRepository _medicationRepository;
-        private readonly IHorarioDosagemRepository _horarioDosagemRepository;
+        private readonly ITimeDosageRepository _horarioDosagemRepository;
         private readonly IMedicationDb _medicationDb;
         private readonly ITreatmentDb _treatmentDb;
-        private readonly IHorariosDosagemDb _horarioDosagemDb;
-        private readonly IHorarioDosagemCreateMapper _horarioDosagemCreateMapper;
+        private readonly ITimeDosageDb _horarioDosagemDb;
+        
+        private IMapper _mapper;
         public MedicationService(
-            IMedicationCreateMapper medicationCreateMapper,
-            IMedicationRepository medicationRepository,
-            IHorarioDosagemCreateMapper horarioDosagemCreateMapper,
-            IHorarioDosagemRepository horarioDosagemRepository,
-            IHorariosDosagemDb horarioDosagemDb,
+            IMedicationRepository medicationRepository,,
+            ITimeDosageRepository horarioDosagemRepository,
+            ITimeDosageDb horarioDosagemDb,
             IMedicationDb medicationDb,
             ITreatmentDb TreatmentDb,
-            IMedicationUpdateMapper medicationUpdateMapper)
+            IMapper mapper)
         {
-            _medicationCreateMapper = medicationCreateMapper;
             _medicationRepository = medicationRepository;
             _medicationDb = medicationDb;
-            _horarioDosagemCreateMapper = horarioDosagemCreateMapper;
             _horarioDosagemRepository = horarioDosagemRepository;
             _horarioDosagemDb = horarioDosagemDb;
             _treatmentDb = TreatmentDb;
-            _medicationUpdateMapper = medicationUpdateMapper;
+            _mapper = mapper;
         }
 
       
         public async Task<BaseResponse<int>> CreateMedication(MedicationCreateRequestModel request)
         {
             var result = new BaseResponse<int>();
-            Medication medication;
             MedicationCreateValidation validation = new MedicationCreateValidation();
             Dictionary<string, string> errors;
 
-            _medicationCreateMapper.SetBaseMapping(request);
             var validationResult = validation.Validate(request);
             if (!validationResult.IsValid)
             {
@@ -66,14 +55,13 @@ namespace MediMax.Business.Services
 
             try
             {
-                medication = _medicationCreateMapper.GetMedication();
+                var medication = _mapper.Map<Medication>(request);
                 _medicationRepository.Create(medication);
                 result.Data = medication.Id;
                 result.IsSuccess = true;
             }
             catch (DbUpdateException exception)
             {
-                // Handle persistence errors
                 result.Errors.Add("Database update failed.");
             }
 
@@ -86,30 +74,27 @@ namespace MediMax.Business.Services
         /// <param name="request"></param>
         /// <returns></returns>
         /// <exception cref="CustomValidationException"></exception>
-        public async Task<bool> UpdateMedication (MedicationUpdateRequestModel request)
+        public async Task<bool> UpdateMedication ( MedicationUpdateRequestModel request )
         {
             var result = new BaseResponse<bool>();
             MedicationtUpdateValidation validation = new MedicationtUpdateValidation();
-            Medication medication;
             Dictionary<string, string> errors;
             bool successMedicamento;
 
-            var validationResult =  validation.Validate(request);
+            var validationResult = validation.Validate(request);
             if (!validationResult.IsValid)
             {
                 result.Message = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
                 result.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
 
-                try
-                {
-                    _medicationUpdateMapper.SetBaseMapping(request);
-                     medication = _medicationUpdateMapper.GetMedication();
-                    _medicationRepository.Update(medication);
-                    result.Data = true;
-                    result.IsSuccess = true;
-                    return result.IsSuccess;
-              
+            try
+            {
+                var medication = _mapper.Map<MedicationResponseModel>(request);
+                await _medicationRepository.Update(medication);
+                result.Data = true;
+                result.IsSuccess = true;
+                return result.Data;
             }
             catch (DbUpdateException exception)
             {
@@ -117,7 +102,36 @@ namespace MediMax.Business.Services
                 throw new CustomValidationException(errors);
             }
         }
+
+        /// <summary>
+        /// Deletando medicamentos
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="RecordNotFoundException"></exception>
+        public async Task<bool> ReactiveMedication ( int medicineId, int userId )
+        {
+            var result = new BaseResponse<bool>();
+            await _medicationRepository.Reactive(medicineId, userId);
+            result.Data = true;
+            result.IsSuccess = true;
+            return result.Data;
+        } 
         
+        /// <summary>
+        /// Deletando medicamentos
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="RecordNotFoundException"></exception>
+        public async Task<bool> DesactiveMedication ( int medicineId, int userId )
+        {
+            var result = new BaseResponse<bool>();
+            await _medicationRepository.Desactive(medicineId, userId);
+            result.Data = true;
+            result.IsSuccess = true;
+            return result.Data;
+        }
 
         /// <summary>
         /// Obtém todos os medicamentos.
@@ -179,19 +193,6 @@ namespace MediMax.Business.Services
             return medicamentoLista;
         }
 
-        /// <summary>
-        /// Deletando medicamentos
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="RecordNotFoundException"></exception>
-        public async Task<bool> DeleteMedication(int medicineId,  int userId )
-        {
-            var result = new BaseResponse<bool>();
-            await _medicationRepository.Delete(medicineId, userId);
-            result.Data = true;
-            result.IsSuccess = true;
-            return result.Data;
-        }
+       
     }
 }

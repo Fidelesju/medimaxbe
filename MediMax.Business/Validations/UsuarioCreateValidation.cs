@@ -15,12 +15,12 @@ namespace MediMax.Business.Validations
 
         private void ValidateName()
         {
-            RuleFor(u => u.UserName)
+            RuleFor(u => u.Name_User)
                 .NotEmpty()
                 .WithMessage(DefaultErrorMessages.RequiredField)
                 .Length(3, 150)
                 .WithMessage(DefaultErrorMessages.TextOutOfBounds(3, 150))
-                .WithName("Nome de usuário");
+                .WithName("Nome de usuário invalido");
         }
 
         private void ValidateEmail()

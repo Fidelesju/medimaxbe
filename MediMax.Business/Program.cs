@@ -5,6 +5,7 @@ using MediMax.Data.ApplicationModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MediMax.Business.Mappers;
 
 internal class Program
 {
@@ -15,6 +16,7 @@ internal class Program
         // Adiciona os serviços ao contêiner.
         builder.Services.AddRazorPages();
         builder.Services.AddControllers();
+      
 
         // Adiciona a configuração JWT
         AddJwtConfiguration(builder.Services, builder.Configuration);

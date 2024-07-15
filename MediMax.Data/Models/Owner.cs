@@ -7,37 +7,27 @@ namespace MediMax.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [StringLength(50)]
-        public string FirstName { get; set; }
+        public string First_Name { get; set; }
 
-        [StringLength(50)]
-        public string LastName { get; set; }
+        public string Last_Name { get; set; }
 
-        [StringLength(50)]
         public string Email { get; set; }
 
-        [StringLength(15)]
-        public string PhoneNumber { get; set; }
+        public string Phone_Number { get; set; }
 
-        [StringLength(100)]
         public string Address { get; set; }
 
-        [StringLength(50)]
         public string City { get; set; }
 
-        [StringLength(50)]
         public string State { get; set; }
 
-        [StringLength(50)]
         public string Country { get; set; }
 
-        [StringLength(15)]
-        public string PostalCode { get; set; }
+        public string Postal_Code { get; set; }
 
-        [StringLength(25)]
-        public string CpfCnpj { get; set; }
+        public string Cpf_Cnpj { get; set; }
 
-        public int IsActive { get; set; }
+        public int Is_Active { get; set; }
 
     }
 }

@@ -14,7 +14,7 @@ namespace MediMax.Business.Validations
 
         private void ValidateName()
         {
-            RuleFor(u => u.UserName)
+            RuleFor(u => u.Name_User)
                 .NotEmpty()
                 .WithMessage(DefaultErrorMessages.RequiredField)
                 .Length(3, 150)

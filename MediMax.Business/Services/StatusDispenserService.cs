@@ -235,8 +235,8 @@ namespace MediMax.Business.Services
                     DispenserStatusResponse = new DispenserStatusListaResponseModel
                     {
                         TreatmentId = TreatmentResponse.Id,
-                        MedicamentoId = medicamentoResponse.Id,
-                        QuantidadeTotalMedicamentoCaixa = (int)medicamentoResponse.PackageQuantity,
+                        MedicamentoId = medicamentoResponse.id,
+                        QuantidadeTotalMedicamentoCaixa = (int)medicamentoResponse.package_quantity,
                         QuantidadeDiasFaltantesFimTreatment = (int)TreatmentResponse.TreatmentDurationDays,
                         IntervaloTreatmentHoras = (int)TreatmentResponse.TreatmentInterval,
                         QuantidadeMedicamentoPorDosagem = (int)TreatmentResponse.MedicineQuantity,
