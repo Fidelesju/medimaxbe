@@ -5,7 +5,8 @@ namespace MediMax.Data.RequestModels
 {
     public class TimeDosageCreateRequestModel
     {
-        public int treatment_id { get; set; }
-        public string time { get; set; }
+        public int Treatment_Id { get; set; }
+        public int Treatment_User_Id { get; set; }
+        public string Time { get; set; }
     }
 }

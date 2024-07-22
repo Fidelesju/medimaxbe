@@ -110,7 +110,7 @@ namespace MediMax.Business.Services
                         _DispenserStatusCreateMapper.SetBaseMapping(request);
                         DispenserStatus = _DispenserStatusCreateMapper.BuscarDispenserStatus();
                         _DispenserStatusRepository.Create(DispenserStatus);
-                        _TreatmentDb.DeleteTreatment(request.Treatment_id);
+                        //_TreatmentDb.DeleteTreatment(request.Treatment_id);
                     }
                     else
                     {
@@ -231,15 +231,15 @@ namespace MediMax.Business.Services
                 medicamentoResponse = await _medicationDb.GetMedicationByTreatmentId(treatmentId, userId);
 
                 if (TreatmentResponse != null)
-                    horarioDosagens = CalcularHorariosDoses(TreatmentResponse.StartTime, TreatmentResponse.TreatmentInterval.Value);
+                    horarioDosagens = CalcularHorariosDoses(TreatmentResponse.Start_Time, TreatmentResponse.Treatment_Interval_Hours);
                     DispenserStatusResponse = new DispenserStatusListaResponseModel
                     {
                         TreatmentId = TreatmentResponse.Id,
                         MedicamentoId = medicamentoResponse.id,
                         QuantidadeTotalMedicamentoCaixa = (int)medicamentoResponse.package_quantity,
-                        QuantidadeDiasFaltantesFimTreatment = (int)TreatmentResponse.TreatmentDurationDays,
-                        IntervaloTreatmentHoras = (int)TreatmentResponse.TreatmentInterval,
-                        QuantidadeMedicamentoPorDosagem = (int)TreatmentResponse.MedicineQuantity,
+                        QuantidadeDiasFaltantesFimTreatment = (int)TreatmentResponse.Treatment_Interval_Days,
+                        IntervaloTreatmentHoras = (int)TreatmentResponse.Treatment_Interval_Hours,
+                        QuantidadeMedicamentoPorDosagem = (int)TreatmentResponse.Medication_Quantity,
                         DosageTime = horarioDosagens
                     };
             }

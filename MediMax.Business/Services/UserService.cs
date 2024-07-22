@@ -133,10 +133,11 @@ namespace MediMax.Business.Services
             }
         }
 
-        public async Task<EmailCodigoResponseModel> SendCodeToEmail ( string email , string name, int id)
+        public async Task<SendCodeToEmailResponseModel> SendCodeToEmail ( string email )
         {
-            EmailCodigoResponseModel response;
-          
+            SendCodeToEmailResponseModel response;
+            UserResponseModel user;
+            user = await _userDb.GetUserByEmail(email);
             string code = GenerateRandomCode();
             string subject = "Código de recuperação de senha";
             string body = $@"
@@ -159,7 +160,7 @@ namespace MediMax.Business.Services
                 <div class='container'>
                     <div class='header'>Bem-vindo à Medimax</div>
                     <div class='body'>
-                        <p>Olá, {name},</p>
+                        <p>Olá, {user.Name_User},</p>
                         <p>Aqui está o seu código de verificação:</p>
                         <p class='code'>{code}</p>
                     </div>
@@ -185,22 +186,25 @@ namespace MediMax.Business.Services
                     await client.SendAsync(emailMessage);
                     await client.DisconnectAsync(true);
                 }
-                response = new EmailCodigoResponseModel()
+                response = new SendCodeToEmailResponseModel()
                 {
                     Code = code,
-                    UserId = id,
                     Email = email,
                     Message = "Codigo enviado com sucesso!",
+                    UserId = user.Id,
+                    OwnerId = user.Owner_Id,
                     Success = true
                 };
             }
             catch (Exception ex)
             {
-                response = new EmailCodigoResponseModel()
+                response = new SendCodeToEmailResponseModel()
                 {
                     Code = code,
                     Email = email,
                     Message = ex.Message,
+                    UserId = user.Id,
+                    OwnerId = user.Owner_Id,
                     Success = false
                 };
             }

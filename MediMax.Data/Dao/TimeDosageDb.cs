@@ -39,17 +39,18 @@ namespace MediMax.Data.Dao
             return horarioDosagemResponseModel;
         } 
         
-        public async Task<List<TimeDosageResponseModel>> GetDosageTimeByTreatmentId(int Treatment_id)
+        public async Task<List<TimeDosageResponseModel>> GetDosageTimeByTreatmentId(int treatment_id)
         {
             string sql;
             List<TimeDosageResponseModel> horarioDosagemResponseModel;
             sql = $@"
                 SELECT 
-                    hd.id as Id,
-	                hd.Treatment_id as TreatmentId,
-                    hd.horario_dosagem as HorarioDosagem
-                FROM horarios_dosagem hd 
-                WHERE hd.Treatment_id = {Treatment_id}
+                    td.id AS Id,
+                    td.Treatment_id AS TreatmentId,
+                    td.time AS TimeDosage,
+                    td.treatment_user_id AS UserId
+                FROM time_dosage td
+                WHERE td.treatment_id = {treatment_id}
                 ";
 
             await Connect();
@@ -64,7 +65,7 @@ namespace MediMax.Data.Dao
             string sql;
             bool success;
             sql = $@"
-                DELETE FROM horarios_dosagem hd WHERE hd.tratamento_id= {Treatment_id}
+                DELETE FROM time_dosage td WHERE td.treatment_id = {Treatment_id}
             ";
 
             await Connect();

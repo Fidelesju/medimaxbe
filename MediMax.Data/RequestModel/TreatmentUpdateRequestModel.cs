@@ -5,14 +5,27 @@ namespace MediMax.Data.RequestModels
 {
     public class TreatmentUpdateRequestModel
     {
-        public int treatment_id { get; set; }
-        public int medication_id { get; set; }
-        public string medicine_name { get; set; }
-        public int medication_quantity { get; set; }
-        public string treatment_start_time { get; set; }
-        public int treatment_interval_hours { get; set; }
-        public int treatment_interval_days { get; set; }
-        public string dietary_recommendations { get; set; }
-        public string observation { get; set; }
+        public string Name_Medication { get; set; }
+
+        public int Medication_Quantity { get; set; }
+
+        public string Start_Time { get; set; }
+
+        public int Treatment_Interval_Days { get; set; }
+
+        public int Treatment_Interval_Hours { get; set; }
+
+        public string Dietary_Recommendations { get; set; }
+
+        public string Observation { get; set; }
+
+        public int Continuous_Use { get; set; }
+
+        public int Is_Active { get; set; }
+
+        public int Medication_Id { get; set; }
+
+        public int User_Id { get; set; }
+        public int Id { get; set; }
     }
 }

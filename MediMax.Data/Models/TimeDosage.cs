@@ -10,7 +10,7 @@ namespace MediMax.Data.Models
         [Key]
         public int Id { get; set; }
         public string Time { get; set; }
-
         public int Treatment_Id { get; set; }
+        public int Treatment_User_Id { get; set; }
     }
 }

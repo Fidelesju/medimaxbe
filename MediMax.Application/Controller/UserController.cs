@@ -171,17 +171,17 @@ namespace MediMax.Application.Controller
             }
         }
 
-        [HttpPost("send/email/{email}/user/{name}/{id}")]
-        [ProducesResponseType(typeof(BaseResponse<EmailCodigoResponseModel>), 200)]
-        [ProducesResponseType(typeof(BaseResponse<EmailCodigoResponseModel>), 400)]
-        [ProducesResponseType(typeof(BaseResponse<EmailCodigoResponseModel>), 404)]
-        [ProducesResponseType(typeof(BaseResponse<EmailCodigoResponseModel>), 500)]
-        public async Task<ActionResult<BaseResponse<EmailCodigoResponseModel>>> SendCodeToEmail ( string email, string name, int id )
+        [HttpPost("send/email/{email}")]
+        [ProducesResponseType(typeof(BaseResponse<SendCodeToEmailResponseModel>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<SendCodeToEmailResponseModel>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<SendCodeToEmailResponseModel>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<SendCodeToEmailResponseModel>), 500)]
+        public async Task<ActionResult<BaseResponse<SendCodeToEmailResponseModel>>> SendCodeToEmail ( string email)
         {
             try
             {
-                EmailCodigoResponseModel user = await _userService.SendCodeToEmail(email, name, id);
-                var response = BaseResponse<EmailCodigoResponseModel>.Builder()
+                SendCodeToEmailResponseModel user = await _userService.SendCodeToEmail(email);
+                var response = BaseResponse<SendCodeToEmailResponseModel>.Builder()
                     .SetMessage("Codigo enviado com sucesso!")
                     .SetData(user);
                 return Ok(response);

@@ -123,9 +123,9 @@ namespace MediMax.Business.Services
                     TreatmentAtivos = await _treatmentDb.GetTreatmentActives(request.userId);
                     foreach (var treatment in TreatmentAtivos)
                     {
-                        if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
+                        if (treatment.Start_Time != null && treatment.Treatment_Interval_Hours != 0)
                         {
-                            List<string> horariosDosagemString = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
+                            List<string> horariosDosagemString = CalcularHorariosDoses(treatment.Start_Time, treatment.Treatment_Interval_Hours);
                         }
                     }
                     var pdfGenerator3 = new PdfGenerator<TreatmentResponseModel>();
@@ -144,12 +144,12 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator3.GeneratePdf(TreatmentAtivos, fileName3, columnNames3, "Relatório de Treatments Ativos");
                     break;
                 case 3:
-                    TreatmentInativos = await _treatmentDb.BuscarTodosTreatmentInativos(request.userId);
+                    TreatmentInativos = await _treatmentDb.GetTreatmentInactives(request.userId);
                     foreach (var treatment in TreatmentInativos)
                     {
-                        if (treatment.StartTime != null && treatment.TreatmentInterval.HasValue)
+                        if (treatment.Start_Time != null && treatment.Treatment_Interval_Hours != 0)
                         {
-                            List<string> horariosDosagemString = CalcularHorariosDoses(treatment.StartTime, treatment.TreatmentInterval.Value);
+                            List<string> horariosDosagemString = CalcularHorariosDoses(treatment.Start_Time, treatment.Treatment_Interval_Hours);
                         }
                     }
                     var pdfGenerator4 = new PdfGenerator<TreatmentResponseModel>();

@@ -160,7 +160,7 @@ namespace MediMax.Business.Services
             if (TreatmentLista == null)
                 return "";
             else
-                return TreatmentLista.Name;
+                return TreatmentLista.Name_Medication;
         }
     }
 }

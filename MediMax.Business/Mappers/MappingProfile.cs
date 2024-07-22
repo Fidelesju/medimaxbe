@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MediMax.Data.Dao;
 using MediMax.Data.Models;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
@@ -14,7 +15,8 @@ namespace MediMax.Business.Mappers
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src["UserId"]))
                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src["Name"]))
                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src["Email"]))
-               .ForMember(dest => dest.TypeUserId, opt => opt.MapFrom(src => src["TypeUserId"]));
+               .ForMember(dest => dest.TypeUserId, opt => opt.MapFrom(src => src["TypeUserId"]))
+               .ForMember(dest => dest.OwnerId, opt => opt.MapFrom(src => src["OwnerId"]));
 
             CreateMap<DbDataReader, UserResponseModel>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src["UserId"]))
@@ -48,7 +50,19 @@ namespace MediMax.Business.Mappers
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src["Id"]))
                 .ForMember(dest => dest.Treatment_Id, opt => opt.MapFrom(src => src["TreatmentId"]))
                 .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src["Time"]));
-           
+
+            CreateMap<DbDataReader, TreatmentResponseModel>()
+                          .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src["MedicineId"]))
+                          .ForMember(dest => dest.Name_Medication, opt => opt.MapFrom(src => src["NameMedication"]))
+                          .ForMember(dest => dest.Medication_Quantity, opt => opt.MapFrom(src => src["MedicineQuantity"]))
+                          .ForMember(dest => dest.Start_Time, opt => opt.MapFrom(src => src["StartTime"]))
+                          .ForMember(dest => dest.Treatment_Interval_Hours, opt => opt.MapFrom(src => src["TreatmentIntervalHours"]))
+                          .ForMember(dest => dest.Treatment_Interval_Days, opt => opt.MapFrom(src => src["TreatmentDurationDays"]))
+                          .ForMember(dest => dest.Dietary_Recommendations, opt => opt.MapFrom(src => src["DietaryRecommendations"]))
+                          .ForMember(dest => dest.Observation, opt => opt.MapFrom(src => src["Observation"]))
+                          .ForMember(dest => dest.Is_Active, opt => opt.MapFrom(src => src["IsActive"]))
+                          .ForMember(dest => dest.Continuous_Use, opt => opt.MapFrom(src => src["ContinuousUse"]))
+                          .ForMember(dest => dest.User_Id, opt => opt.MapFrom(src => src["UserId"]));
 
             CreateMap<UserCreateRequestModel, User>();
             CreateMap<TimeDosageCreateRequestModel, TimeDosage>();
@@ -57,6 +71,7 @@ namespace MediMax.Business.Mappers
             CreateMap<TreatmentManagementCreateRequestModel, TreatmentManagement>();
             CreateMap<UserUpdateRequestModel, UserResponseModel>();
             CreateMap<MedicationUpdateRequestModel, MedicationResponseModel>();
+            CreateMap<TreatmentUpdateRequestModel, TreatmentResponseModel>();
         }
     }
 }

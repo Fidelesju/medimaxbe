@@ -22,8 +22,6 @@ namespace MediMax.Data.RequestModels
 
         public int Continuous_Use { get; set; }
 
-        public int Is_Active { get; set; }
-
         public int Medication_Id { get; set; }
 
         public int User_Id { get; set; }

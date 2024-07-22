@@ -67,14 +67,16 @@ namespace MediMax.Business.Services
 
 
                 var treatment = _mapper.Map<Treatment>(request);
+                treatment.Is_Active = 1;
                 _treatmentRepository.Create(treatment);
 
                 foreach (string time in timeDosageList)
                 {
                     TimeDosageCreateRequestModel horarioDosagemRequest = new TimeDosageCreateRequestModel
                     {
-                        treatment_id = treatment.Id,
-                        time = time
+                        Treatment_Id = treatment.Id,
+                        Time = time,
+                        Treatment_User_Id = treatment.User_Id
                     };
 
                     // Verifica se já existe um horário de dosagem com os mesmos valores na tabela
@@ -84,8 +86,7 @@ namespace MediMax.Business.Services
                         // O horário de dosagem já existe, pode optar por atualizar ou pular a inserção
                         continue; // Neste caso, optamos por pular a inserção se o horário já existir
                     }
-
-                    var timeDosage = _mapper.Map<TimeDosage>(request);
+                    var timeDosage = _mapper.Map<TimeDosage>(horarioDosagemRequest);
                     _timeDosageRepository.Create(timeDosage);
                 }
 
@@ -112,9 +113,7 @@ namespace MediMax.Business.Services
         {
             var result = new BaseResponse<bool>();
             TreatmentUpdateValidation validation = new TreatmentUpdateValidation();
-            Medication medication = new Medication();
             TimeDosageResponseModel horarioExistente = new TimeDosageResponseModel();
-            Treatment treatment = new Treatment();
             List<string> horariosDosagem;
             Dictionary<string, string> errors;
 
@@ -127,10 +126,12 @@ namespace MediMax.Business.Services
 
             try
             {
-                await _timeDosageDb.DeletandoHorarioDosagem(request.treatment_id);
-                horariosDosagem = CalcularHorariosDoses(request.treatment_start_time, request.treatment_interval_hours);
+                await _timeDosageDb.DeletandoHorarioDosagem(request.Id);
+                horariosDosagem = CalcularHorariosDoses(request.Start_Time, request.Treatment_Interval_Hours);
 
                 if (horariosDosagem != null) {
+                    var treatment = _mapper.Map<TreatmentResponseModel>(request);
+                    treatment.Is_Active = 1;
                     _treatmentRepository.Update(treatment);
                     result.Data = true;
                     result.IsSuccess = true;
@@ -142,11 +143,12 @@ namespace MediMax.Business.Services
                     {
                         TimeDosageCreateRequestModel horarioDosagemRequest = new TimeDosageCreateRequestModel
                         {
-                            treatment_id = request.treatment_id,
-                            time = horario
+                            Treatment_Id = request.Id,
+                            Time = horario,
+                            Treatment_User_Id = request.User_Id,
                         };
 
-                        horarioExistente = await _timeDosageDb.BuscarHorarioDosagemExistente(request.treatment_id, horario);
+                        horarioExistente = await _timeDosageDb.BuscarHorarioDosagemExistente(request.Id, horario);
                         if (horarioExistente != null)
                         {
                             continue;
@@ -168,7 +170,25 @@ namespace MediMax.Business.Services
                 throw new CustomValidationException(errors);
             }
         }
-        
+
+        public async Task<bool> DesactiveTreatment ( int medicineId, int treatmentId )
+        {
+            var result = new BaseResponse<bool>();
+            await _treatmentRepository.Desactive(medicineId, treatmentId);
+            result.Data = true;
+            result.IsSuccess = true;
+            return result.Data;
+        }
+
+        public async Task<bool> ReactiveTreatment ( int medicineId, int treatmentId )
+        {
+            var result = new BaseResponse<bool>();
+            await _treatmentRepository.Reactive(medicineId, treatmentId);
+            result.Data = true;
+            result.IsSuccess = true;
+            return result.Data;
+        }
+
         /// <inheritdoc/>
         public async Task<List<TreatmentResponseModel>> GetTreatmentByMedicationId( int medicineId, int userId )
         {
@@ -197,6 +217,14 @@ namespace MediMax.Business.Services
             treatmentList = await _treatmentDb.GetTreatmentActives(userId);
             return treatmentList;
         } 
+         /// <inheritdoc/>
+        public async Task<List<TreatmentResponseModel>> GetTreatmentDesactives ( int userId )
+        {
+
+            List<TreatmentResponseModel> treatmentList;
+            treatmentList = await _treatmentDb.GetTreatmentDesactives(userId);
+            return treatmentList;
+        } 
         
         /// <inheritdoc/>
         public async Task<List<TreatmentResponseModel>> GetTreatmentByInterval(string startTime, string finishTime, int userId )
@@ -220,14 +248,5 @@ namespace MediMax.Business.Services
             return dosageTimes;
         }
 
-     
-        public async Task<bool> DeleteTreatment ( int medicineId, int treatmentId )
-        {
-            var result = new BaseResponse<bool>();
-            await _treatmentRepository.Delete(medicineId, treatmentId);
-            result.Data = true;
-            result.IsSuccess = true;
-            return result.Data;
-        }
     }
 }

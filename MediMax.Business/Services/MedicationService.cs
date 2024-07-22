@@ -20,10 +20,10 @@ namespace MediMax.Business.Services
         private readonly IMedicationDb _medicationDb;
         private readonly ITreatmentDb _treatmentDb;
         private readonly ITimeDosageDb _horarioDosagemDb;
-        
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
+
         public MedicationService(
-            IMedicationRepository medicationRepository,,
+            IMedicationRepository medicationRepository,
             ITimeDosageRepository horarioDosagemRepository,
             ITimeDosageDb horarioDosagemDb,
             IMedicationDb medicationDb,
@@ -42,9 +42,9 @@ namespace MediMax.Business.Services
         public async Task<BaseResponse<int>> CreateMedication(MedicationCreateRequestModel request)
         {
             var result = new BaseResponse<int>();
-            MedicationCreateValidation validation = new MedicationCreateValidation();
-            Dictionary<string, string> errors;
-
+            MedicationCreateValidation validation;
+            validation = new MedicationCreateValidation();
+            
             var validationResult = validation.Validate(request);
             if (!validationResult.IsValid)
             {
@@ -59,10 +59,11 @@ namespace MediMax.Business.Services
                 _medicationRepository.Create(medication);
                 result.Data = medication.Id;
                 result.IsSuccess = true;
+                result.SetMessage("Medicamento criado com sucesso!");
             }
             catch (DbUpdateException exception)
             {
-                result.Errors.Add("Database update failed.");
+                result.Errors.Add(exception.Message.ToString());
             }
 
             return result;
@@ -79,7 +80,6 @@ namespace MediMax.Business.Services
             var result = new BaseResponse<bool>();
             MedicationtUpdateValidation validation = new MedicationtUpdateValidation();
             Dictionary<string, string> errors;
-            bool successMedicamento;
 
             var validationResult = validation.Validate(request);
             if (!validationResult.IsValid)
@@ -94,6 +94,7 @@ namespace MediMax.Business.Services
                 await _medicationRepository.Update(medication);
                 result.Data = true;
                 result.IsSuccess = true;
+                result.SetMessage("Medicamento atualizado com sucesso!");
                 return result.Data;
             }
             catch (DbUpdateException exception)
@@ -115,6 +116,7 @@ namespace MediMax.Business.Services
             await _medicationRepository.Reactive(medicineId, userId);
             result.Data = true;
             result.IsSuccess = true;
+            result.SetMessage("Medicamento reativado com sucesso!");
             return result.Data;
         } 
         
@@ -130,6 +132,7 @@ namespace MediMax.Business.Services
             await _medicationRepository.Desactive(medicineId, userId);
             result.Data = true;
             result.IsSuccess = true;
+            result.SetMessage("Medicamento desativado com sucesso!");
             return result.Data;
         }
 
@@ -163,7 +166,7 @@ namespace MediMax.Business.Services
             return medicamentoLista;
         }
 
-          /// <summary>
+        /// <summary>
         /// Obtém medicamento por nome.
         /// </summary>
         public async Task<MedicationResponseModel> GetMedicationByTreatmentId(int TreatmentId, int userId )
@@ -192,7 +195,5 @@ namespace MediMax.Business.Services
             }
             return medicamentoLista;
         }
-
-       
     }
 }

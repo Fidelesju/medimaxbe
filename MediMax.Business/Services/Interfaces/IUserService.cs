@@ -18,6 +18,6 @@ namespace MediMax.Business.Services.Interfaces
         Task<List<UserResponseModel>> GetUserByOwner ( int ownerId );
         Task<List<UserResponseModel>> GetUserByTypeAndOwnerId ( int typeUser, int ownerId );
 
-        Task<EmailCodigoResponseModel> SendCodeToEmail ( string email, string name, int id );
+        Task<SendCodeToEmailResponseModel> SendCodeToEmail ( string email);
     }
 }

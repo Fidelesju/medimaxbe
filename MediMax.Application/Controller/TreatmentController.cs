@@ -39,7 +39,7 @@ namespace MediMax.Application.Controller
             {
                 int result = await _treatmentService.CreateTreatment(request);
 
-                if (result != null || result == 0)
+                if (result == 0)
                     return Ok(BaseResponse<int>
                           .Builder()
                           .SetMessage("Falha ao cadastrar tratamento")
@@ -115,15 +115,15 @@ namespace MediMax.Application.Controller
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> DeleteTreatment ( int medication_id, int treatment_id )
+        public async Task<ActionResult<BaseResponse<bool>>> DesactiveTreatment ( int medication_id, int treatment_id )
         {
             try
             {
-                bool result = await _treatmentService.DeleteTreatment(medication_id, treatment_id);
+                bool result = await _treatmentService.DesactiveTreatment(medication_id, treatment_id);
 
                 var response = new BaseResponse<bool>
                 {
-                    Message = "Tratamento deletado com sucesso.",
+                    Message = "Tratamento desativado com sucesso.",
                     Data = result
                 };
 
@@ -156,11 +156,11 @@ namespace MediMax.Application.Controller
         {
             try
             {
-                bool result = await _treatmentService.DeleteTreatment(medication_id, treatment_id);
+                bool result = await _treatmentService.ReactiveTreatment(medication_id, treatment_id);
 
                 var response = new BaseResponse<bool>
                 {
-                    Message = "Tratamento deletado com sucesso.",
+                    Message = "Tratamento reativado com sucesso.",
                     Data = result
                 };
 
@@ -288,6 +288,39 @@ namespace MediMax.Application.Controller
             try
             {
                 var Treatment = await _treatmentService.GetTreatmentActives(userId);
+                var response = BaseResponse<List<TreatmentResponseModel>>
+                        .Builder()
+                        .SetMessage("Treatments encontrados com sucesso.")
+                        .SetData(Treatment);
+                return Ok(response);
+            }
+            catch (InvalidNameException ex)
+            {
+                _logger.LogError(ex, "BuscarTreatmentPorNome: Controller");
+                return BadRequest($"Nome de Treatment inválido: {ex.Message}");
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarTreatmentPorNome: Controller");
+                return NotFound("Nenhum Treatment encontrado com o nome especificado.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarTreatmentPorNome: Controller");
+                return StatusCode(500, $"Erro ao buscar Treatments: {ex.Message}");
+            }
+        }
+
+        [HttpGet("desactives/user/{userId}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<List<TreatmentResponseModel>>>> GetTreatmentDesactives( int userId )
+        {
+            try
+            {
+                var Treatment = await _treatmentService.GetTreatmentDesactives(userId);
                 var response = BaseResponse<List<TreatmentResponseModel>>
                         .Builder()
                         .SetMessage("Treatments encontrados com sucesso.")
