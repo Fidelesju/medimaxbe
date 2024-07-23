@@ -19,14 +19,6 @@ namespace MediMax.Business.Validations
                 .Length(3, 150)
                 .WithMessage("O nome do medicamento deve ter entre 3 e 150 caracteres");
 
-            RuleFor(u => u.expiration_date)
-                .NotEmpty()
-                .WithMessage("A data de vencimento é obrigatória")
-                .Must(BeAValidDate)
-                .WithMessage("A data de vencimento não é válida")
-                .Must(BeNotNearExpiration)
-                .WithMessage("O medicamento está próximo da data de vencimento");
-
             RuleFor(u => u.package_quantity)
                 .GreaterThan(0)
                 .WithMessage("A quantidade na embalagem deve ser maior que zero");

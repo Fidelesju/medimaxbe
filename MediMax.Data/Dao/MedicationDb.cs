@@ -125,6 +125,32 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return medicamento;
         }
+          public async Task<MedicationResponseModel> GetMedicationById ( int medicationId, int userId)
+        {
+            string sql;
+            MedicationResponseModel medicamento;
+            sql = $@"
+                SELECT 
+                   m.id AS Id,
+                   m.name_medication AS NameMedication,
+                   m.expiration_date AS ExpirationDate,
+                   m.package_quantity AS PackageQuantity,
+                   m.dosage AS Dosage,
+                   m.is_active AS IsActive,
+                   m.user_id AS UserId
+                FROM medication m
+                WHERE m.id = {medicationId}
+                AND m.is_active = 1
+                AND m.user_id = {userId}
+                ORDER BY m.id DESC;
+                ";
+
+            await Connect();
+            await Query(sql);
+            medicamento = await GetQueryResultObject();
+            await Disconnect();
+            return medicamento;
+        }
          
         public async Task<List<MedicationResponseModel>> GetMedicationByExpirationDate(int userId)
         {

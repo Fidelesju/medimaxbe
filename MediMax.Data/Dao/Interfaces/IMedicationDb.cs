@@ -10,5 +10,6 @@ namespace MediMax.Data.Dao.Interfaces
         Task<List<MedicationResponseModel>> GetMedicationByExpirationDate( int userId );
         Task<MedicationResponseModel> GetMedicationByTreatmentId(int TreatmentId, int userId );
         Task<List<MedicationResponseModel>> BuscarMedicamentosInativos ( int userId );
+        Task<MedicationResponseModel> GetMedicationById ( int medicationId, int userId );
     }
 }

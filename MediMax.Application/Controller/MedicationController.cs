@@ -226,6 +226,46 @@ namespace MediMax.Application.Controller
             }
         }
 
+      
+        /// <summary>
+        /// Obtém todos os Medications.
+        /// </summary>
+        [HttpGet("{medicationId}/user/{userId}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<MedicationResponseModel>>> GetMedicationById( int medicationId, int userId )
+        {
+            try
+            {
+                var result = await _medicationService.GetMedicationById(medicationId, userId);
+
+                if (result != null)
+                    return Ok(BaseResponse<MedicationResponseModel>
+                          .Builder()
+                          .SetMessage("Medicamentos encontrados com sucesso.")
+                          .SetData(result)
+                      );
+                else
+                    return Ok(BaseResponse<MedicationResponseModel>
+                         .Builder()
+                         .SetMessage("Medications não encontrado")
+                         .SetData(result)
+                     );
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarTodosMedications: Controller");
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarTodosMedications: Controller");
+                return await UntreatedException(ex);
+            }
+        }
+
         /// <summary>
         /// Obtém lista de Medications por nome.
         /// </summary>

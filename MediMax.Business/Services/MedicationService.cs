@@ -16,10 +16,7 @@ namespace MediMax.Business.Services
     public class MedicationService : IMedicationService
     {
         private readonly IMedicationRepository _medicationRepository;
-        private readonly ITimeDosageRepository _horarioDosagemRepository;
         private readonly IMedicationDb _medicationDb;
-        private readonly ITreatmentDb _treatmentDb;
-        private readonly ITimeDosageDb _horarioDosagemDb;
         private readonly IMapper _mapper;
 
         public MedicationService(
@@ -32,13 +29,15 @@ namespace MediMax.Business.Services
         {
             _medicationRepository = medicationRepository;
             _medicationDb = medicationDb;
-            _horarioDosagemRepository = horarioDosagemRepository;
-            _horarioDosagemDb = horarioDosagemDb;
-            _treatmentDb = TreatmentDb;
             _mapper = mapper;
         }
 
       
+        /// <summary>
+        /// Criando medicamentos
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<BaseResponse<int>> CreateMedication(MedicationCreateRequestModel request)
         {
             var result = new BaseResponse<int>();
@@ -145,6 +144,21 @@ namespace MediMax.Business.Services
             medicamentoLista = await _medicationDb.GetAllMedicine( userId );
 
             if (medicamentoLista == null || medicamentoLista.Count == 0)
+            {
+                return null;
+            }
+            return medicamentoLista;
+        }
+
+        /// <summary>
+        /// Obtém todos os medicamentos por id.
+        /// </summary>
+        public async Task<MedicationResponseModel> GetMedicationById ( int medicationId, int userId )
+        {
+            MedicationResponseModel medicamentoLista;
+            medicamentoLista = await _medicationDb.GetMedicationById(medicationId, userId);
+
+            if (medicamentoLista == null)
             {
                 return null;
             }

@@ -14,5 +14,6 @@ namespace MediMax.Business.Services.Interfaces
         Task<bool> DesactiveMedication ( int medicineId, int userId );
         Task<bool> ReactiveMedication ( int medicineId, int userId );
         Task<MedicationResponseModel> GetMedicationByTreatmentId ( int TreatmentId , int userId );
+        Task<MedicationResponseModel> GetMedicationById ( int medicationId, int userId );
     }
 }
