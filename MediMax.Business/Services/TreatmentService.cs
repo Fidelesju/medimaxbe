@@ -171,7 +171,7 @@ namespace MediMax.Business.Services
             }
         }
 
-        public async Task<bool> DesactiveTreatment ( int medicineId, int treatmentId )
+        public async Task<bool> DeactivateTreatment ( int medicineId, int treatmentId )
         {
             var result = new BaseResponse<bool>();
             await _treatmentRepository.Desactive(medicineId, treatmentId);
@@ -195,13 +195,24 @@ namespace MediMax.Business.Services
            List<TreatmentResponseModel> treatmentList;
             treatmentList = await _treatmentDb.GetTreatmentByMedicationId(medicineId, userId);
             return treatmentList;
-        } /// <inheritdoc/>
+        }
+        
+        /// <inheritdoc/>
         public async Task<List<TimeDosageResponseModel>> GetDosageTimeByTreatmentId ( int treatmentId )
         {
             List<TimeDosageResponseModel> treatmentList;
             treatmentList = await _timeDosageDb.GetDosageTimeByTreatmentId(treatmentId);
             return treatmentList;
         }
+         
+        /// <inheritdoc/>
+        public async Task<List<TimeDosageResponseModel>> GetDosageTimeByUserIdAndTime ( int userId, string time )
+        {
+            List<TimeDosageResponseModel> treatmentList;
+            treatmentList = await _timeDosageDb.GetDosageTimeByUserIdAndTime(userId, time);
+            return treatmentList;
+        }
+
         public async Task<TreatmentResponseModel> GetTreatmentById ( int treatmentId, int userId )
         {
             TreatmentResponseModel treatmentList;
@@ -218,7 +229,7 @@ namespace MediMax.Business.Services
             return treatmentList;
         } 
          /// <inheritdoc/>
-        public async Task<List<TreatmentResponseModel>> GetTreatmentDesactives ( int userId )
+        public async Task<List<TreatmentResponseModel>> GetTreatmentDeactivate ( int userId )
         {
 
             List<TreatmentResponseModel> treatmentList;

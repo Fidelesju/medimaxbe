@@ -149,18 +149,13 @@ namespace MediMax.Business.Services
         public async Task<string> BuscarUltimoGerenciamento ( int userId )
         {
             TreatmentManagementResponseModel historico;
-            TreatmentResponseModel TreatmentLista = null;
-            int treatmentId = 0;
 
             historico = await _historicoDb.BuscarUltimoGerenciamento(userId);
-            if (historico != null)
-                treatmentId = historico.Treatment_Id;
-
-            TreatmentLista = await _treatmentDb.GetTreatmentById(treatmentId, userId);
-            if (TreatmentLista == null)
+            
+            if (historico == null)
                 return "";
             else
-                return TreatmentLista.Name_Medication;
+                return historico.Medication_Name;
         }
     }
 }

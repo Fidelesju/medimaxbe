@@ -8,20 +8,13 @@ namespace MediMax.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [StringLength(50)]
-        public string NutritionType { get; set; }
+        public string Nutrition_Type { get; set; }
+        public string Title { get; set; }
 
-        [StringLength(15)]
         public string Time { get; set; }
-        public int IsActive { get; set; }
+        public int Is_Active { get; set; }
 
-        public int UserId { get; set; }
+        public int User_Id { get; set; }
 
-        [ForeignKey("UserId")]
-        public User User { get; set; }
-
-        [ForeignKey("NutritionDetailId")]
-        public NutritionDetail NutritionDetail { get; set; }
-        public int NutritionDetailId { get; set; }
     }
 }

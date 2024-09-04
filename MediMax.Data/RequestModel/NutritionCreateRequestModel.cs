@@ -1,13 +1,15 @@
 ﻿using MediMax.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace MediMax.Data.RequestModels
 {
     public class NutritionCreateRequestModel
     {
-        public int UserId{ get; set; }
-        public string tipo_refeicao { get; set; }
-        public string horario { get; set; }
-        public List<DetalheAlimentacaoCreateRequestModel> detalhe_alimentacao{ get; set; }
-        public int detalhe_alimentacao_id { get; set; }
+        public string Nutrition_Type { get; set; }
+        public string Time { get; set; }
+        public string Title { get; set; }
+        public int Is_Active { get; set; }
+        public int User_Id { get; set; }
+        public List<NutritionDetailCreateRequestModel> Nutrition_Detail { get; set; }
     }
 }

@@ -141,11 +141,11 @@ namespace MediMax.Business.Services
             int quantidadePorDia = 0;
             int quantidadeTotal = 0;
             int restoDivisao = 0;
-            frenquenciaDias = CalcularFrequenciaDosagemDiaria(request.intervalo_Treatment_horas);
-            quantidadePorDia = frenquenciaDias* request.quantidade_medication_por_dosagem;
-            quantidadeTotal = quantidadePorDia* request.intervalo_Treatment_dias;
-            quantidadeTotalCaixasTreatment = quantidadeTotal / request.quantidade_total_medication_caixa;
-            restoDivisao = quantidadeTotal % request.quantidade_total_medication_caixa;
+            frenquenciaDias = CalcularFrequenciaDosagemDiaria(request.intervalo_tratamento_horas);
+            quantidadePorDia = frenquenciaDias* request.quantidade_medicamento_por_dosagem;
+            quantidadeTotal = quantidadePorDia* request.intervalo_tratamento_dias;
+            quantidadeTotalCaixasTreatment = quantidadeTotal / request.quantidade_total_medicamento_caixa;
+            restoDivisao = quantidadeTotal % request.quantidade_total_medicamento_caixa;
 
             if (restoDivisao != 0)
                 quantidadeTotalCaixasTreatment++;

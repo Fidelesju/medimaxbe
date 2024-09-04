@@ -27,6 +27,7 @@ namespace MediMax.Business.Mappers
             _owner.Country = BaseMapping.Country;
             _owner.Postal_Code = BaseMapping.PostalCode;
             _owner.Cpf_Cnpj = BaseMapping.Cpf_Cnpj;
+            _owner.Number_Address = BaseMapping.NumberAddress;
             _owner.Is_Active = 1;
             return _owner;
         }

@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using AutoMapper;
 using MediMax.Data.ApplicationModels;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
@@ -7,33 +8,33 @@ using MediMax.Data.ResponseModels;
 
 namespace MediMax.Data.Dao
 {
-    public class NutritionDb : Db<NutritionResponseModel>, INutritionDb
+    public class NutritionDb : Db<NutritionGetResponseModel>, INutritionDb
     {
+        private readonly IMapper _mapper;
         public NutritionDb(
             IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment, 
+            IMapper mapper,
             MediMaxDbContext dbContext) : base(configuration, webHostEnvironment, dbContext)
         {
+            _mapper = mapper;
         }
 
-        public async Task<List<NutritionResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals, int userId)
+        public async Task<List<NutritionGetResponseModel>> GetNutritionByNutritionType ( string nutritionType, int userId)
         {
             string sql;
-            List<NutritionResponseModel> alimentacaoList;
+            List<NutritionGetResponseModel> alimentacaoList;
             sql = $@"
-                  SELECT 
-                   a.id AS Id,
-                   a.tipo_refeicao AS TypeMeals,
-                   a.horario AS Time,
-                   da.alimento AS Meals,
-                   da.quantidade AS QuantityMeals,
-                   da.unidade_medida AS Unit,
-                   a.UserId AS UserId,
-                   da.id AS DetaiMealsId
-                FROM alimentacao a
-                INNER JOIN detalhe_alimentacao da ON da.id = a.detalhe_alimentacao_id
-                WHERE a.tipo_refeicao = '{typeMeals}'
-                AND a.UserId = {userId};
+                SELECT 
+	                n.id AS NutritionId,
+                    n.nutrition_type AS NutritionType,
+                    n.time AS Time,
+                    n.title AS Title,
+                    n.user_id AS UserId,
+                    n.is_active AS IsActive
+                FROM nutrition n
+                WHERE n.user_id = {userId}
+                AND n.nutrition_type = '{nutritionType}'
                 ";
 
             await Connect();
@@ -43,23 +44,20 @@ namespace MediMax.Data.Dao
             return alimentacaoList;
         }
         
-        public async Task<List<NutritionResponseModel>> BuscarTodasAlimentacao(int userId)
+        public async Task<List<NutritionGetResponseModel>> GetNutritionByUserId ( int userId)
         {
             string sql;
-            List<NutritionResponseModel> alimentacaoList;
+            List<NutritionGetResponseModel> alimentacaoList;
             sql = $@"
-              SELECT 
-                 a.id AS Id,
-                 a.tipo_refeicao AS TypeMeals,
-                 a.horario AS Time,
-                 da.alimento AS Meals,
-                da.quantidade AS QuantityMeals,
-                da.unidade_medida AS Unit,
-                da.id AS DetaiMealsId,
-                 a.UserId AS UserId
-              FROM alimentacao a
-              INNER JOIN detalhe_alimentacao da ON da.id = a.detalhe_alimentacao_id
-              AND a.UserId = {userId};
+             SELECT 
+	            n.id AS NutritionId,
+                n.nutrition_type AS NutritionType,
+                n.time AS Time,
+                n.time AS Title,
+                n.user_id AS UserId,
+                n.is_active AS IsActive
+            FROM nutrition n
+            WHERE n.user_id = {userId};
                 ";
 
             await Connect();
@@ -68,104 +66,11 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return alimentacaoList;
         }
-        public async Task<NutritionResponseModel> BuscarRefeicoesPorHorario ( int userId)
-        {
-            string sql;
-            NutritionResponseModel alimentacaoList;
-            sql = $@"
-                     SELECT 
-	                    a.id AS Id,
-	                    a.tipo_refeicao AS TypeMeals,
-	                    a.horario AS Time,
-                       da.alimento AS Meals,
-                       da.quantidade AS QuantityMeals,
-                       da.unidade_medida AS Unit,
-	                    a.UserId AS UserId
-                    FROM alimentacao a
-                    INNER JOIN detalhe_alimentacao da ON da.id = a.detalhe_alimentacao_id
-                    WHERE 
-	                    a.horario >= NOW()  -- Horário atual ou futuro
-                    AND a.UserId = 1
-                    ORDER BY a.horario ASC -- Ordena pelo horário mais próximo primeiro
-                    LIMIT 1;
-                ";
-
-            await Connect();
-            await Query(sql);
-            alimentacaoList = await GetQueryResultObject();
-            await Disconnect();
-            return alimentacaoList;
-        }
-
-        public async Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request)
-        {
-            string sql;
-            bool success;
-            sql = $@"
-             UPDATE alimentacao a
-                SET 
-                    a.tipo_refeicao = '{request.tipo_refeicao}',
-                    a.horario = '{request.horario}'
-                WHERE a.id = {request.id}
-                AND a.UserId = {request.UserId}
-
-                ";
-            await Connect();
-            success = await PersistQuery(sql);
-            await Disconnect();
-            return success;
-       }
+ 
         
-        public async Task<bool> AlterandoDetalheAlimentacao(string quantidade, string alimento, string unidade_medida, int id)
+        protected override NutritionGetResponseModel Mapper(DbDataReader reader)
         {
-            string sql;
-            bool success;
-            sql = $@"
-             UPDATE detalhe_alimentacao da
-                SET 
-                    da.quantidade = '{quantidade}',
-                    da.alimento = '{alimento}',
-                    da.unidade_medida = '{unidade_medida}'
-                WHERE da.id = {id}
-
-                ";
-            await Connect();
-            success = await PersistQuery(sql);
-            await Disconnect();
-            return success;
-        } 
-      
-        public async Task<bool> DeletandoAlimentacao(int id, int userId)
-        {
-            string sql;
-            bool success;
-            sql = $@"
-                DELETE FROM alimentacao a 
-                WHERE a.id = {id}
-                AND a.UserId = {userId}
-                ";
-            await Connect();
-            success = await PersistQuery(sql);
-            await Disconnect();
-            return success;
-        }
-        protected override NutritionResponseModel Mapper(DbDataReader reader)
-        {
-            NutritionResponseModel alimentacao;
-            NutritionDetail detalheAlimentacao;
-            alimentacao = new NutritionResponseModel();
-            detalheAlimentacao = new NutritionDetail();
-            alimentacao.id = Convert.ToInt32(reader["Id"]);
-            detalheAlimentacao.Nutrition = Convert.ToString(reader["Meals"]);
-            alimentacao.horario = Convert.ToString(reader["Time"]);
-            alimentacao.tipo_refeicao = Convert.ToString(reader["TypeMeals"]);
-            detalheAlimentacao.UnitMeasurement = Convert.ToString(reader["Unit"]);
-            detalheAlimentacao.Quantity = Convert.ToInt32(reader["QuantityMeals"]);
-            alimentacao.UserId = Convert.ToInt32(reader["UserId"]);
-            detalheAlimentacao.Id = Convert.ToInt32(reader["DetaiMealsId"]);
-
-            alimentacao.detalhe_alimentacao_id = detalheAlimentacao;
-            return alimentacao;
+            return _mapper.Map<NutritionGetResponseModel>(reader);
         }
     }
 }

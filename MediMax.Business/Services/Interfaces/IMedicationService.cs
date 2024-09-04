@@ -11,7 +11,7 @@ namespace MediMax.Business.Services.Interfaces
         Task<bool> UpdateMedication( MedicationUpdateRequestModel request );
         Task<List<MedicationResponseModel>> GetMedicationByName(string name, int userId );
         Task<List<MedicationResponseModel>> GetMedicationByExpirationDate( int userId );
-        Task<bool> DesactiveMedication ( int medicineId, int userId );
+        Task<bool> DeactivateMedication ( int medicineId, int userId );
         Task<bool> ReactiveMedication ( int medicineId, int userId );
         Task<MedicationResponseModel> GetMedicationByTreatmentId ( int TreatmentId , int userId );
         Task<MedicationResponseModel> GetMedicationById ( int medicationId, int userId );

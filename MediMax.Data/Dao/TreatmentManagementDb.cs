@@ -30,10 +30,12 @@ namespace MediMax.Data.Dao
                     tm.was_taken as WasTaken, 
                     tm.treatment_id as TreatmentId,
                     tm.treatment_user_id as UserId,
-                    tm.medication_id AS MedicationId
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
                 FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
                 WHERE tm.treatment_user_id = {userId}
-                ORDER BY tm.id DESC
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -56,10 +58,12 @@ namespace MediMax.Data.Dao
                     tm.was_taken as WasTaken, 
                     tm.treatment_id as TreatmentId,
                     tm.treatment_user_id as UserId,
-                    tm.medication_id AS MedicationId
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
                 FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
                 WHERE tm.treatment_user_id = {userId}
-                ORDER BY tm.id DESC
+                ORDER BY tm.medication_intake_date DESC
                 LIMIT 1
                 ";
 
@@ -74,20 +78,20 @@ namespace MediMax.Data.Dao
             string sql;
             TreatmentManagementResponseModel historicoResponseModel;
             sql = $@"
-                 SELECT 
-                    gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                ORDER BY gt.id DESC
+                  SELECT 
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                ORDER BY tm.medication_intake_date DESC
                 LIMIT 1
                 ";
 
@@ -102,20 +106,21 @@ namespace MediMax.Data.Dao
             string sql;
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
-                SELECT 
-                    gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND gt.foi_tomado = 1
+                 SELECT 
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND tm.was_taken = 1
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -129,20 +134,21 @@ namespace MediMax.Data.Dao
             string sql;
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
-                SELECT 
-                    gt.id as Id,
-	                gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado,
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND gt.foi_tomado = 0
+                 SELECT 
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND tm.was_taken = 0
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -156,20 +162,21 @@ namespace MediMax.Data.Dao
             string sql;
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
-                SELECT 
-                    gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 7 DAY
+                 SELECT 
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND STR_TO_DATE(tm.medication_intake_date, '%d/%m/%Y') >= now() - INTERVAL 7 DAY
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -183,20 +190,21 @@ namespace MediMax.Data.Dao
             string sql;
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
-                SELECT 
-                                   gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 15 DAY
+                 SELECT 
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND STR_TO_DATE(tm.medication_intake_date, '%d/%m/%Y') >= now() - INTERVAL 15 DAY
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -211,19 +219,20 @@ namespace MediMax.Data.Dao
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
                 SELECT 
-                                  gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 30 DAY
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND STR_TO_DATE(tm.medication_intake_date, '%d/%m/%Y') >= now() - INTERVAL 30 DAY
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -238,19 +247,20 @@ namespace MediMax.Data.Dao
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
                 SELECT 
-                                    gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 60 DAY
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND STR_TO_DATE(tm.medication_intake_date, '%d/%m/%Y') >= now() - INTERVAL 60 DAY
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -264,20 +274,21 @@ namespace MediMax.Data.Dao
             string sql;
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
-                SELECT 
-                                   gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y') >= now() - INTERVAL 1 YEAR
+                 SELECT 
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND STR_TO_DATE(tm.medication_intake_date, '%d/%m/%Y') >= now() - INTERVAL 1 YEAR
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -292,20 +303,21 @@ namespace MediMax.Data.Dao
             string sql;
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
-                SELECT 
-                    gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND YEAR(STR_TO_DATE(gt.data_ingestao_medication, '%d/%m/%Y')) = '{year}'
+               SELECT 
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND STR_TO_DATE(tm.medication_intake_date, '%d/%m/%Y')  = '{year}'
+                ORDER BY tm.medication_intake_date DESC
                 ";
 
             await Connect();
@@ -319,20 +331,20 @@ namespace MediMax.Data.Dao
             string sql;
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
-                SELECT 
-                    gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON gt.Treatment_id = t.id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND gt.data_ingestao_medication = '{data}'
+                 SELECT 
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND tm.medication_intake_date = '{data}'
                 ";
 
             await Connect();
@@ -347,19 +359,19 @@ namespace MediMax.Data.Dao
             List<TreatmentManagementResponseModel> historicoResponseModel;
             sql = $@"
                 SELECT 
-                                   gt.id as Id,
-                    gt.Treatment_id as TreatmentId,
-                    gt.data_ingestao_medication as DataIngestaoMedicamento,
-                    gt.horario_correto_Treatment as HorarioCorretoTreatment,
-                    gt.horario_ingestao_medication as HorarioIngestaoMedicamento,
-                    gt.foi_tomado as FoiTomado, 
-                    t.nome_medication as NomeMedicamento,
-                    m.UserId as UserId
-                FROM gerenciamento_Treatment gt
-                INNER JOIN Treatment t ON t.id = gt.Treatment_id
-                INNER JOIN medicamentos m ON m.id = t.remedio_id
-                WHERE m.UserId = {userId}
-                AND m.nome  = '%{nome}%'
+                    tm.id as Id,
+                    tm.correct_time_treatment as CorrectTimeTreatment,
+                    tm.medication_intake_time as MedicationIntakeTime,
+                    tm.medication_intake_date as MedicationIntakeDate,
+                    tm.was_taken as WasTaken, 
+                    tm.treatment_id as TreatmentId,
+                    tm.treatment_user_id as UserId,
+                    tm.medication_id AS MedicationId,
+                    t.name_medication AS MedicationName
+                FROM treatment_management tm
+                INNER JOIN treatment t ON t.id = tm.treatment_id
+                WHERE tm.treatment_user_id = {userId}
+                AND t.name_medication  = '%{nome}%'
                 ";
 
             await Connect();

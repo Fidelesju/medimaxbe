@@ -59,6 +59,28 @@ namespace MediMax.Data.Dao
             await Disconnect();
             return horarioDosagemResponseModel;
         }
+
+        public async Task<List<TimeDosageResponseModel>> GetDosageTimeByUserIdAndTime ( int userId, string time )
+        {
+            string sql;
+            List<TimeDosageResponseModel> horarioDosagemResponseModel;
+            sql = $@"
+                SELECT 
+                     td.id AS Id,
+                     td.time AS TimeDosage,
+                     td.treatment_id AS TreatmentId,
+                     td.treatment_user_id AS UserId
+                FROM time_dosage td
+                WHERE td.treatment_user_id = {userId}
+                AND td.time = '{time}';
+                ";
+
+            await Connect();
+            await Query(sql);
+            horarioDosagemResponseModel = await GetQueryResultList();
+            await Disconnect();
+            return horarioDosagemResponseModel;
+        }
       
         public async Task<bool> DeletandoHorarioDosagem(int Treatment_id)
         {

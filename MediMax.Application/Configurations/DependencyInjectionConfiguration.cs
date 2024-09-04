@@ -50,6 +50,7 @@ namespace MediMax.Application.Configurations
             services.AddScoped<ITreatmentDb, TreatmentDb>();
             services.AddScoped<IUserDb, UserDb>();
             services.AddScoped<INutritionDb, NutritionDb>();
+            services.AddScoped<INutritionDetailDb, NutritionDetailDb>();
             services.AddScoped<ITimeDosageDb, TimeDosageDb>();
             services.AddScoped<ITreatmentManagementDbDb, TreatmentManagementDb>();
             services.AddScoped<IDispenserStatusDb, DispenserStatusDb>();
@@ -57,22 +58,21 @@ namespace MediMax.Application.Configurations
 
         private static void ConfigureMapperDependecyInjection(IServiceCollection services) 
         {
-            services.AddScoped<IDetalheAlimentacaoCreateMapper, DetalheAlimentacaoCreateMapper>();
             services.AddScoped<IOwnerCreateMapper, OwnerCreateMapper>();
             services.AddScoped<IOwnerUpdateMapper, OwnerUpdateMapper>();
-            services.AddScoped<INutritionCreateMapper, NutritionCreateMapper>();
             services.AddScoped<INotificationCreateMapper, NotificationCreateMapper>();
             services.AddScoped<IDispenserStatusCreateMapper, DispenserStatusCreateMapper>();
         }
 
         private static void ConfigureRepositoriesDependecyInjection(IServiceCollection services)
         {
-            services.AddScoped<IMedicationRepository, MedicamentoRepository>();
+            services.AddScoped<IMedicationRepository, MedicationRepository>();
             services.AddScoped<ITreatmentRepository, TreatmentRepository>();
             services.AddScoped<ITreatmentManagementRepository, TreatmentManagementRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOwnerRepository, OwnerRepository>();
             services.AddScoped<INutritionRepository, NutritionRepository>();
+            services.AddScoped<INutritionDetailRepository, NutritionDetailRepository>();
             services.AddScoped<IDetalheAlimentacaoRepository, DetalheAlimentacaoRepository>();
             services.AddScoped<ITimeDosageRepository, HorarioDosagemRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();

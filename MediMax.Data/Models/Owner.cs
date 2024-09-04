@@ -28,6 +28,7 @@ namespace MediMax.Data.Models
         public string Cpf_Cnpj { get; set; }
 
         public int Is_Active { get; set; }
+        public int Number_Address { get; set; }
 
     }
 }

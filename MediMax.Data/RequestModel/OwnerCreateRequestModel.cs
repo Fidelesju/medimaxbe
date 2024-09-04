@@ -14,6 +14,7 @@ namespace MediMax.Data.RequestModels
         public string State { get; set; }
         public string Country { get; set; }
         public string PostalCode { get; set; }
+        public int NumberAddress{ get; set; }
         public string Cpf_Cnpj { get; set; }
     }
 }

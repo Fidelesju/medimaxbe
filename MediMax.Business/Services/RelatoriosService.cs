@@ -79,6 +79,7 @@ namespace MediMax.Business.Services
             List<TreatmentManagementResponseModel> historico60Dias;
             List<TreatmentManagementResponseModel> historicoUltimoAno;
             List<NutritionResponseModel> alimentacao;
+            List<NutritionGetResponseModel> alimentacaoGet;
             List<MedicationResponseModel> medicamentoAtivos;
             List<MedicationResponseModel> medicamentoInativos;
             List<TreatmentResponseModel> TreatmentAtivos;
@@ -307,8 +308,8 @@ namespace MediMax.Business.Services
                 memoryStream = pdfGenerator14.GeneratePdf(historicoDataEspecifica, fileName14, columnNames14, "Relatório " + request.date);
                     break;
                 case 14:
-                    alimentacao = await _alimentacaoDb.BuscarTodasAlimentacao(request.userId);
-                    var pdfGenerator15 = new PdfGenerator<NutritionResponseModel>();
+                    alimentacaoGet = await _alimentacaoDb.GetNutritionByUserId(request.userId);
+                    var pdfGenerator15 = new PdfGenerator<NutritionGetResponseModel>();
                     string fileName15 = filePath + "Historico_Refeições.pdf";
                     Dictionary<string, string> columnNames15 = new Dictionary<string, string>
                     {
@@ -318,7 +319,7 @@ namespace MediMax.Business.Services
                         { "quantidade", "Quantidade" },
                         { "unidade_medida", "Unidade de Medida" }
                     };
-                memoryStream = pdfGenerator15.GeneratePdf(alimentacao, fileName15, columnNames15, "Relatório de Refeições");
+                memoryStream = pdfGenerator15.GeneratePdf(alimentacaoGet, fileName15, columnNames15, "Relatório de Refeições");
                     break;
             }
 

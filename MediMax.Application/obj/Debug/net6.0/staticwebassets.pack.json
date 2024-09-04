@@ -257,6 +257,10 @@
       "PackagePath": "staticwebassets\\logs\\log-2024-7-7_domingo.log"
     },
     {
+      "Id": "C:\\Users\\Julia Fideles\\OneDrive\\Documentos\\Documentos\\Git\\portfolio\\medimaxbe\\MediMax.Application\\wwwroot\\logs\\log-2024-8-22_quinta-feira.log",
+      "PackagePath": "staticwebassets\\logs\\log-2024-8-22_quinta-feira.log"
+    },
+    {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.MediMax.Application.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

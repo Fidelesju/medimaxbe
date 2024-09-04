@@ -8,5 +8,6 @@ namespace MediMax.Data.Dao.Interfaces
         Task<TimeDosageResponseModel> BuscarHorarioDosagemExistente(int Treatment_id, string horario_dosage);
         Task<bool> DeletandoHorarioDosagem(int Treatment_id);
         Task<List<TimeDosageResponseModel>> GetDosageTimeByTreatmentId ( int Treatment_id );
+        Task<List<TimeDosageResponseModel>> GetDosageTimeByUserIdAndTime ( int userId, string time );
     }
 }

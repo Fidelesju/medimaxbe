@@ -1,69 +1,79 @@
-﻿using MediMax.Business.Exceptions;
-using MediMax.Business.Mappers.Interfaces;
+﻿using AutoMapper;
+using FluentValidation;
+using MediMax.Business.Exceptions;
 using MediMax.Business.Services.Interfaces;
 using MediMax.Business.Validations;
+using MediMax.Data.ApplicationModels;
 using MediMax.Data.Dao.Interfaces;
 using MediMax.Data.Models;
 using MediMax.Data.Repositories.Interfaces;
 using MediMax.Data.RequestModels;
 using MediMax.Data.ResponseModels;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace MediMax.Business.Services
 {
     public class NutritionService  : INutritionService 
     {
-        private readonly INutritionCreateMapper _nutritionCreateMapper;
-        private readonly IDetalheAlimentacaoCreateMapper _nutritionDetailCreateMapper;
         private readonly INutritionRepository _nutritionRepository;
-        private readonly IDetalheAlimentacaoRepository _detalheAlimentacaoRepository;
+        private readonly INutritionDetailRepository _nutritionDetailRepository;
         private readonly INutritionDb _nutritionDb;
+        private readonly INutritionDetailDb _nutritionDetailDb;
+        private readonly IMapper _mapper;
+
         public NutritionService (
-            INutritionCreateMapper nutritionCreateMapper,
             INutritionRepository nutritionRepository,
-            IDetalheAlimentacaoRepository detalheAlimentacaoRepository,
-            IDetalheAlimentacaoCreateMapper nutritionDetailCreateMapper,
+            INutritionDetailRepository nutritionDetailRepository,
+            INutritionDetailDb nutritionDetailDb,
+            IMapper mapper,
             INutritionDb alimentacaoDb) 
         {
-            _nutritionCreateMapper = nutritionCreateMapper;
             _nutritionRepository = nutritionRepository;
             _nutritionDb = alimentacaoDb;
-            _detalheAlimentacaoRepository = detalheAlimentacaoRepository;
-            _nutritionDetailCreateMapper = nutritionDetailCreateMapper;
+            _mapper = mapper;
+            _nutritionDetailRepository = nutritionDetailRepository;
+            _nutritionDetailDb = nutritionDetailDb;
         }
 
-        public async Task<int> CreateNutrition(NutritionCreateRequestModel request)
+        public async Task<BaseResponse<int>> CreateNutrition(NutritionCreateRequestModel request)
         {
-            Nutrition nutrition = null;
-            NutritionDetail detailFood;
-            DetalheAlimentacaoCreateRequestModel detailRequest;
-            NutritionCreateValidation validation;
+            var result = new BaseResponse<int>();
+            NutritionDetailCreateRequestModel detailRequest;
             Dictionary<string, string> errors;
-
-            _nutritionCreateMapper.SetBaseMapping(request);
+            NutritionCreateValidation validation;
             validation = new NutritionCreateValidation();
-            if (!validation.IsValid(request))
+
+            var validationResult = validation.Validate(request);
+            if (!validationResult.IsValid)
             {
-                return 0;
+                result.Message = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+                result.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                return result;
             }
+
             try
             {
-                foreach (var detalheAlimentacao in request.detalhe_alimentacao)
-                {
-                    detailRequest = new DetalheAlimentacaoCreateRequestModel();
-                    detailRequest.alimento = detalheAlimentacao.alimento;
-                    detailRequest.unidade_medida = detalheAlimentacao.unidade_medida;
-                    detailRequest.quantidade = detalheAlimentacao.quantidade;
+                var nutrition = _mapper.Map<Nutrition>(request);
+                nutrition.Is_Active = 1;
+                _nutritionRepository.Create(nutrition);
 
-                    detailFood = _nutritionDetailCreateMapper.GetFoodDetail(detailRequest);
-                    detailFood.Id = 0;
-                    _detalheAlimentacaoRepository.Create(detailFood);
-                    request.detalhe_alimentacao_id = detailFood.Id;
-                    nutrition = _nutritionCreateMapper.GetFood();
-                    nutrition.Id = 0;
-                    _nutritionRepository.Create(nutrition);
+                foreach (var nutritionDetail in request.Nutrition_Detail)
+                {
+                    detailRequest = new NutritionDetailCreateRequestModel();
+                    detailRequest.Nutrition = nutritionDetail.Nutrition;
+                    detailRequest.Unit_Measurement = nutritionDetail.Unit_Measurement;
+                    detailRequest.Quantity = nutritionDetail.Quantity;
+                    detailRequest.Nutrition_Id = nutrition.Id;
+
+                    var nutritionDetailModel = _mapper.Map<NutritionDetail>(detailRequest);
+                    _nutritionDetailRepository.Create(nutritionDetailModel);
+                    result.Data = nutrition.Id;
+                    result.IsSuccess = true;
+                    result.SetMessage("Alimentação criado com sucesso!");
                 }
-                return nutrition.NutritionDetailId;
+
+                return result;
             }
             catch (DbUpdateException exception)
             {
@@ -76,65 +86,153 @@ namespace MediMax.Business.Services
             }
         }
 
-        public async Task<bool> AlterandoAlimentacao(AlimentacaoUpdateRequestModel request)
+        /// <summary>
+        /// Alterando medicamentos
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="CustomValidationException"></exception>
+        public async Task<BaseResponse<bool>> UpdateNutrition ( NutritionUpdateRequestModel request )
         {
-            AlimentacaoUpdateValidation validation;
+            var result = new BaseResponse<bool>();
+            NutritionDetailUpdateRequestModel detailRequest;
             Dictionary<string, string> errors;
-            Nutrition alimentacao;
-            bool success;
+            NutritionUpdateValidation validation;
+            validation = new NutritionUpdateValidation();
 
-            validation = new AlimentacaoUpdateValidation();
-            if (!validation.IsValid(request))
+            var validationResult = validation.Validate(request);
+            if (!validationResult.IsValid)
             {
-                errors = validation.GetErrors();
-                throw new CustomValidationException(errors);
+                result.Message = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+                result.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                return result;
             }
 
             try
             {
-                success = await _nutritionDb.AlterandoAlimentacao(request);
-                foreach (var detalheAlimentacao in request.detalhe_alimento)
+                var nutrition = _mapper.Map<NutritionUpdateResponseModel>(request);
+                await _nutritionRepository.Update(nutrition);
+
+                foreach (var nutritionDetail in request.Nutrition_Detail)
                 {
-                    success = await _nutritionDb.AlterandoDetalheAlimentacao(detalheAlimentacao.quantidade,detalheAlimentacao.alimento, detalheAlimentacao.unidade_medida, detalheAlimentacao.id);
+                    detailRequest = new NutritionDetailUpdateRequestModel();
+                    detailRequest.Nutrition = nutritionDetail.Nutrition;
+                    detailRequest.Unit_Measurement = nutritionDetail.Unit_Measurement;
+                    detailRequest.Quantity = nutritionDetail.Quantity;
+                    detailRequest.Nutrition_Id = nutrition.Id;
+                    detailRequest.Id = nutritionDetail.Id;
+
+                    var nutritionDetailModel = _mapper.Map<NutritionDetailResponseModel>(detailRequest);
+                    _nutritionDetailRepository.Update(nutritionDetailModel);
+                    result.Data = true;
+                    result.IsSuccess = true;
                 }
-                return success;
+
+              
+                return result;
             }
             catch (DbUpdateException exception)
             {
                 errors = validation.GetPersistenceErrors(exception);
                 throw new CustomValidationException(errors);
             }
-        } 
-        
-        public async Task<bool> DeletandoAlimentacao(int id, int userId)
-        {
-            bool success;
-            try
-            {
-                success = await _nutritionDb.DeletandoAlimentacao(id, userId);
-                return success;
-            }
-            catch (DbUpdateException exception)
-            {
-                throw new DbUpdateException();
-            }
         }
 
-        public async Task<List<NutritionResponseModel>> BuscarAlimentacaoPorTipo(string typeMeals, int userId )
+        public async Task<BaseResponse<bool>> DesactiveNutrition ( NutritionDesativeRequestModel request )
         {
-            List<NutritionResponseModel> alimentacao;
-            alimentacao = await _nutritionDb.BuscarAlimentacaoPorTipo(typeMeals, userId);
-            if (alimentacao == null)
+            var result = new BaseResponse<bool>();
+
+            try
+            {
+                await _nutritionRepository.Desactive(request);
+
+                foreach (var nutritionDetail in request.Nutrition_Detail)
+                {
+                    var detailRequest = new NutritionDetailDeleteRequestModel
+                    {
+                        Nutrition_Id = nutritionDetail.Nutrition_Id,
+                        Id = nutritionDetail.Id
+                    };
+
+                    await _nutritionDetailRepository.Delete(detailRequest);
+                }
+
+                result.Data = true;
+                result.IsSuccess = true;
+            }
+            catch (DbUpdateException)
+            {
+                result.Data = false;
+                result.IsSuccess = false;
+                throw new RecordNotFoundException();
+            }
+
+            return result;
+        }
+
+        public async Task<BaseResponse<bool>> ReactiveNutrition ( NutritionReactiveRequestModel request )
+        {
+            var result = new BaseResponse<bool>();
+            NutritionDetailCreateRequestModel detailRequest;
+
+            try
+            {
+                await _nutritionRepository.Reactive(request);
+
+                foreach (var nutritionDetail in request.Nutrition_Detail)
+                {
+                    detailRequest = new NutritionDetailCreateRequestModel();
+                    detailRequest.Nutrition = nutritionDetail.Nutrition;
+                    detailRequest.Unit_Measurement = nutritionDetail.Unit_Measurement;
+                    detailRequest.Quantity = nutritionDetail.Quantity;
+                    detailRequest.Nutrition_Id = request.Id;
+
+                    var nutritionDetailModel = _mapper.Map<NutritionDetail>(detailRequest);
+                    _nutritionDetailRepository.Create(nutritionDetailModel);
+                    result.Data = true;
+                    result.IsSuccess = true;
+                    result.SetMessage("Alimentação criado com sucesso!");
+                }
+
+                result.Data = true;
+                result.IsSuccess = true;
+            }
+            catch (DbUpdateException)
+            {
+                result.Data = false;
+                result.IsSuccess = false;
+                throw new RecordNotFoundException();
+            }
+
+            return result;
+        }
+
+        public async Task<List<NutritionGetResponseModel>> GetNutritionByType(string nutritionType, int userId )
+        {
+            List<NutritionGetResponseModel> nutrition;
+            nutrition = await _nutritionDb.GetNutritionByNutritionType(nutritionType, userId);
+            if (nutrition == null)
             {
                 throw new RecordNotFoundException();
             }
-            return alimentacao;
+            return nutrition;
         }
         
-        public async Task<NutritionResponseModel> BuscarRefeicoesPorHorario ( int userId )
+        public async Task<List<NutritionGetResponseModel>> GetNutritionByUserId ( int userId )
         {
-            NutritionResponseModel alimentacao;
-            alimentacao = await _nutritionDb.BuscarRefeicoesPorHorario( userId);
+            List<NutritionGetResponseModel> nutrition;
+            nutrition = await _nutritionDb.GetNutritionByUserId( userId);
+            if (nutrition == null)
+            {
+                return nutrition;
+            }
+            return nutrition;
+        }
+
+        public async Task<List<NutritionDetailResponseModel>> GetNutritionDetailsByUserIAndNutritionId (int nutritionId )
+        {
+            List<NutritionDetailResponseModel> alimentacao;
+            alimentacao = await _nutritionDetailDb.GetNutritionDetailsByUserIAndNutritionId( nutritionId);
             if (alimentacao == null)
             {
                 return alimentacao;

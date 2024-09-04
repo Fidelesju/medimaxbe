@@ -281,8 +281,8 @@ namespace MediMax.Data.Dao
 
         protected override TreatmentResponseModel Mapper ( DbDataReader reader )
         {
-            return _mapper.Map<TreatmentResponseModel>(reader );
+            return _mapper.Map<TreatmentResponseModel>(reader);
         }
-
+        
     }
 }

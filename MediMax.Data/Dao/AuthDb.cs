@@ -24,15 +24,18 @@ namespace MediMax.Data.Dao
             LoginResponseModel loginResponseModel;
             sql = $@"
                     SELECT 
-                        u.id AS UserId,
-                        u.name_user AS Name,
-                        u.email AS Email,
-                        u.type_user_id AS TypeUserId,
-                        u.owner_id AS OwnerId
-                        FROM user u
-                     WHERE u.email = '{email}'
-                     AND u.password = '{password}'
-                     LIMIT 1;
+                      u.id AS UserId,
+                      u.name_user AS Name,
+                      u.email AS Email,
+                      u.type_user_id AS TypeUserId,
+                      u.owner_id AS OwnerId,
+                      o.email AS EmailOwner
+                      FROM user u
+	               INNER JOIN owner o ON o.id = u.owner_id
+                   WHERE u.email = '{email}'
+                   AND u.password = '{password}'
+                   LIMIT 1;
+                
                 ";
             await Connect();
             await Query(sql);

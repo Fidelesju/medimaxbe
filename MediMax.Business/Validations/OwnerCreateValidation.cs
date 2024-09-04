@@ -11,7 +11,6 @@ namespace MediMax.Business.Validations
             ValidateFirstName();
             ValidateLastName();
             ValidateEmail();
-            ValidateAddress();
             ValidateCity();
             ValidateCountry();
             ValidatePhoneNumber();
@@ -50,15 +49,7 @@ namespace MediMax.Business.Validations
                 ;
         }
 
-        private void ValidateAddress()
-        {
-            RuleFor(o => o.Address)
-                .NotEmpty()
-                .WithMessage(DefaultErrorMessages.RequiredField)
-                .Must(Address => CustomValidations.IsInLengthInterval(3, 150, Address))
-                .WithMessage(DefaultErrorMessages.TextOutOfBounds(3, 150))
-                ;
-        }
+      
 
         private void ValidateCity()
         {

@@ -42,18 +42,26 @@ namespace MediMax.Business.Services
 
             loginResponse = await _authDb.AuthenticateUser(loginRequest.Email, encryptPassword);
 
-            switch (loginResponse.TypeUserId)
+            if(loginResponse != null)
             {
-                case 1:
+                switch (loginResponse.TypeUserId)
+                {
+                    case 1:
                     role = "admin";
                     break;
-                case 2:
+                    case 2:
                     role = "user";
                     break;
-                default:
+                    default:
                     role = "owner";
                     break;
+                }
             }
+            else
+            {
+                return null;
+            }
+           
 
             loginResponse.Token = _jwtService.GetJwtToken(role, role);
             return loginResponse;

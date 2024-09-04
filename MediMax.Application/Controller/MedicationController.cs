@@ -110,16 +110,16 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("desactive/medication/{medicineId}/user/{userId}")]
+        [HttpPost("deactivate/medication/{medicineId}/user/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> DesactiveMedication ( int medicineId, int userId )
+        public async Task<ActionResult<BaseResponse<bool>>> DeactivateMedication ( int medicineId, int userId )
           {
                 try
                 {
-                    bool result = await _medicationService.DesactiveMedication(medicineId, userId);
+                    bool result = await _medicationService.DeactivateMedication(medicineId, userId);
 
                     if (result == true)
                         return Ok(BaseResponse<bool>

@@ -5,7 +5,8 @@ namespace MediMax.Data.ResponseModels
     public class TimeDosageResponseModel
     {
         public int Id { get; set; }
-        public int? Treatment_Id { get; set; }
-        public string? Time  { get; set; }
+        public int? TreatmentId { get; set; }
+        public int? UserId { get; set; }
+        public string? TimeDosage { get; set; }
     }
 }

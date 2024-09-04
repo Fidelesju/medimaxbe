@@ -110,16 +110,16 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("desactive/medication/{medication_id}/treatment/{treatment_id}")]
+        [HttpPost("deactivate/medication/{medication_id}/treatment/{treatment_id}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> DesactiveTreatment ( int medication_id, int treatment_id )
+        public async Task<ActionResult<BaseResponse<bool>>> DeactivateTreatment ( int medication_id, int treatment_id )
         {
             try
             {
-                bool result = await _treatmentService.DesactiveTreatment(medication_id, treatment_id);
+                bool result = await _treatmentService.DeactivateTreatment(medication_id, treatment_id);
 
                 var response = new BaseResponse<bool>
                 {
@@ -211,7 +211,7 @@ namespace MediMax.Application.Controller
             }
         }
         
-        [HttpGet("dosage-time/treatment/{treatmentId}/")]
+        [HttpGet("dosage-time/{treatmentId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -240,11 +240,44 @@ namespace MediMax.Application.Controller
             catch (Exception ex)
             {
                 _logger.LogError(ex, "BuscarTreatmentPorNome: Controller");
-                return StatusCode(500, $"Erro ao buscar Treatments: {ex.Message}");
+                return StatusCode(500, $"Erro ao buscar Treatments: {ex.Message}"); 
+            }
+        }
+         
+        [HttpGet("dosage-time/{userId}/{time}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<List<TimeDosageResponseModel>>>> GetDosageTimeByUserIdAndTime ( int userId, string time )
+        {
+            try
+            {
+                var Treatment = await _treatmentService.GetDosageTimeByUserIdAndTime(userId, time);
+                var response = BaseResponse<List<TimeDosageResponseModel>>
+                        .Builder()
+                        .SetMessage("Horarios de dosagem encontrados com sucesso.")
+                        .SetData(Treatment);
+                return Ok(response);
+            }
+            catch (InvalidNameException ex)
+            {
+                _logger.LogError(ex, "BuscarTreatmentPorNome: Controller");
+                return BadRequest($"Nome de Treatment inválido: {ex.Message}");
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarTreatmentPorNome: Controller");
+                return NotFound("Nenhum Treatment encontrado com o nome especificado.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarTreatmentPorNome: Controller");
+                return StatusCode(500, $"Erro ao buscar Treatments: {ex.Message}"); 
             }
         }
 
-        [HttpGet("treatment/{treatmentId}/user/{userId}")]
+        [HttpGet("{treatmentId}/user/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -311,16 +344,16 @@ namespace MediMax.Application.Controller
             }
         }
 
-        [HttpGet("desactives/user/{userId}")]
+        [HttpGet("deactivate/user/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<TreatmentResponseModel>>>> GetTreatmentDesactives( int userId )
+        public async Task<ActionResult<BaseResponse<List<TreatmentResponseModel>>>> GetTreatmentDeactivate( int userId )
         {
             try
             {
-                var Treatment = await _treatmentService.GetTreatmentDesactives(userId);
+                var Treatment = await _treatmentService.GetTreatmentDeactivate(userId);
                 var response = BaseResponse<List<TreatmentResponseModel>>
                         .Builder()
                         .SetMessage("Treatments encontrados com sucesso.")

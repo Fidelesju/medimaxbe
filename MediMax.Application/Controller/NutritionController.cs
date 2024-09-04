@@ -24,29 +24,29 @@ namespace MediMax.Application.Controllers
             _nutritionService = nutritionService ?? throw new ArgumentNullException(nameof(nutritionService));
         }
 
-        [HttpPost("Create")]
+        [HttpPost("create")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<int>>> CreateNutrition(NutritionCreateRequestModel request)
+        public async Task<ActionResult<BaseResponse<int>>> CreateNutrition(NutritionCreateRequestModel request )
         {
             try
             {
-                int response = await _nutritionService.CreateNutrition(request);
-                if (response == 0 || response == null)
+                var response = await _nutritionService.CreateNutrition(request);
+                if (response == null)
                 {
                     return Ok(new BaseResponse<int>
                     {
                         Message = "Falha ao criar uma nova refeição.",
-                        Data = 0
+                        Data = response.Data
                     });
                 }
 
                 return Ok(new BaseResponse<int>
                 {
                     Message = "Refeição criada com sucesso.",
-                    Data = response
+                    Data = response.Data
                 });
             }
             catch (CustomValidationException ex)
@@ -61,29 +61,29 @@ namespace MediMax.Application.Controllers
             }
         }
         
-        [HttpPost("Update")]
+        [HttpPost("update")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> AlterandoAlimentacao( AlimentacaoUpdateRequestModel request)
+        public async Task<ActionResult<BaseResponse<bool>>> UpdateNutrition ( NutritionUpdateRequestModel request )
         {
             try
             {
-                bool success = await _nutritionService.AlterandoAlimentacao(request);
-                if (!success)
+                var success = await _nutritionService.UpdateNutrition(request);
+                if (!success.Data)
                 {
                     return BadRequest(new BaseResponse<bool>
                     {
                         Message = "Falha ao alterar dados de refeição.",
-                        Data = success
+                        Data = success.Data
                     });
                 }
 
                 return Ok(new BaseResponse<bool>
                 {
                     Message = "Refeição alterada com sucesso.",
-                    Data = success
+                    Data = success.IsSuccess
                 });
             }
             catch (CustomValidationException ex)
@@ -98,29 +98,66 @@ namespace MediMax.Application.Controllers
             }
         }
 
-        [HttpPost("Delete/{nutritionId}/{userId}")]
+        [HttpPost("desactive")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<bool>>> DeletandoAlimentacao(int nutritionId, int userId )
+        public async Task<ActionResult<BaseResponse<bool>>> DesactiveNutrition( NutritionDesativeRequestModel request )
         {
             try
             {
-                bool success = await _nutritionService.DeletandoAlimentacao(nutritionId, userId);
-                if (!success)
+                var success = await _nutritionService.DesactiveNutrition(request);
+                if (!success.Data)
                 {
                     return BadRequest(new BaseResponse<bool>
                     {
                         Message = "Falha ao deletar refeição.",
-                        Data = success
+                        Data = success.Data
                     });
                 }
 
                 return Ok(new BaseResponse<bool>
                 {
                     Message = "Refeição deletada com sucesso.",
-                    Data = success
+                    Data = success.Data
+                });
+            }
+            catch (CustomValidationException ex)
+            {
+                _logger.LogError(ex, "DeletandoAlimentacao: Controller");
+                return ValidationErrorsBadRequest(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DeletandoAlimentacao: Controller");
+                return await HandleException(ex);
+            }
+        }
+
+        [HttpPost("reactive")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<bool>>> ReactiveNutrition( NutritionReactiveRequestModel request )
+        {
+            try
+            {
+                var success = await _nutritionService.ReactiveNutrition(request);
+                if (!success.Data)
+                {
+                    return BadRequest(new BaseResponse<bool>
+                    {
+                        Message = "Falha ao deletar refeição.",
+                        Data = success.Data
+                    });
+                }
+
+                return Ok(new BaseResponse<bool>
+                {
+                    Message = "Refeição deletada com sucesso.",
+                    Data = success.Data
                 });
             }
             catch (CustomValidationException ex)
@@ -136,17 +173,17 @@ namespace MediMax.Application.Controllers
         }
 
 
-        [HttpGet("GetMealsByType/{typeMeals}/{userId}")]
+        [HttpGet("by-type/{typeNutrition}/{userId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<List<NutritionResponseModel>>>> BuscarRefeicoesPorTipo(string typeMeals, int userId )
+        public async Task<ActionResult<BaseResponse<List<NutritionGetResponseModel>>>> GetNutritionByNutritionType(string typeNutrition, int userId )
         {
             try
             {
-                List<NutritionResponseModel> alimentacao = await _nutritionService.BuscarAlimentacaoPorTipo(typeMeals, userId);
-                return Ok(new BaseResponse<List<NutritionResponseModel>>
+                List<NutritionGetResponseModel> alimentacao = await _nutritionService.GetNutritionByType(typeNutrition, userId);
+                return Ok(new BaseResponse<List<NutritionGetResponseModel>>
                 {
                     Message = "Alimentos encontrados com sucesso.",
                     Data = alimentacao
@@ -164,24 +201,60 @@ namespace MediMax.Application.Controllers
             }
         }
         
-        [HttpGet("GetMealsByTime/{userId}")]
+        [HttpGet("user/{id}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<NutritionResponseModel>>> BuscarRefeicoesPorHorario( int userId )
+        public async Task<ActionResult<BaseResponse<List<NutritionGetResponseModel>>>> GetNutritionByUserId( int id )
         {
             try
             {
-                NutritionResponseModel alimentacao = await _nutritionService.BuscarRefeicoesPorHorario(userId);
+               List<NutritionGetResponseModel> alimentacao = await _nutritionService.GetNutritionByUserId(id);
+
                 if(alimentacao != null)
-                return Ok(new BaseResponse<NutritionResponseModel>
+                return Ok(new BaseResponse<List<NutritionGetResponseModel>>
                 {
                     Message = "Alimentos encontrados com sucesso.",
                     Data = alimentacao
                 });
                 else
-                    return Ok(new BaseResponse<NutritionResponseModel>
+                    return Ok(new BaseResponse<List<NutritionGetResponseModel>>
+                    {
+                        Message = "Alimentos não encontrados.",
+                        Data = alimentacao
+                    });
+            }
+            catch (RecordNotFoundException ex)
+            {
+                _logger.LogError(ex, "BuscarRefeicoesPorTipo: Controller");
+                return await NotFoundResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "BuscarRefeicoesPorTipo: Controller");
+                return await HandleException(ex);
+            }
+        }
+             
+        [HttpGet("by-details/{nutritionId}")]
+        [ProducesResponseType(typeof(BaseResponse<int>), 200)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 400)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 404)]
+        [ProducesResponseType(typeof(BaseResponse<int>), 500)]
+        public async Task<ActionResult<BaseResponse<List<NutritionDetailResponseModel>>>> GetNutritionDetailsByUserIAndNutritionId( int nutritionId )
+        {
+            try
+            {
+                List<NutritionDetailResponseModel> alimentacao = await _nutritionService.GetNutritionDetailsByUserIAndNutritionId(nutritionId);
+                if(alimentacao != null)
+                return Ok(new BaseResponse<List<NutritionDetailResponseModel>>
+                {
+                    Message = "Alimentos encontrados com sucesso.",
+                    Data = alimentacao
+                });
+                else
+                    return Ok(new BaseResponse<List<NutritionDetailResponseModel>>
                     {
                         Message = "Alimentos não encontrados.",
                         Data = alimentacao

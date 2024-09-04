@@ -115,6 +115,10 @@
             "ServiceStack": {
               "target": "Package",
               "version": "[8.2.2, )"
+            },
+            "System.IO.Ports": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -243,6 +247,10 @@
             "ServiceStack": {
               "target": "Package",
               "version": "[8.2.2, )"
+            },
+            "System.IO.Ports": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "iTextSharp": {
               "target": "Package",

@@ -125,7 +125,7 @@ namespace MediMax.Business.Services
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="RecordNotFoundException"></exception>
-        public async Task<bool> DesactiveMedication ( int medicineId, int userId )
+        public async Task<bool> DeactivateMedication ( int medicineId, int userId )
         {
             var result = new BaseResponse<bool>();
             await _medicationRepository.Desactive(medicineId, userId);

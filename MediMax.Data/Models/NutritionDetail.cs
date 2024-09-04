@@ -7,13 +7,12 @@ namespace MediMax.Data.Models
     {
         [Key]
         public int Id { get; set; }
+        public int Nutrition_Id { get; set; }
 
-        [StringLength(100)]
         public string Nutrition { get; set; }
 
         public int Quantity { get; set; }
 
-        [StringLength(25)]
-        public string UnitMeasurement { get; set; }
+        public string Unit_Measurement { get; set; }
     }
 }

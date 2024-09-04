@@ -28,7 +28,7 @@ namespace MediMax.Application.Controller
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("Create")]
+        [HttpPost("create")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -69,7 +69,7 @@ namespace MediMax.Application.Controller
             }
         }
 
-        [HttpPost("Update")]
+        [HttpPost("update")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -143,7 +143,7 @@ namespace MediMax.Application.Controller
         }
 
 
-        [HttpPost("Desactive/{ownerId}")]
+        [HttpPost("deactive/{ownerId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
@@ -173,7 +173,7 @@ namespace MediMax.Application.Controller
             }
         }
 
-        [HttpPost("Reactive/{ownerId}")]
+        [HttpPost("reactive/{ownerId}")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]

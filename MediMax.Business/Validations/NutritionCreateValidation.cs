@@ -13,7 +13,7 @@ namespace MediMax.Business.Validations
 
         private void ValidateAlimentacao()
         {
-            RuleFor(n => n.detalhe_alimentacao[0].alimento)
+            RuleFor(n => n.Nutrition_Type)
             .NotEmpty()
             .WithMessage(DefaultErrorMessages.RequiredField)
             .Length(3, 150)
@@ -21,10 +21,6 @@ namespace MediMax.Business.Validations
             .WithName("Alimento deve conter mais de 3 caracteres!");
         }
 
-        private void ValidateQuantidade()
-        {
-           
-        }
 
         protected override List<PersistenceError> GetPersistenceValidations()
         {
