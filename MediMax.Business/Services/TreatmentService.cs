@@ -213,12 +213,24 @@ namespace MediMax.Business.Services
             return treatmentList;
         }
 
-        public async Task<TreatmentResponseModel> GetTreatmentById ( int treatmentId, int userId )
+        public async Task<List<TreatmentResponseModel>> GetListTreatmentById ( IdTreatmentListRequestModel request )
         {
-            TreatmentResponseModel treatmentList;
-            treatmentList = await _treatmentDb.GetTreatmentById(treatmentId, userId);
+            List<TreatmentResponseModel> treatmentList = new List<TreatmentResponseModel>();
+
+            foreach (var treatmentId in request.Treatment_Id)
+            {
+                // Obtenha o tratamento pelo ID e adicione à lista
+                var treatment = await _treatmentDb.GetListTreatmentById(treatmentId, request.User_Id);
+                if (treatment != null)
+                {
+                    treatmentList.AddRange(treatment);
+                }
+            }
+
             return treatmentList;
         }
+     
+
 
         /// <inheritdoc/>
         public async Task<List<TreatmentResponseModel>> GetTreatmentActives ( int userId )

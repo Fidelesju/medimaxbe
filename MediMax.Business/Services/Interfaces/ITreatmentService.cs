@@ -10,7 +10,7 @@ namespace MediMax.Business.Services.Interfaces
         Task<List<TreatmentResponseModel>> GetTreatmentByInterval(string startTime, string finishTime, int userId );
         Task<bool> DeactivateTreatment ( int medicineId, int treatmentId );
         Task<List<TreatmentResponseModel>> GetTreatmentActives ( int userId );
-        Task<TreatmentResponseModel> GetTreatmentById ( int treatmentId, int userId );
+        Task<List<TreatmentResponseModel>> GetListTreatmentById ( IdTreatmentListRequestModel request );
         Task<List<TimeDosageResponseModel>> GetDosageTimeByTreatmentId ( int treatmentId );
         Task<int> CreateTreatment ( TreatmentCreateRequestModel request );
         Task<bool> UpdateMedication ( TreatmentUpdateRequestModel request );

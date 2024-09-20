@@ -86,11 +86,8 @@ namespace MediMax.Business.Services
             List<TreatmentResponseModel> TreatmentInativos;
             List<TreatmentManagementResponseModel> historicoAnoEspecifico;
             List<TreatmentManagementResponseModel> historicoDataEspecifica;
-            List<TimeDosageResponseModel> horariosDosagem = null;
-
             MemoryStream memoryStream = null;
 
-            RelatorioResponseModel response = new RelatorioResponseModel();
             switch (request.type)
             {
                 case 0:
@@ -99,74 +96,129 @@ namespace MediMax.Business.Services
                     string fileName1 = filePath + "Medicamentos_Ativos.pdf";
                     Dictionary<string, string> columnNames1 = new Dictionary<string, string>
                     {
-                        { "Name", "Medicamento" },
-                        { "PackageQuantity", "Quantidade de Medicamentos da Caixa" },
-                        { "Dosage", "Dosagem" },
-                        { "ExpirationDate", "Data de Vencimento" }
+                        { "medicine_name", "Medicamento" },
+                        { "package_quantity", "Quantidade de Medicamentos da Caixa" },
+                        { "dosage", "Dosagem" },
+                        { "expiration_date", "Data de Vencimento" }
                     };
                     memoryStream = pdfGenerator1.GeneratePdf(medicamentoAtivos, fileName1, columnNames1, "Relatório de Medicamentos Ativos");
 
                 break;
                 case 1:
                     medicamentoInativos = await _medicationDb.BuscarMedicamentosInativos(request.userId);
-                    var pdfGenerator2 = new PdfGenerator<MedicationResponseModel>();
-                    string fileName2 = filePath + "Medicamentos_Inativos.pdf";
-                    Dictionary<string, string> columnNames2 = new Dictionary<string, string>
-                        {
-                            { "Name", "Medicamento" },
-                            { "PackageQuantity", "Quantidade de Medicamentos da Caixa" },
-                            { "Dosage", "Dosagem" },
-                            { "ExpirationDate", "Data de Vencimento" }
-                        };
-                memoryStream = pdfGenerator2.GeneratePdf(medicamentoInativos, fileName2, columnNames2, "Relatório de Medicamentos Inativos");
-                    break;
-                case 2:
-                    TreatmentAtivos = await _treatmentDb.GetTreatmentActives(request.userId);
-                    foreach (var treatment in TreatmentAtivos)
+                    if (medicamentoInativos == null)
                     {
-                        if (treatment.Start_Time != null && treatment.Treatment_Interval_Hours != 0)
-                        {
-                            List<string> horariosDosagemString = CalcularHorariosDoses(treatment.Start_Time, treatment.Treatment_Interval_Hours);
-                        }
+                        return null;
                     }
-                    var pdfGenerator3 = new PdfGenerator<TreatmentResponseModel>();
-                    string fileName3 = filePath + "Treatments_Ativos.pdf";
-                    Dictionary<string, string> columnNames3 = new Dictionary<string, string>
+                    var pdfGenerator2 = new PdfGenerator<MedicationResponseModel>();
+                        string fileName2 = filePath + "Medicamentos_Inativos.pdf";
+                        Dictionary<string, string> columnNames2 = new Dictionary<string, string>
+                        {
+                            { "medicine_name", "Medicamento" },
+                            { "package_quantity", "Quantidade de Medicamentos da Caixa" },
+                            { "dosage", "Dosagem" },
+                            { "expiration_date", "Data de Vencimento" }
+                        };
+                    memoryStream = pdfGenerator2.GeneratePdf(medicamentoInativos, fileName2, columnNames2, "Relatório de Medicamentos Inativos");
+                        break;
+                case 2:
+                // Lista temporária para armazenar os dados de tratamento junto com os horários de dosagem
+                var treatmentWithDosageTimes = new List<dynamic>();
+
+                TreatmentAtivos = await _treatmentDb.GetTreatmentActives(request.userId);
+
+                foreach (var treatment in TreatmentAtivos)
+                {
+                    List<string> dosageTimes = new List<string>();
+
+                    // Calcular os horários de dosagem se houver dados válidos
+                    if (treatment.Start_Time != null && treatment.Treatment_Interval_Hours != 0)
                     {
-                        { "Name", "Medicamento" },
-                        { "MedicineQuantity", "Quantidade de Medicamentos" },
-                        { "StartTime", "Horário de Inicio do Treatment" },
-                        { "TreatmentInterval", "Intervalo de Horas do Treatment" },
-                        { "TreatmentDurationDays", "Intervalo de Dias do Treatment" },
-                        { "DietaryRecommendations", "Recomendações de Alimentação" },
-                        { "Observation", "Observação" },
-                        { "DosageTime", "Horário Dosagem" }
-                    };
-                memoryStream = pdfGenerator3.GeneratePdf(TreatmentAtivos, fileName3, columnNames3, "Relatório de Treatments Ativos");
-                    break;
+                        dosageTimes = CalcularHorariosDoses(treatment.Start_Time, treatment.Treatment_Interval_Hours);
+                    }
+
+                    // Adicionar tratamento e horários de dosagem à lista temporária
+                    treatmentWithDosageTimes.Add(new
+                    {
+                        treatment.Name_Medication,
+                        treatment.Medication_Quantity,
+                        treatment.Start_Time,
+                        treatment.Treatment_Interval_Hours,
+                        treatment.Treatment_Interval_Days,
+                        treatment.Dietary_Recommendations,
+                        treatment.Observation,
+                        treatment.Continuous_Use,
+                        Dosage_Times = dosageTimes// Adiciona os horários de dosagem calculados
+                    });
+                }
+
+                // Gerar PDF com a nova lista de tratamentos contendo os horários de dosagem
+                var pdfGenerator3 = new PdfGenerator<dynamic>(); // Use dynamic aqui para acomodar os novos dados
+                string fileName3 = filePath + "Treatments_Ativos.pdf";
+                Dictionary<string, string> columnNames3 = new Dictionary<string, string>
+                {
+                    { "Name_Medication", "Medicamento" },
+                    { "Medication_Quantity", "Quantidade de Medicamentos" },
+                    { "Start_Time", "Horário de Inicio do Treatment" },
+                    { "Treatment_Interval_Hours", "Intervalo de Horas do Treatment" },
+                    { "Treatment_Interval_Days", "Intervalo de Dias do Treatment" },
+                    { "Dietary_Recommendations", "Recomendações de Alimentação" },
+                    { "Observation", "Observação" },
+                    { "Continuous_Use", "Uso contínuo?" },
+                    { "Dosage_Times", "Horário Dosagem" } // Adicionar nova coluna para horários de dosagem
+                };
+                memoryStream = pdfGenerator3.GeneratePdf(treatmentWithDosageTimes, fileName3, columnNames3, "Relatório de Treatments Ativos");
+                break;
                 case 3:
+                    // Lista temporária para armazenar os dados de tratamento junto com os horários de dosagem
+                    var treatmentWithDosageTimes3 = new List<dynamic>();
+
                     TreatmentInativos = await _treatmentDb.GetTreatmentInactives(request.userId);
+                    if(TreatmentInativos == null)
+                    {
+                        return null;
+                    }
                     foreach (var treatment in TreatmentInativos)
                     {
+                        List<string> dosageTimes = new List<string>();
+
+                        // Calcular os horários de dosagem se houver dados válidos
                         if (treatment.Start_Time != null && treatment.Treatment_Interval_Hours != 0)
                         {
-                            List<string> horariosDosagemString = CalcularHorariosDoses(treatment.Start_Time, treatment.Treatment_Interval_Hours);
+                            dosageTimes = CalcularHorariosDoses(treatment.Start_Time, treatment.Treatment_Interval_Hours);
                         }
+
+                        // Adicionar tratamento e horários de dosagem à lista temporária
+                        treatmentWithDosageTimes3.Add(new
+                        {
+                            treatment.Name_Medication,
+                            treatment.Medication_Quantity,
+                            treatment.Start_Time,
+                            treatment.Treatment_Interval_Hours,
+                            treatment.Treatment_Interval_Days,
+                            treatment.Dietary_Recommendations,
+                            treatment.Observation,
+                            treatment.Continuous_Use,
+                            Dosage_Times = dosageTimes// Adiciona os horários de dosagem calculados
+                        });
                     }
-                    var pdfGenerator4 = new PdfGenerator<TreatmentResponseModel>();
-                    string fileName4 = filePath + "Treatments_Inativos.pdf";
+
+                    // Gerar PDF com a nova lista de tratamentos contendo os horários de dosagem
+                    var pdfGenerator4 = new PdfGenerator<dynamic>(); // Use dynamic aqui para acomodar os novos dados
+                    string fileName4 = filePath + "tratamentos_inativos.pdf";
                     Dictionary<string, string> columnNames4 = new Dictionary<string, string>
                     {
-                        { "Name", "Medicamento" },
-                        { "MedicineQuantity", "Quantidade de Medicamentos" },
-                        { "StartTime", "Horário de Inicio do Treatment" },
-                        { "TreatmentInterval", "Intervalo de Horas do Treatment" },
-                        { "TreatmentDurationDays", "Intervalo de Dias do Treatment" },
-                        { "DietaryRecommendations", "Recomendações de Alimentação" },
+                        { "Name_Medication", "Medicamento" },
+                        { "Medication_Quantity", "Quantidade de Medicamentos" },
+                        { "Start_Time", "Horário de Inicio do Treatment" },
+                        { "Treatment_Interval_Hours", "Intervalo de Horas do Treatment" },
+                        { "Treatment_Interval_Days", "Intervalo de Dias do Treatment" },
+                        { "Dietary_Recommendations", "Recomendações de Alimentação" },
                         { "Observation", "Observação" },
-                        { "DosageTime", "Horário Dosagem" }
+                        { "Continuous_Use", "Uso contínuo?" },
+                        { "Dosage_Times", "Horário Dosagem" } // Adicionar nova coluna para horários de dosagem
                     };
-                memoryStream = pdfGenerator4.GeneratePdf(TreatmentInativos, fileName4, columnNames4, "Relatório de Treatment Inativos");
+                    memoryStream = pdfGenerator4.GeneratePdf(treatmentWithDosageTimes3, fileName4, columnNames4, "Relatório de Tratamentos Inativos");
                     break;
                 case 4:
                     historicoGeral = await _historicoDb.GetAllHistoric(request.userId);
@@ -174,10 +226,10 @@ namespace MediMax.Business.Services
                     string fileName5 = filePath + "Historico_Geral.pdf";
                     Dictionary<string, string> columnNames5 = new Dictionary<string, string>
                     {
-                        { "DateMedicationIntake", "Data de Ingestão" },
-                        { "CorrectTreatmentSchedule", "Horário Correto" },
-                        { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                        { "MedicineName", "Nome do Medicamento" },
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
                 memoryStream = pdfGenerator5.GeneratePdf(historicoGeral, fileName5, columnNames5, "Relatório de Geral");
@@ -187,12 +239,13 @@ namespace MediMax.Business.Services
                     var pdfGenerator6 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName6 = filePath + "Historico_medications_Tomados.pdf";
                     Dictionary<string, string> columnNames6 = new Dictionary<string, string>
-                        {
-                            { "DateMedicationIntake", "Data de Ingestão" },
-                            { "CorrectTreatmentSchedule", "Horário Correto" },
-                            { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                            { "MedicineName", "Nome do Medicamento" }
-                        };
+                    {
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
+                        { "WasTakenDescription", "Foi Tomado" }
+                    };
                 memoryStream = pdfGenerator6.GeneratePdf(historicoTomado, fileName6, columnNames6, "Relatório de Treatments Inativos");
                     break;
                 case 6:
@@ -200,13 +253,14 @@ namespace MediMax.Business.Services
                     var pdfGenerator7 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName7 = filePath + "Historico_medications_Nao_Tomados.pdf";
                     Dictionary<string, string> columnNames7 = new Dictionary<string, string>
-                            {
-                                { "DateMedicationIntake", "Data de Ingestão" },
-                                { "CorrectTreatmentSchedule", "Horário Correto" },
-                                { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                                { "MedicineName", "Nome do Medicamento" }
-                            };
-                    pdfGenerator7.GeneratePdf(historicoNaoTomado, fileName7, columnNames7, "Relatório de Medicamentos Não Tomados");
+                    {
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
+                        { "WasTakenDescription", "Foi Tomado" }
+                    };
+                pdfGenerator7.GeneratePdf(historicoNaoTomado, fileName7, columnNames7, "Relatório de Medicamentos Não Tomados");
                     break;
                 case 7:
                     historico7Dias = await _historicoDb.BuscarHistorico7Dias(request.userId);
@@ -214,10 +268,10 @@ namespace MediMax.Business.Services
                     string fileName8 = filePath + "Historico_Ultimos_7_Dias.pdf";
                     Dictionary<string, string> columnNames8 = new Dictionary<string, string>
                     {
-                        { "DateMedicationIntake", "Data de Ingestão" },
-                        { "CorrectTreatmentSchedule", "Horário Correto" },
-                        { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                        { "MedicineName", "Nome do Medicamento" },
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
                 memoryStream = pdfGenerator8.GeneratePdf(historico7Dias, fileName8, columnNames8, "Relatório de Ultimos 7 dias");
@@ -227,13 +281,13 @@ namespace MediMax.Business.Services
                     var pdfGenerator9 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName9 = filePath + "Historico_Ultimos_15_Dias.pdf";
                     Dictionary<string, string> columnNames9 = new Dictionary<string, string>
-                        {
-                            { "DateMedicationIntake", "Data de Ingestão" },
-                            { "CorrectTreatmentSchedule", "Horário Correto" },
-                            { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                            { "MedicineName", "Nome do Medicamento" },
-                            { "WasTakenDescription", "Foi Tomado" }
-                        };
+                    {
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
+                        { "WasTakenDescription", "Foi Tomado" }
+                    };
                 memoryStream = pdfGenerator9.GeneratePdf(historico15Dias, fileName9, columnNames9, "Relatório de Ultimos 15 dias");
                     break;
                 case 9:
@@ -241,13 +295,13 @@ namespace MediMax.Business.Services
                     var pdfGenerator10 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName10 = filePath + "Historico_Ultimos_30_Dias.pdf";
                     Dictionary<string, string> columnNames10 = new Dictionary<string, string>
-                            {
-                                { "DateMedicationIntake", "Data de Ingestão" },
-                                { "CorrectTreatmentSchedule", "Horário Correto" },
-                                { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                                { "MedicineName", "Nome do Medicamento" },
-                                { "WasTakenDescription", "Foi Tomado" }
-                            };
+                    {
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
+                        { "WasTakenDescription", "Foi Tomado" }
+                    };
                 memoryStream = pdfGenerator10.GeneratePdf(historico30Dias, fileName10, columnNames10, "Relatório de Ultimos 30 dias");
                     break;
                 case 10:
@@ -255,13 +309,13 @@ namespace MediMax.Business.Services
                     var pdfGenerator11 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName11 = filePath + "Historico_Ultimos_60_Dias.pdf";
                     Dictionary<string, string> columnNames11 = new Dictionary<string, string>
-                                {
-                                    { "DateMedicationIntake", "Data de Ingestão" },
-                                    { "CorrectTreatmentSchedule", "Horário Correto" },
-                                    { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                                    { "MedicineName", "Nome do Medicamento" },
-                                    { "WasTakenDescription", "Foi Tomado" }
-                                };
+                    {
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
+                        { "WasTakenDescription", "Foi Tomado" }
+                    };
                 memoryStream = pdfGenerator11.GeneratePdf(historico60Dias, fileName11, columnNames11, "Relatório de Ultimos 60 dias");
                     break;
                 case 11:
@@ -269,11 +323,11 @@ namespace MediMax.Business.Services
                     var pdfGenerator12 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName12 = filePath + "Historico_Ultimo_Ano.pdf";
                     Dictionary<string, string> columnNames12 = new Dictionary<string, string>
-                    {
-                        { "DateMedicationIntake", "Data de Ingestão" },
-                        { "CorrectTreatmentSchedule", "Horário Correto" },
-                        { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                        { "MedicineName", "Nome do Medicamento" },
+                   {
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
 
@@ -285,10 +339,10 @@ namespace MediMax.Business.Services
                     string fileName13= filePath + "Historico_Ano_" +request.year + ".pdf";
                     Dictionary<string, string> columnNames13= new Dictionary<string, string>
                     {
-                        { "DateMedicationIntake", "Data de Ingestão" },
-                        { "CorrectTreatmentSchedule", "Horário Correto" },
-                        { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                        { "MedicineName", "Nome do Medicamento" },
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
                 memoryStream = pdfGenerator13.GeneratePdf(historicoAnoEspecifico, fileName13, columnNames13, "Relatório " + request.year);
@@ -298,11 +352,11 @@ namespace MediMax.Business.Services
                     var pdfGenerator14 = new PdfGenerator<TreatmentManagementResponseModel>();
                     string fileName14 = filePath + "Historico.pdf";
                     Dictionary<string, string> columnNames14 = new Dictionary<string, string>
-                    {
-                        { "DateMedicationIntake", "Data de Ingestão" },
-                        { "CorrectTreatmentSchedule", "Horário Correto" },
-                        { "MedicationIntakeSchedule", "Horário de Ingestão" },
-                        { "MedicineName", "Nome do Medicamento" },
+                   {
+                        { "Medication_Intake_Date", "Data de Ingestão" },
+                        { "Correct_Time_Treatment", "Horário Correto" },
+                        { "Medication_Intake_Time", "Horário de Ingestão" },
+                        { "Medication_Name", "Nome do Medicamento" },
                         { "WasTakenDescription", "Foi Tomado" }
                     };
                 memoryStream = pdfGenerator14.GeneratePdf(historicoDataEspecifica, fileName14, columnNames14, "Relatório " + request.date);

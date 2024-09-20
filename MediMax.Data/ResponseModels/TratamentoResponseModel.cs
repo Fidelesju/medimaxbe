@@ -2,6 +2,7 @@
 {
     public class TreatmentResponseModel
     {
+        public int Id { get; set; }
         public string Name_Medication { get; set; }
 
         public int Medication_Quantity { get; set; }
@@ -23,6 +24,5 @@
         public int Medication_Id { get; set; }
 
         public int User_Id { get; set; }
-        public int Id { get; set; }
     }
 }

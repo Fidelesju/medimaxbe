@@ -80,54 +80,42 @@ namespace MediMax.Data.ApplicationModels
 
                         foreach (var columnName in columnNames.Keys)
                         {
-                            if (columnName == "DosageTime")
+                            // Usa reflexão para acessar as propriedades do item
+                            var propertyInfo = item.GetType().GetProperty(columnName);
+
+                            if (propertyInfo != null)
                             {
-                                // Verificar se a propriedade "DosageTime" existe em TModel
-                                var dosageTimeProperty = typeof(TModel).GetProperty("DosageTime");
-                                if (dosageTimeProperty != null)
+                                var value = propertyInfo.GetValue(item, null);
+
+                                // Se for a coluna de "Dosage_Times", converta a lista de horários para string
+                                if (columnName == "Dosage_Times" && value is List<string> dosageTimes)
                                 {
-                                    // Obter o valor da propriedade "DosageTime"
-                                    var dosageTimes = dosageTimeProperty.GetValue(item) as List<string>;
-                                    if (dosageTimes != null)
-                                    {
-                                        // Converter a lista em uma única string separada por vírgulas
-                                        string dosageTimesString = string.Join(", ", dosageTimes);
+                                    string dosageTimesString = string.Join(", ", dosageTimes);
 
-                                        // Criar uma célula com a string de dosagem
-                                        PdfPCell dosageTimeCell = new PdfPCell(new Phrase(dosageTimesString, new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.WHITE)));
-                                        dosageTimeCell.BackgroundColor = currentCellBackgroundColor;
-                                        dosageTimeCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                                        dosageTimeCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-
-                                        // Adicionar a célula à tabela
-                                        table.AddCell(dosageTimeCell);
-                                    }
+                                    // Cria a célula com os horários de dosagem
+                                    PdfPCell dosageTimeCell = new PdfPCell(new Phrase(dosageTimesString, new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.WHITE)));
+                                    dosageTimeCell.BackgroundColor = currentCellBackgroundColor;
+                                    dosageTimeCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                                    dosageTimeCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                                    table.AddCell(dosageTimeCell);
+                                }
+                                else
+                                {
+                                    // Trata as outras colunas
+                                    string cellValue = value?.ToString() ?? "";
+                                    PdfPCell cell = new PdfPCell(new Phrase(cellValue, new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.WHITE)));
+                                    cell.BackgroundColor = currentCellBackgroundColor;
+                                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                                    table.AddCell(cell);
                                 }
                             }
-                            else
-                            {
-                                // Obter o valor da propriedade correspondente ao nome da coluna
-                                string cellValue = GetPropertyValue(item, columnName);
-
-                                // Criar uma instância de Font com uma família de fontes específica
-                                Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.WHITE);
-
-                                // Criar uma instância de Phrase com o valor e a fonte especificada
-                                Phrase phrase = new Phrase(cellValue, font);
-
-                                // Criar a célula com a Phrase criada
-                                PdfPCell cell = new PdfPCell(phrase);
-                                cell.BackgroundColor = currentCellBackgroundColor;
-                                cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-
-                                // Adicionar a célula à tabela
-                                table.AddCell(cell);
-                            }
                         }
+
                         // Alternar entre as cores das linhas
                         isEvenRow = !isEvenRow;
                     }
+
                     document.Add(table);
                 }
                 return memoryStream;

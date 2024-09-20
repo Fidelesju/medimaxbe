@@ -11,16 +11,16 @@ namespace MediMax.Data.Repositories
         {
         }
 
-        public int Create( StatusDispenser horarioDosagem )
+        public int Create( StatusDispenser statusDispenser )
         {
-            DbSet.Add(horarioDosagem);
+            DbSet.Add(statusDispenser);
             Context.SaveChanges();
-            return horarioDosagem.Id;
+            return statusDispenser.Id;
         }
 
-        public void Update( StatusDispenser horarioDosagem )
+        public void Update( StatusDispenser statusDispenser )
         {
-            DbSet.Update(horarioDosagem);
+            DbSet.Update(statusDispenser);
             Context.SaveChanges();
         }
     }

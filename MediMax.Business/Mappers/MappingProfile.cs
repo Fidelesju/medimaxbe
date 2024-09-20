@@ -54,7 +54,8 @@ namespace MediMax.Business.Mappers
                 .ForMember(dest => dest.TimeDosage, opt => opt.MapFrom(src => src["TimeDosage"]));
 
             CreateMap<DbDataReader, TreatmentResponseModel>()
-                          .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src["MedicineId"]))
+                          .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src["Id"]))
+                          .ForMember(dest => dest.Medication_Id, opt => opt.MapFrom(src => src["MedicineId"]))
                           .ForMember(dest => dest.Name_Medication, opt => opt.MapFrom(src => src["NameMedication"]))
                           .ForMember(dest => dest.Medication_Quantity, opt => opt.MapFrom(src => src["MedicineQuantity"]))
                           .ForMember(dest => dest.Start_Time, opt => opt.MapFrom(src => src["StartTime"]))
@@ -64,6 +65,7 @@ namespace MediMax.Business.Mappers
                           .ForMember(dest => dest.Observation, opt => opt.MapFrom(src => src["Observation"]))
                           .ForMember(dest => dest.Is_Active, opt => opt.MapFrom(src => src["IsActive"]))
                           .ForMember(dest => dest.Continuous_Use, opt => opt.MapFrom(src => src["ContinuousUse"]))
+                          .ForMember(dest => dest.Medication_Id, opt => opt.MapFrom(src => src["MedicationId"]))
                           .ForMember(dest => dest.User_Id, opt => opt.MapFrom(src => src["UserId"]));
 
             CreateMap<DbDataReader, NutritionGetResponseModel>()

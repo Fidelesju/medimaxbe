@@ -36,6 +36,7 @@ namespace MediMax.Data.Dao
                         t.observation AS Observation,
                         t.is_active AS IsActive,
                         t.continuous_use AS ContinuousUse,
+                        t.medication_Id AS MedicationId,
                         t.user_id AS UserId
                     FROM treatment t
                     WHERE t.medication_id = {medicineId}
@@ -67,6 +68,7 @@ namespace MediMax.Data.Dao
                         t.observation AS Observation,
                         t.is_active AS IsActive,
                         t.continuous_use AS ContinuousUse,
+                        t.medication_Id AS MedicationId,
                         t.user_id AS UserId
                     FROM treatment t
                     WHERE t.medication_id = {medicineId}
@@ -82,6 +84,37 @@ namespace MediMax.Data.Dao
             return TreatmentList;
         }
 
+        public async Task<List<TreatmentResponseModel>> GetListTreatmentById ( int treatmentId, int userId )
+        {
+            string sql;
+            List<TreatmentResponseModel> treatment;
+            sql = $@"
+              SELECT 
+                t.id AS Id,
+                t.medication_id AS MedicineId,
+                t.name_medication AS NameMedication,
+                t.medication_quantity AS MedicineQuantity,
+                t.start_time AS StartTime,
+                t.treatment_interval_hours AS TreatmentIntervalHours,
+                t.treatment_interval_days AS TreatmentDurationDays,
+                t.dietary_recommendations AS DietaryRecommendations,
+                t.observation AS Observation,
+                t.is_active AS IsActive,
+                t.continuous_use AS ContinuousUse,
+                t.medication_Id AS MedicationId,
+                t.user_id AS UserId
+            FROM treatment t
+            WHERE t.id = {treatmentId}
+            AND t.is_active = 1
+            AND t.user_id = {userId};
+                ";
+
+            await Connect();
+            await Query(sql);
+            treatment = await GetQueryResultList();
+            await Disconnect();
+            return treatment;
+        }
         public async Task<TreatmentResponseModel> GetTreatmentById ( int treatmentId, int userId )
         {
             string sql;
@@ -99,6 +132,7 @@ namespace MediMax.Data.Dao
                 t.observation AS Observation,
                 t.is_active AS IsActive,
                 t.continuous_use AS ContinuousUse,
+                t.medication_Id AS MedicationId,
                 t.user_id AS UserId
             FROM treatment t
             WHERE t.id = {treatmentId}
@@ -130,6 +164,7 @@ namespace MediMax.Data.Dao
                     t.observation AS Observation,
                     t.is_active AS IsActive,
                     t.continuous_use AS ContinuousUse,
+                    t.medication_Id AS MedicationId,
                     t.user_id AS UserId
                 FROM treatment t
                 WHERE t.id = {treatmentId}
@@ -164,6 +199,7 @@ namespace MediMax.Data.Dao
                     t.observation AS Observation,
                     t.is_active AS IsActive,
                     t.continuous_use AS ContinuousUse,
+                    t.medication_Id AS MedicationId,
                     t.user_id AS UserId
                 FROM treatment t
                 WHERE t.is_active = 1
@@ -195,6 +231,7 @@ namespace MediMax.Data.Dao
                     t.observation AS Observation,
                     t.is_active AS IsActive,
                     t.continuous_use AS ContinuousUse,
+                    t.medication_Id AS MedicationId,
                     t.user_id AS UserId
                 FROM treatment t
                 WHERE t.is_active = 0
@@ -227,10 +264,11 @@ namespace MediMax.Data.Dao
                     t.observation AS Observation,
                     t.is_active AS IsActive,
                     t.continuous_use AS ContinuousUse,
+                    t.medication_Id AS MedicationId,
                     t.user_id AS UserId
                 FROM treatment t
                 WHERE t.is_active = 0
-                AND t.user_id = {userId};
+                AND t.user_id = {userId}
                 ORDER BY id DESC
                 LIMIT 1
                 ";
@@ -259,6 +297,7 @@ namespace MediMax.Data.Dao
                     t.observation AS Observation,
                     t.is_active AS IsActive,
                     t.continuous_use AS ContinuousUse,
+                    t.medication_Id AS MedicationId,
                     t.user_id AS UserId
                 FROM treatment t
                 WHERE t.is_active = 1

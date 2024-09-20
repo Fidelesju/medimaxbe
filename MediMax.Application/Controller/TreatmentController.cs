@@ -277,17 +277,17 @@ namespace MediMax.Application.Controller
             }
         }
 
-        [HttpGet("{treatmentId}/user/{userId}")]
+        [HttpPost("list-id")]
         [ProducesResponseType(typeof(BaseResponse<int>), 200)]
         [ProducesResponseType(typeof(BaseResponse<int>), 400)]
         [ProducesResponseType(typeof(BaseResponse<int>), 404)]
         [ProducesResponseType(typeof(BaseResponse<int>), 500)]
-        public async Task<ActionResult<BaseResponse<TreatmentResponseModel>>> GetTreatmentById ( int treatmentId , int userId )
+        public async Task<ActionResult<BaseResponse<List<TreatmentResponseModel>>>> GetTreatmentById ( IdTreatmentListRequestModel request )
         {
             try
             {
-                var Treatment = await _treatmentService.GetTreatmentById(treatmentId, userId);
-                var response = BaseResponse<TreatmentResponseModel>
+                var Treatment = await _treatmentService.GetListTreatmentById(request);
+                var response = BaseResponse<List<TreatmentResponseModel>>
                         .Builder()
                         .SetMessage("Treatments encontrados com sucesso.")
                         .SetData(Treatment);

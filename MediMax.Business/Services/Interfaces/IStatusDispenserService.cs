@@ -6,7 +6,7 @@ namespace MediMax.Business.Services.Interfaces
 {
     public interface IDispenserStatusService
     {
-        Task<int> CriandoOuAtualizandoDispenserStatus(DispenserStatusCreateRequestModel request);
+        Task<int> CriandoOuAtualizandoDispenserStatus ( int treatmentId, int userId, int medicationId );
         Task<DispenserStatusListaResponseModel> BuscandoDispenserStatus ( int treatmentId, int userId );
         Task<int> CalculadoraQuantidadeCaixasTreatment ( CalculadoraCaixasRequestModel request );
     }

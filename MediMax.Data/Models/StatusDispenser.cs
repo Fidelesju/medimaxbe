@@ -10,57 +10,46 @@ namespace MediMax.Data.Models
         [Key]
         public int Id { get; set; }
 
-        public int TreatmentStatus { get; set; }
+        public int Treatment_Status { get; set; }
 
-        public int TotalQuantityBoxTreatment { get; set; }
+        public int Total_Quantity_Box_Treatment { get; set; }
 
-        public int TotalQuantityMedicationBox { get; set; }
+        public int Total_Quantity_Medication_Box { get; set; }
 
-        public int TotalQuantityMedicationDosageDay { get; set; }
+        public int Total_Quantity_Medication_Dosage_Day { get; set; }
 
-        public int TotalQuantityMedicamentosTreatment { get; set; }
+        public int Total_Quantity_Medicamentos_Treatment { get; set; }
 
-        public int WeeklyMedicationQuantity { get; set; }
+        public int Weekly_Medication_Quantity { get; set; }
 
-        public int QuantityMedicinePerDosage { get; set; }
+        public int Quantity_Medicine_Per_Dosage { get; set; }
 
-        public int MissingMedicineQuantityToEndTreatment { get; set; }
+        public int Missing_Medicine_Quantity_To_End_Treatment { get; set; }
 
-        public int QuantityDaysMissingToEndTreatment { get; set; }
+        public int Quantity_Days_Missing_To_End_Treatment { get; set; }
 
-        public int CurrentQuantityMedicationBoxTreatment { get; set; }
+        public int Current_Quantity_Medication_Box_Treatment { get; set; }
 
-        public int TreatmentIntervalHours { get; set; }
+        public int Treatment_Interval_Hours { get; set; }
 
-        public int TreatmentIntervalDays { get; set; }
+        public int Treatment_Interval_Days { get; set; }
 
-        public int DailyDosageFrequency { get; set; }
+        public int Daily_Dosage_Frequency { get; set; }
 
-        [StringLength(25)]
-        public string TreatmentStartDate { get; set; }
+        public string Treatment_Start_Date { get; set; }
 
-        [StringLength(25)]
-        public string FinalDateExpectedTreatment { get; set; }
+        public string Final_Date_Expected_Treatment { get; set; }
 
-        [StringLength(25)]
-        public string FinalDateMarkedTreatment { get; set; }
+        public string Final_Date_Marked_Treatment { get; set; }
 
-        [StringLength(25)]
-        public string CreationData { get; set; }
+        public string Creation_Data { get; set; }
 
-        [StringLength(25)]
-        public string WeeklyUpdateDate { get; set; }
+        public string Weekly_Update_Date { get; set; }
 
-        public int TreatmentId { get; set; }
+        public int Treatment_Id { get; set; }
 
-        [ForeignKey("TreatmentId")]
-        public Treatment Treatment { get; set; }
+        public int Medication_Id { get; set; }
 
-        public int MedicationId { get; set; }
-
-        [ForeignKey("MedicationId")]
-        public Medication Medication { get; set; }
-
-        public int TreatmentUserId { get; set; }
+        public int Treatment_User_Id { get; set; }
     }
 }

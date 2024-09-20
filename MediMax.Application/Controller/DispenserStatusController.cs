@@ -25,11 +25,11 @@ namespace MediMax.Application.Controller
         }
 
         [HttpPost("CreateOrUpate")]
-        public async Task<ActionResult<BaseResponse<int>>> CriandoDispenserStatus(DispenserStatusCreateRequestModel request)
+        public async Task<ActionResult<BaseResponse<int>>> CriandoDispenserStatus(int treatmentId, int userId, int medicationId)
         {
             try
             {
-                int id = await _DispenserStatusService.CriandoOuAtualizandoDispenserStatus(request);
+                int id = await _DispenserStatusService.CriandoOuAtualizandoDispenserStatus(treatmentId,userId,medicationId);
                 var response = BaseResponse<int>.Builder()
                     .SetMessage("Abastecimento feito com sucesso!")
                     .SetData(id);

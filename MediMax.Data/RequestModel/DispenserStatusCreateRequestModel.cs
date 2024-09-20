@@ -7,6 +7,7 @@ namespace MediMax.Data.RequestModels
     {
         public int Treatment_id { get; set; }
         public int medicamento_id { get; set; }
+        public int user_id { get; set; }
         public int quantidade_total_medication_caixa { get; set; }
         public int quantidade_total_caixa_Treatment { get; set; }
         public int intervalo_Treatment_horas { get; set; }
